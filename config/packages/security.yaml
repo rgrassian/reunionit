@@ -1,5 +1,9 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
     providers:
         in_memory: { memory: ~ }
     firewalls:
@@ -22,3 +26,6 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_EMPLOYEE: ROLE_GUEST
+        ROLE_ADMIN: ROLE_EMPLOYEE
