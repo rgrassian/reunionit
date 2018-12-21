@@ -2,11 +2,6 @@
 
 {% block body %}
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    {% endblock %}
-
-
     {% include 'components/_nav.html.twig' %}
 
     <div class="jumbotron">
@@ -18,5 +13,7 @@
             <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         </p>
     </div>
+
+    {% include 'components/_footer.html.twig' %}
 
 {% endblock %}
