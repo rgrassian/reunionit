@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Etudiant
- * Date: 21/12/2018
- * Time: 13:54
- */
 
 namespace App\DataFixtures;
 
