@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Unavailability index{% endblock %}
+
+{% block body %}
+    <h1>Unavailability index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Guests</th>
+                <th>Object</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for unavailability in unavailabilities %}
+            <tr>
+                <td>{{ unavailability.id }}</td>
+                <td>{{ unavailability.startDate ? unavailability.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
+                <td>{{ unavailability.object }}</td>
+                <td>{{ unavailability.type }}</td>
+                <td>
+                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">show</a>
+                    <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('unavailability_new') }}">Create new</a>
+{% endblock %}
