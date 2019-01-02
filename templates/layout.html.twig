@@ -4,10 +4,11 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" >
 {% endblock %}
 
-{% block content %}
+{% block body %}
 
     {% include 'components/_nav.html.twig' %}
 
+        {% block content '' %}
 
     {% include 'components/_footer.html.twig' %}
 
