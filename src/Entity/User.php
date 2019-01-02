@@ -44,13 +44,13 @@ class User
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Occupied", mappedBy="organiser")
+     * @ORM\OneToMany(targetEntity="App\Entity\Unavailability", mappedBy="organiser")
      */
-    private $occupieds;
+    private $unavailabilities;
 
     public function __construct()
     {
-        $this->occupieds = new ArrayCollection();
+        $this->unavailabilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,30 +119,30 @@ class User
     }
 
     /**
-     * @return Collection|Occupied[]
+     * @return Collection|Unavailability[]
      */
-    public function getOccupieds(): Collection
+    public function getUnavailability(): Collection
     {
-        return $this->occupieds;
+        return $this->unavailabilities;
     }
 
-    public function addOccupied(Occupied $occupied): self
+    public function addUnavailability(Unavailability $unavailability): self
     {
-        if (!$this->occupieds->contains($occupied)) {
-            $this->occupieds[] = $occupied;
-            $occupied->setOrganiser($this);
+        if (!$this->unavailabilities->contains($unavailability)) {
+            $this->unavailabilities[] = $unavailability;
+            $unavailability->setOrganiser($this);
         }
 
         return $this;
     }
 
-    public function removeOccupied(Occupied $occupied): self
+    public function removeUnavailability(Unavailability $unavailability): self
     {
-        if ($this->occupieds->contains($occupied)) {
-            $this->occupieds->removeElement($occupied);
+        if ($this->unavailabilities->contains($unavailability)) {
+            $this->unavailabilities->removeElement($unavailability);
             // set the owning side to null (unless already changed)
-            if ($occupied->getOrganiser() === $this) {
-                $occupied->setOrganiser(null);
+            if ($unavailability->getOrganiser() === $this) {
+                $unavailability->setOrganiser(null);
             }
         }
 

@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\Occupied;
+use App\Entity\Unavailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Occupied|null find($id, $lockMode = null, $lockVersion = null)
- * @method Occupied|null findOneBy(array $criteria, array $orderBy = null)
- * @method Occupied[]    findAll()
- * @method Occupied[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Unavailability|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Unavailability|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Unavailability[]    findAll()
+ * @method Unavailability[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OccupiedRepository extends ServiceEntityRepository
+class UnavailabilityRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Occupied::class);
+        parent::__construct($registry, Unavailability::class);
     }
 
     // /**

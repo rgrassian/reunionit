@@ -34,13 +34,13 @@ class Room
     private $features = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Occupied", mappedBy="room")
+     * @ORM\OneToMany(targetEntity="App\Entity\Unavailability", mappedBy="room")
      */
-    private $occupieds;
+    private $unavailabilities;
 
     public function __construct()
     {
-        $this->occupieds = new ArrayCollection();
+        $this->unavailabilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,27 +85,27 @@ class Room
     }
 
     /**
-     * @return Collection|Occupied[]
+     * @return Collection|Unavailability[]
      */
     public function getOccupieds(): Collection
     {
-        return $this->occupieds;
+        return $this->unavailabilities;
     }
 
-    public function addOccupied(Occupied $occupied): self
+    public function addOccupied(Unavailability $occupied): self
     {
-        if (!$this->occupieds->contains($occupied)) {
-            $this->occupieds[] = $occupied;
+        if (!$this->unavailabilities->contains($occupied)) {
+            $this->unavailabilities[] = $occupied;
             $occupied->setRoom($this);
         }
 
         return $this;
     }
 
-    public function removeOccupied(Occupied $occupied): self
+    public function removeOccupied(Unavailability $occupied): self
     {
-        if ($this->occupieds->contains($occupied)) {
-            $this->occupieds->removeElement($occupied);
+        if ($this->unavailabilities->contains($occupied)) {
+            $this->unavailabilities->removeElement($occupied);
             // set the owning side to null (unless already changed)
             if ($occupied->getRoom() === $this) {
                 $occupied->setRoom(null);

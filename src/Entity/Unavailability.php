@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OccupiedRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UnavailabilityRepository")
  */
-class Occupied
+class Unavailability
 {
     /**
      * @ORM\Id()
@@ -29,7 +29,7 @@ class Occupied
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $attendants = [];
+    private $guests = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -42,13 +42,13 @@ class Occupied
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="occupieds")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="unavailabilities")
      * @ORM\JoinColumn(nullable=false)
      */
     private $organiser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="occupieds")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="unavailabilities")
      * @ORM\JoinColumn(nullable=false)
      */
     private $room;
@@ -82,16 +82,14 @@ class Occupied
         return $this;
     }
 
-    public function getAttendants(): ?array
+    public function getGuests()
     {
-        return $this->attendants;
+        return $this->guests;
     }
 
-    public function setAttendants(?array $attendants): self
+    public function setGuests($guests): void
     {
-        $this->attendants = $attendants;
-
-        return $this;
+        $this->guests = $guests;
     }
 
     public function getObject(): ?string
