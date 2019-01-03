@@ -1,13 +1,30 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Edit Room{% endblock %}
+{% block page_title %}{{ room.name }}{% endblock %}
 
-{% block body %}
-    <h1>Edit Room</h1>
+{% block content %}
 
-    {{ include('room/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="jumbotron col-md-6 mx-auto">
 
-    <a href="{{ path('room_index') }}">back to list</a>
+        <h1>Modifier la salle {{ room.name }}</h1>
 
-    {{ include('room/_delete_form.html.twig') }}
+        {#{{ include('room/_form.html.twig', {'button_label': 'Mettre à jour'}) }}#}
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <div style="position: relative;">
+            <button class="btn btn-info">Mettre à jour</button>
+        {{ form_end(form) }}
+
+            <button type="button" class="btn btn-info"><a href="{{ path('room_index') }}" style="color: #fff;">Retour à la liste</a></button>
+            {{ include('room/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
 {% endblock %}

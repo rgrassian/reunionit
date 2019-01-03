@@ -24,7 +24,11 @@
         <div style="position: relative;">
             <button type="button" class="btn btn-info"><a href="{{ path('room_edit', {'id': room.id}) }}" style="color: #fff;">Modifier</a></button>
             <button type="button" class="btn btn-info"><a href="{{ path('room_index') }}" style="color: #fff;">Retour aux salles</a></button>
-            {{ include('room/_delete_form.html.twig') }}
+            <form method="post" action="{{ path('room_delete', {'id': room.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');" style="position: absolute;right: 0;top: 0;">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
+                <button class="btn btn-warning">Supprimer</button>
+            </form>
         </div>
     </div>
 
