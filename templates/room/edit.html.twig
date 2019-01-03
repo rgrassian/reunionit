@@ -8,18 +8,40 @@
 
         <h1>Modifier la salle {{ room.name }}</h1>
 
-        {#{{ include('room/_form.html.twig', {'button_label': 'Mettre à jour'}) }}#}
-
         {{ form_start(form) }}
-        {{ form_widget(form) }}
 
-        <div style="position: relative;">
-            <button class="btn btn-info">Mettre à jour</button>
-        {{ form_end(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.capacity) }}
 
-            <button type="button" class="btn btn-info"><a href="{{ path('room_index') }}" style="color: #fff;">Retour à la liste</a></button>
-            {{ include('room/_delete_form.html.twig') }}
+        {{ form_label(form.features) }}
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            {% set salle = form.vars.value %}
+        {% for feature in form.features %}
+            <label class="btn btn-info{{ feature.vars.value in salle.features ? '' : ' active' }}">
+                <input
+                        value="{{ feature.vars.value }}"
+                        type="checkbox" {{ feature.vars.value in salle.features ? '' : 'checked' }}
+                        autocomplete="off"
+                        name="room[features][]">
+                {{ feature.vars.label }}
+            </label>
+        {% endfor %}
         </div>
+
+        <button class="btn btn-primary" style="margin-top: 20px;">Mettre à jour</button>
+
+        <button type="button" class="btn btn-primary" style="margin-top: 20px;"><a href="{{ path('room_index') }}" style="color: #fff;">Retour à la liste</a></button>
+
+    </form>
+        <form method="post"
+              action="{{ path('room_delete', {'id': room.id}) }}"
+              onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');"
+              style="position: relative;float: right;bottom: 38px;">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
+            <button class="btn btn-warning">Supprimer</button>
+        </form>
+
     </div>
 
 {% endblock %}
