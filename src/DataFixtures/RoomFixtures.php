@@ -29,7 +29,7 @@ class RoomFixtures extends Fixture
 
             $room->setName($faker->city);
             $room->setCapacity(10);
-            $room->setFeatures(['wifi','videoprojecteur','chauffage au sol']);
+            $room->setFeatures(['Wifi','Chauffage au sol']);
 
             $manager->persist($room);
         }

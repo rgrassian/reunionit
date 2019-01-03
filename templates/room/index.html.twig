@@ -1,13 +1,13 @@
 {% extends 'layout.html.twig' %}
 
+{% set active = 'salles' %}
+
 {% block title %}Room index{% endblock %}
 
 {% block content %}
-
     <div class="jumbotron col-md-9 mx-auto">
         <h1 class="display-3">Nos salles de réunion</h1>
         <hr>
-        {#<p class="lead">#}
             <div class="row text-center">
                 {% for room in rooms %}
                     <div class="col-lg-3 col-md-6 mb-4">
@@ -24,35 +24,6 @@
                 {% endfor %}
             </div>
         <hr>
-            {#<table class="table">#}
-                {#<thead>#}
-                {#<tr>#}
-                    {#<th>Name</th>#}
-                    {#<th>Capacity</th>#}
-                    {#<th>Features</th>#}
-                    {#<th>actions</th>#}
-                {#</tr>#}
-                {#</thead>#}
-                {#<tbody>#}
-                {#{% for room in rooms %}#}
-                    {#<tr>#}
-                        {#<td>{{ room.name }}</td>#}
-                        {#<td>{{ room.capacity }}</td>#}
-                        {#<td>{{ room.features ? room.features|join(', ') : '' }}</td>#}
-                        {#<td>#}
-                            {#<a href="{{ path('room_show', {'id': room.id}) }}">Voir</a>#}
-                            {#<a href="{{ path('room_edit', {'id': room.id}) }}">Modifier</a>#}
-                        {#</td>#}
-                    {#</tr>#}
-                {#{% else %}#}
-                    {#<tr>#}
-                        {#<td colspan="5">no records found</td>#}
-                    {#</tr>#}
-                {#{% endfor %}#}
-                {#</tbody>#}
-            {#</table>#}
-
-        {#</p>#}
         <p class="lead mx-auto">
             <a class="btn btn-warning btn-lg" href="{{ path('room_new') }}" role="button">Créer une nouvelle salle</a>
         </p>
