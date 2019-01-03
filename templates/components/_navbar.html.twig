@@ -20,17 +20,17 @@
                 <a class="nav-link" href="#">About</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        {#<form class="form-inline my-2 my-lg-0">#}
+            {#<input class="form-control mr-sm-2" type="text" placeholder="Search">#}
+            {#<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>#}
+        {#</form>#}
         <ul class="navbar-nav mr-auto" style="margin-right: 50px !important;">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#" >Bonjour {{ app.user.prenom ~' - Service '~ app.user.nom }}</a>
+                    <a class="nav-link" href="#" >Bonjour {{ app.user.firstName ~' '~ app.user.lastName }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('security_deconnexion') }}" >Déconnexion</a>
+                    <a class="btn btn-info nav-link" href="{{ path('app_logout') }}" >Déconnexion</a>
                 </li>
             {% endif %}
         </ul>
