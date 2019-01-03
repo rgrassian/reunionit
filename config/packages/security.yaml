@@ -33,7 +33,8 @@ security:
                 check_path: app_login
                 username_parameter: app_login[email]
                 password_parameter: app_login[password]
-                default_target_path: index
+                default_target_path: /
+                always_use_default_target_path: true
             provider: user_provider
             logout:
                 path: /deconnexion

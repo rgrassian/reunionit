@@ -3,16 +3,24 @@
 {% block title %}A bas la réunionnite !{% endblock %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron col-md-6 mx-auto" style="margin-top: 5%;">
         <h1 class="display-3">A bas la réunionnite!</h1>
 
         {{ dump(app.user) }}
 
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <p class="lead">Bonjour{{ is_granted('IS_AUTHENTICATED_FULLY') ? ' '~app.user.firstName~' '~app.user.lastName : '' }},</p>
+        <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p>
+        {#<p>Bienvenue sur notre service d'optimisation digitale de happiness development agile en environnement corporate.</p>#}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ path('room_index') }}" role="button">Réserver une salle</a>
+            </p>
+        {% else %}
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ path('app_login') }}" role="button">Se connecter</a>
+            </p>
+        {% endif %}
+
     </div>
 {% endblock %}
