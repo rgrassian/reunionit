@@ -16,19 +16,16 @@ class RoomType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom',
-                'attr' => [
-                    'style' => 'min-width: 250px;margin-bottom: 5px;'
-                ]
+                'label' => 'Nom'
             ])
             ->add('capacity', IntegerType::class, [
-                'label' => 'Capacité',
-                'attr' => [
-                    'style' => 'min-width: 250px;margin-bottom: 5px;'
-                ]
+                'label' => 'Capacité'
             ])
             ->add('features', ChoiceType::class, [
                 'label' => 'Options',
+                'attr' => [
+                    'class' => 'btn-group btn-group-toggle'
+                ],
                 'choices' => [
                     'Wifi' => 'Wifi',
                     'Vidéoprojecteur' => 'Vidéoprojecteur',
