@@ -87,28 +87,28 @@ class Room
     /**
      * @return Collection|Unavailability[]
      */
-    public function getOccupieds(): Collection
+    public function getUnavailabilities(): Collection
     {
         return $this->unavailabilities;
     }
 
-    public function addOccupied(Unavailability $occupied): self
+    public function addUnavailabilities(Unavailability $unavailability): self
     {
-        if (!$this->unavailabilities->contains($occupied)) {
-            $this->unavailabilities[] = $occupied;
-            $occupied->setRoom($this);
+        if (!$this->unavailabilities->contains($unavailability)) {
+            $this->unavailabilities[] = $unavailability;
+            $unavailability->setRoom($this);
         }
 
         return $this;
     }
 
-    public function removeOccupied(Unavailability $occupied): self
+    public function removeUnavailabilities(Unavailability $unavailability): self
     {
-        if ($this->unavailabilities->contains($occupied)) {
-            $this->unavailabilities->removeElement($occupied);
+        if ($this->unavailabilities->contains($unavailability)) {
+            $this->unavailabilities->removeElement($unavailability);
             // set the owning side to null (unless already changed)
-            if ($occupied->getRoom() === $this) {
-                $occupied->setRoom(null);
+            if ($unavailability->getRoom() === $this) {
+                $unavailability->setRoom(null);
             }
         }
 

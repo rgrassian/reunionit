@@ -17,6 +17,8 @@ class UnavailabilityController extends AbstractController
 {
     /**
      * @Route("/", name="unavailability_index", methods={"GET"})
+     * @param UnavailabilityRepository $unavailabilityRepository
+     * @return Response
      */
     public function index(UnavailabilityRepository $unavailabilityRepository): Response
     {
@@ -25,6 +27,8 @@ class UnavailabilityController extends AbstractController
 
     /**
      * @Route("/new", name="unavailability_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -48,6 +52,8 @@ class UnavailabilityController extends AbstractController
 
     /**
      * @Route("/{id}", name="unavailability_show", methods={"GET"})
+     * @param Unavailability $unavailability
+     * @return Response
      */
     public function show(Unavailability $unavailability): Response
     {
@@ -56,6 +62,9 @@ class UnavailabilityController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="unavailability_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Unavailability $unavailability
+     * @return Response
      */
     public function edit(Request $request, Unavailability $unavailability): Response
     {
@@ -76,6 +85,9 @@ class UnavailabilityController extends AbstractController
 
     /**
      * @Route("/{id}", name="unavailability_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Unavailability $unavailability
+     * @return Response
      */
     public function delete(Request $request, Unavailability $unavailability): Response
     {

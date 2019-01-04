@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -47,4 +48,18 @@ class UnavailabilityRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public function findUnavailabilitiesByRoomByDates($roomId, $startDate, $endDate)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.room = :room_id')
+            ->setParameter('room_id', $roomId)
+            ->andWhere('u.startDate BETWEEN :startDate and :endDate')
+            ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
+            ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
+
 }

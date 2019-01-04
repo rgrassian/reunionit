@@ -139,4 +139,5 @@ class Unavailability
 
         return $this;
     }
+
 }
