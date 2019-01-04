@@ -15,18 +15,19 @@
                                 <h2 class="card-title">{{ room.name }}</h2>
                                 <p class="card-text">{{ room.features ? room.features|join(', ') : '' }}</p>
                                 <a href="{{ path('room_show', {'id': room.id}) }}" class="btn btn-info">Voir</a>
-                                <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info">Modifier</a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-warning">Modifier</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         <hr>
-        <p class="lead mx-auto">
-            <a class="btn btn-primary btn-lg" href="{{ path('room_new') }}" role="button">Créer une nouvelle salle</a>
-        </p>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+            <p class="lead mx-auto">
+                <a class="btn btn-warning btn-lg" href="{{ path('room_new') }}" role="button">Créer une nouvelle salle</a>
+            </p>
+        {% endif %}
     </div>
-
-
-
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Room;
 use App\Form\RoomType;
 use App\Repository\RoomRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     /**
-     * @Route("/salles", name="room_index", methods={"GET"})
+     * Permet à tout utilisateur de voir
+     * la liste de toutes les salles.
+     * @Route("/liste-des-salles.html", name="room_index", methods={"GET"})
      * @param RoomRepository $roomRepository
      * @return Response
      */
@@ -23,7 +26,8 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/salle/creer", name="room_new", methods={"GET","POST"})
+     * Permet à l'admin de créer une nouvelle salle.
+     * @Route("admin/nouvelle-salle.html", name="room_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -48,7 +52,9 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/salle/{id}", name="room_show", methods={"GET"})
+     * Permet à tout utilisateur de visualiser
+     * les caractéristiques d'une salle.
+     * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
      * @param Room $room
      * @return Response
      */
@@ -58,7 +64,11 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/salle/{id}/modifier", name="room_edit", methods={"GET","POST"})
+     * Permet à l'admin de modifier
+     * les caractéristiques d'une salle.
+     * @Route("/admin/modifier/salle-{id}.html",
+     *     name="room_edit",
+     *     methods={"GET","POST"})
      * @param Request $request
      * @param Room $room
      * @return Response
@@ -81,7 +91,8 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/salle/{id}", name="room_delete", methods={"DELETE"})
+     * Permet à l'admin de supprimer une salle.
+     * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
      * @param Request $request
      * @param Room $room
      * @return Response

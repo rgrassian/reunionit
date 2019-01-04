@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Erreur {{ status_code }}
+{% endblock %}
+
+{% block content %}
+    <div class="page-404">
+        <h1>Accès Refusé {{ status_code }}</h1>
+        <p><img src="http://newapps.cs50.net/img/error403.gif" alt="Erreur 403"></p>
+        <a href="{{ path('index') }}" class="my-btn btn-go-home">
+            RETOURNER VERS L'ACCUEIL
+        </a>
+    </div>
+{% endblock %}
