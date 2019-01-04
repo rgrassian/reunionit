@@ -3,13 +3,14 @@
 {% block title %}A bas la réunionnite !{% endblock %}
 
 {% block content %}
-    <div class="jumbotron col-md-12 mx-auto" >
+    <div class="jumbotron col-md-6 mx-auto align-items-center">
         <h1 class="display-3">A bas la réunionnite!</h1>
+
         <p class="lead">Bonjour{{ is_granted('IS_AUTHENTICATED_FULLY') ? ' '~app.user.firstName~' '~app.user.lastName : '' }},</p>
         <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>
         <hr class="my-4">
         {#<p>Bienvenue sur notre service d'optimisation digitale de happiness development agile en environnement corporate.</p>#}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_EMPLOYEE') %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <p class="lead">
                 <a class="btn btn-primary btn-lg" href="{{ path('room_index') }}" role="button">Réserver une salle</a>
             </p>
