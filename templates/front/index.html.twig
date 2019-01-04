@@ -3,10 +3,8 @@
 {% block title %}A bas la réunionnite !{% endblock %}
 
 {% block content %}
-    <div class="jumbotron col-md-6 mx-auto" style="margin-top: 5%;">
+    <div class="jumbotron col-md-6 mx-auto align-items-center">
         <h1 class="display-3">A bas la réunionnite!</h1>
-
-        {{ dump(app.user) }}
 
         <p class="lead">Bonjour{{ is_granted('IS_AUTHENTICATED_FULLY') ? ' '~app.user.firstName~' '~app.user.lastName : '' }},</p>
         <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>

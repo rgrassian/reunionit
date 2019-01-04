@@ -27,16 +27,16 @@
         <ul class="navbar-nav mr-auto" style="margin-right: 50px !important;">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#" >Bonjour {{ app.user.firstName ~' '~ app.user.lastName }}</a>
+                    <a class="nav-link text-white" href="#" >Bonjour {{ app.user.firstName ~' '~ app.user.lastName }}</a>
                 </li>
             {% endif %}
             <li class="nav-item">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="btn btn-info nav-link" href="{{ path('app_logout') }}" >
+                    <a class="btn btn-info nav-link text-white" href="{{ path('app_logout') }}" >
                         Déconnexion
                     </a>
                 {% else %}
-                    <a class="btn btn-info nav-link" href="{{ path('app_login') }}" >
+                    <a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >
                         Connexion
                     </a>
                 {% endif %}

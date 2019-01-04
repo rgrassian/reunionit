@@ -1,5 +1,5 @@
-<form method="post" action="{{ path('room_delete', {'id': room.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');" style="position: absolute;right: 0;top: 0;">
+<form method="post" action="{{ path('room_delete', {'id': room.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
-    <button class="btn btn-warning">Supprimer</button>
+    <button class="btn btn-warning"><i class="fas fa-trash-alt"></i></button>
 </form>

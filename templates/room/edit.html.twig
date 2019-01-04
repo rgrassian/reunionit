@@ -13,26 +13,19 @@
         {{ form_row(form.name) }}
         {{ form_row(form.capacity) }}
 
+        <div class="form-group">
         {{ form_label(form.features) }}
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            {% set salle = form.vars.value %}
-        {% for feature in form.features %}
-            <label class="btn btn-info{{ feature.vars.value in salle.features ? '' : ' active' }}">
-                <input
-                        value="{{ feature.vars.value }}"
-                        type="checkbox" {{ feature.vars.value in salle.features ? '' : 'checked' }}
-                        autocomplete="off"
-                        name="room[features][]">
-                {{ feature.vars.label }}
-            </label>
-        {% endfor %}
+                {% set salle = form.vars.value %}
+                {% for feature in form.features %}
+                    {{ form_widget(feature) }}
+                {% endfor %}
         </div>
+        {{ form_errors(form.features) }}
 
         <button class="btn btn-primary" style="margin-top: 20px;">Mettre à jour</button>
 
         <button type="button" class="btn btn-primary" style="margin-top: 20px;"><a href="{{ path('room_index') }}" style="color: #fff;">Retour à la liste</a></button>
-
-    </form>
+        {{ form_end(form) }}
         <form method="post"
               action="{{ path('room_delete', {'id': room.id}) }}"
               onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');"
