@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UnavailabilityController extends AbstractController
 {
     /**
-     * Permet d'afficher l'historique de l'occupation des salles.
+     * Affiche l'historique de l'occupation des salles.
      * @Route("/admin/historique.html", name="unavailability_index", methods={"GET"})
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
@@ -26,6 +26,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Permet de créer une nouvelle réservation.
      * @Route("/nouvelle-reservation.html", name="unavailability_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
@@ -61,6 +62,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Affiche les infos sur une réservation.
      * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
      * @param Unavailability $unavailability
      * @return Response
@@ -71,6 +73,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Permet de modifier une réservation.
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Unavailability $unavailability
@@ -98,6 +101,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Permet de supprimer une réservation.
      * @Route("/supprimer/reservation-{id}.html", name="unavailability_delete", methods={"DELETE"})
      * @param Request $request
      * @param Unavailability $unavailability

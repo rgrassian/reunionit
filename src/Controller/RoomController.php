@@ -14,8 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     /**
-     * Permet à tout utilisateur de voir
-     * la liste de toutes les salles.
+     * Liste de toutes les salles.
      * @Route("/liste-des-salles.html", name="room_index", methods={"GET"})
      * @param RoomRepository $roomRepository
      * @return Response
@@ -52,8 +51,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * Permet à tout utilisateur de visualiser
-     * les caractéristiques d'une salle.
+     * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
      * @param Room $room
      * @return Response
