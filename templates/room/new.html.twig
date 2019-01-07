@@ -1,11 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}New Room{% endblock %}
 
-{% block body %}
+{% block content %}
+
+    <div class="jumbotron col-md-9 mx-auto">
+
     <h1>Create new Room</h1>
 
-    {{ include('room/_form.html.twig') }}
+        {{ include('room/_form.html.twig') }}
 
-    <a href="{{ path('room_index') }}">back to list</a>
+        <a href="{{ path('room_index') }}">back to list</a>
+
+    </div>
+
 {% endblock %}

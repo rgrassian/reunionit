@@ -1,42 +1,52 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Unavailability{% endblock %}
+{% block page_title %}Réservation{% endblock %}
 
-{% block body %}
-    <h1>Unavailability</h1>
+{% block content %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ unavailability.id }}</td>
-            </tr>
-            <tr>
-                <th>StartDate</th>
-                <td>{{ unavailability.startDate ? unavailability.startDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>EndDate</th>
-                <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Guests</th>
-                <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Object</th>
-                <td>{{ unavailability.object }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ unavailability.type }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="jumbotron col-md-9 mx-auto">
 
-    <a href="{{ path('unavailability_index') }}">back to list</a>
+    <h1>Réservation</h1>
 
-    <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">edit</a>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Organisateur</th>
+                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Salle</th>
+                    <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
+                </tr>
+                <tr>
+                    <th>Début</th>
+                    <td>{{ unavailability.startDate ? unavailability.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Fin</th>
+                    <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Invités</th>
+                    <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Objet</th>
+                    <td>{{ unavailability.object }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ unavailability.type }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    {{ include('unavailability/_delete_form.html.twig') }}
+        <a href="{{ path('unavailability_index') }}">Retour</a>
+
+        <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">Modifier</a>
+
+        {{ include('unavailability/_delete_form.html.twig') }}
+
+    </div>
+
 {% endblock %}

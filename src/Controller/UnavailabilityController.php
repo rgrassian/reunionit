@@ -34,6 +34,10 @@ class UnavailabilityController extends AbstractController
     {
         $unavailability = new Unavailability();
         $form = $this->createForm(UnavailabilityType::class, $unavailability);
+        $unavailability->setOrganiser($this->getUser());
+
+        $form->get('organiser')->setData($this->getUser());
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
