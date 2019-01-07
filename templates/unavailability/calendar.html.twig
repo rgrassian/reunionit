@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+    <div class="jumbotron col-md-9 mx-auto">
+
+        <a href="{{ path('unavailability_new') }}">Nouvelle réservation</a>
+
+        {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script src='{{ asset('bundles/fullcalendar/js/fullcalendar/locale/fr.js') }}'></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#calendar-holder').fullCalendar({
+                locale: 'fr',
+                header: {
+                    left: 'prev, today',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay, next'
+                },
+                lazyFetching: true,
+                navLinks: true,
+                eventSources: [
+                    {
+                        url: '/fc-load-events',
+                        type: 'POST',
+                        data: {
+                            filters: {
+                            }
+                        },
+                        error: function () {
+                            alert('There was an error while fetching FullCalendar!');
+                        }
+                    }
+                ],
+            });
+        });
+    </script>
+{% endblock %}

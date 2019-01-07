@@ -117,4 +117,13 @@ class UnavailabilityController extends AbstractController
 
         return $this->redirectToRoute('unavailability_index');
     }
+
+
+    /**
+     * @Route("/calendrier", name="unavailability_calendar")
+     */
+    public function calendar()
+    {
+        return $this->render('unavailability/calendar.html.twig');
+    }
 }

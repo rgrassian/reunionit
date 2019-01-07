@@ -8,6 +8,9 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
+                <a class="nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">Calendrier</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">Nos salles</a>
             </li>
             {% if is_granted('ROLE_ADMIN') %}
