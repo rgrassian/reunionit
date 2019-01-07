@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Unavailability;
+use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
 use App\Repository\UnavailabilityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,10 +33,16 @@ class UnavailabilityController extends AbstractController
     public function new(Request $request): Response
     {
         $unavailability = new Unavailability();
-        $form = $this->createForm(UnavailabilityType::class, $unavailability);
-        $unavailability->setOrganiser($this->getUser());
 
-        $form->get('organiser')->setData($this->getUser());
+        if ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
+            $unavailability->setOrganiser($this->getUser());
+            $form->get('organiser')->setData($this->getUser());
+        } else {
+            $form = $this->createForm(UnavailabilityType::class, $unavailability);
+            $unavailability->setOrganiser($this->getUser());
+            $unavailability->setType(Unavailability::REUNION);
+        }
 
         $form->handleRequest($request);
 
@@ -44,7 +51,7 @@ class UnavailabilityController extends AbstractController
             $entityManager->persist($unavailability);
             $entityManager->flush();
 
-            return $this->redirectToRoute('unavailability_index');
+            return $this->redirectToRoute('room_show', ['id' => $unavailability->getRoom()->getId()]);
         }
 
         return $this->render('unavailability/new.html.twig', [
@@ -71,7 +78,11 @@ class UnavailabilityController extends AbstractController
      */
     public function edit(Request $request, Unavailability $unavailability): Response
     {
-        $form = $this->createForm(UnavailabilityType::class, $unavailability);
+        if ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
+        } else {
+            $form = $this->createForm(UnavailabilityType::class, $unavailability);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,18 +1,4 @@
 {{ form_start(form) }}
-    {#{{ form_widget(form) }}#}
-    {{ form_row(form.startDate) }}
-    {{ form_row(form.endDate) }}
-    {{ form_row(form.guests) }}
-    {{ form_row(form.object) }}
-    {% if is_granted('ROLE_ADMIN') %}
-        {{ form_row(form.type) }}
-        {{ form_row(form.organiser) }}
-    {% else %}
-        <div style="display: none">
-            {{ form_row(form.type) }}
-            {{ form_row(form.organiser) }}
-        </div>
-    {% endif %}
-    {{ form_row(form.room) }}
+    {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

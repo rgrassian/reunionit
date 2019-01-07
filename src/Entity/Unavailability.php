@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Unavailability
 {
+    const REUNION = 0;
+    const AUTRE = 1;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
