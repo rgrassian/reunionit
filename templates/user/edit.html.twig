@@ -1,13 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block page_title %}Modifier{% endblock %}
 
-{% block body %}
-    <h1>Edit User</h1>
+{% block content %}
+<div class="jumbotron col-md-9 mx-auto">
+    <h1>Modifier l'utilisateur</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}">Liste des utilisateurs</a>
 
     {{ include('user/_delete_form.html.twig') }}
+</div>
 {% endblock %}

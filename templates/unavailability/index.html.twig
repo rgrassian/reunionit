@@ -30,7 +30,7 @@
                     <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
                     <td>{{ unavailability.object }}</td>
-                    <td>{{ unavailability.type }}</td>
+                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                     <td>
                         <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}"><i class="far fa-eye"></i></a>
                     </td>

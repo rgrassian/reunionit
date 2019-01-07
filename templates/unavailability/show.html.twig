@@ -11,6 +11,10 @@
         <table class="table">
             <tbody>
                 <tr>
+                    <th>Objet</th>
+                    <td>{{ unavailability.object }}</td>
+                </tr>
+                <tr>
                     <th>Organisateur</th>
                     <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
                 </tr>
@@ -20,24 +24,22 @@
                 </tr>
                 <tr>
                     <th>Début</th>
-                    <td>{{ unavailability.startDate ? unavailability.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ unavailability.startDate ? unavailability.startDate|date('d/m/Y H:i') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Fin</th>
-                    <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ unavailability.endDate ? unavailability.endDate|date('d/m/Y H:i') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Invités</th>
                     <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
                 </tr>
-                <tr>
-                    <th>Objet</th>
-                    <td>{{ unavailability.object }}</td>
-                </tr>
-                <tr>
-                    <th>Type</th>
-                    <td>{{ unavailability.type }}</td>
-                </tr>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
 
