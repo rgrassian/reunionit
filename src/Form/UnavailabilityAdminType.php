@@ -25,8 +25,8 @@ class UnavailabilityAdminType extends UnavailabilityType
             ->add('type', ChoiceType::class, [
                 'label' => 'Type de réservation',
                 'choices' => [
-                    'réunion' => Unavailability::REUNION,
-                    'autre' => Unavailability::AUTRE
+                    'Réunion' => Unavailability::REUNION,
+                    'Autre' => Unavailability::AUTRE
                 ],
                 'expanded' => false,
                 'multiple' => false

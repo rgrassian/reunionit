@@ -1,11 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block page_title %}Nouvel utilisateur{% endblock %}
 
-{% block body %}
-    <h1>Create new User</h1>
+{% block content %}
+<div class="jumbotron col-md-9 mx-auto">
+
+    <h1>Nouvel utilisateur</h1>
 
     {{ include('user/_form.html.twig') }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}">Liste des utilisateurs</a>
+
+</div>
 {% endblock %}

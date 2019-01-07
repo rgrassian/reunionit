@@ -10,7 +10,16 @@ class AppExtension extends AbstractExtension
     {
         return [
             new \Twig_Filter('role_format', function ($role) {
-                return ucfirst(strtolower(explode('_', $role)[1]));
+
+                switch ($role) {
+                    case 'ROLE_ADMIN':
+                        return 'Administrateur';
+                        break;
+                    case 'ROLE_EMPLOYEE':
+                        return 'Salarié';
+                        break;
+                }
+
             })
         ];
     }
