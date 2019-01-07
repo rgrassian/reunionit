@@ -10,13 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/unavailability")
- */
+
 class UnavailabilityController extends AbstractController
 {
     /**
-     * @Route("/", name="unavailability_index", methods={"GET"})
+     * Permet d'afficher l'historique de l'occupation des salles.
+     * @Route("/admin/historique.html", name="unavailability_index", methods={"GET"})
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
@@ -26,7 +25,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="unavailability_new", methods={"GET","POST"})
+     * @Route("/nouvelle-reservation.html", name="unavailability_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -55,7 +54,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="unavailability_show", methods={"GET"})
+     * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
      * @param Unavailability $unavailability
      * @return Response
      */
@@ -65,7 +64,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="unavailability_edit", methods={"GET","POST"})
+     * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response
@@ -88,7 +87,7 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="unavailability_delete", methods={"DELETE"})
+     * @Route("/supprimer/reservation-{id}.html", name="unavailability_delete", methods={"DELETE"})
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response
