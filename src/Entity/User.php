@@ -127,6 +127,10 @@ class User implements UserInterface
         return $this->unavailabilities;
     }
 
+    /**
+     * @param Unavailability $unavailability
+     * @return User
+     */
     public function addUnavailability(Unavailability $unavailability): self
     {
         if (!$this->unavailabilities->contains($unavailability)) {
@@ -137,6 +141,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Unavailability $unavailability
+     * @return User
+     */
     public function removeUnavailability(Unavailability $unavailability): self
     {
         if ($this->unavailabilities->contains($unavailability)) {

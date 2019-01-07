@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,8 +20,22 @@ class UnavailabilityType extends AbstractType
             ->add('guests')
             ->add('object')
             ->add('type')
-            ->add('organiser')
-            ->add('room')
+//            ->add('organiser')
+//            ->add('room')
+            ->add('organiser', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Organisateur'
+            ])
+            ->add('room', EntityType::class, [
+                'class' => Room::class,
+                'choice_label' => 'name',
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Salle'
+            ])
         ;
     }
 
