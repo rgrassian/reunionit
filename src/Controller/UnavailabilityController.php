@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
+use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +33,7 @@ class UnavailabilityController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, RoomRepository $roomRepository): Response
     {
         $unavailability = new Unavailability();
 
@@ -46,15 +48,21 @@ class UnavailabilityController extends AbstractController
         }
 
         // Si la réservation vient du calendrier, on intègre les dates de début et de fin choisies par l'utilisateur
-        if (!null == $request->query->get('startDate') && !null == $request->query->get('endDate')) {
+        if (!null == $request->query->get('startDate')
+            && !null == $request->query->get('endDate')
+            && !null == $request->query->get('roomId')) {
 
             $startDate = \DateTime::createFromFormat('d/m/Y H:i', $request->query->get('startDate'));
-            $unavailability->setStartDate($startDate);
-            $form->get('startDate')->setData($startDate);
-
             $endDate = \DateTime::createFromFormat('d/m/Y H:i', $request->query->get('endDate'));
-            $unavailability->setEndDate($endDate);
+            $room = $roomRepository->findOneById($request->query->get('roomId'));
+
+            $unavailability->setStartDate($startDate)
+                ->setEndDate($endDate)
+                ->setRoom($room);
+
+            $form->get('startDate')->setData($startDate);
             $form->get('endDate')->setData($endDate);
+            $form->get('room')->setData($room);
 
         }
 

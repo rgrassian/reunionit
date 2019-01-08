@@ -43,21 +43,22 @@ class FullCalendarListener
                 ->findUnavailabilitiesByDates($startDate, $endDate);
         }
 
+        // On crée un évènement pour chaque unavailability
         foreach($unavailabilities as $unavailability) {
 
-            // this create the events with your own entity (here booking entity) to po
             $bookingEvent  = new Event(
                 $unavailability->getRoom()->getName(),
                 $unavailability->getStartDate(),
                 $unavailability->getEndDate() // If the end date is null or not defined, it creates an all day event
             );
 
+            // Création du lien vers l'unavailability sur le calendrier
             $bookingEvent->setUrl(
                 $this->router->generate('unavailability_show', [
                     'id' => $unavailability->getId(),
                 ])
             );
-            // finally, add the booking to the CalendarEvent for displaying on the calendar
+            // Ajout de l'évènement au calendrier
             $calendar->addEvent($bookingEvent);
         }
 

@@ -77,7 +77,11 @@
                 select: function(startDate, endDate) {
                     let r = confirm('Réserver la salle {{ room.name }} pour la période du ' + startDate.format('DD/MM/YYYY HH:mm') + ' au ' + endDate.format('DD/MM/YYYY HH:mm') + ' ?');
                     if (r === true) {
-                            window.location.href = '{{ path('unavailability_new') }}' + '?startDate=' + encodeURIComponent(startDate.format('DD/MM/YYYY HH:mm')) + '&endDate=' + encodeURIComponent(endDate.format('DD/MM/YYYY HH:mm'));
+                            window.location.href = '{{ path('unavailability_new') }}'
+                                + '?startDate=' + encodeURIComponent(startDate.format('DD/MM/YYYY HH:mm'))
+                                + '&endDate=' + encodeURIComponent(endDate.format('DD/MM/YYYY HH:mm'))
+                                + '&roomId={{ room.id }}'
+                            ;
                         }
                     },
                 eventSources: [
