@@ -1,11 +1,32 @@
 {% extends 'layout.html.twig' %}
 
-{% block page_title %}User{% endblock %}
+{% block page_title %}{{ user.firstName ~' '~ user.lastName }}{% endblock %}
 
 {% block content %}
-    <div class="jumbotron col-md-9 mx-auto">
+
+    <div class="jumbotron col-md-9 mx-auto mt-4">
 
         <h1>{{ user.firstName ~' '~ user.lastName }}</h1>
+
+        <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
+            <a href="{{ path('user_index') }}" style="color: #fff;">
+                <button type="button" class="btn btn-info" style="width: 45px;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </a>
+            <a href="{{ path('user_edit', {'id': user.id}) }}" style="color: #fff;">
+                <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </a>
+            <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression du membre ?');" style="display: inline-block;">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>
 
         <table class="table">
             <tbody>
@@ -28,12 +49,6 @@
             </tbody>
         </table>
 
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('user_index') }}">Liste des utilisateurs</a>
-
-            <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a>
-
-            {{ include('user/_delete_form.html.twig') }}
-        {% endif %}
     </div>
+
 {% endblock %}

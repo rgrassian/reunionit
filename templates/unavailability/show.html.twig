@@ -4,9 +4,29 @@
 
 {% block content %}
 
-    <div class="jumbotron col-md-9 mx-auto">
+    <div class="jumbotron col-md-9 mx-auto mt-4">
 
     <h1>Réservation</h1>
+
+        <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
+            <a href="{{ path('unavailability_index') }}" style="color: #fff;">
+                <button type="button" class="btn btn-info" style="width: 45px;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </a>
+            <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}" style="color: #fff;">
+                <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </a>
+            <form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la réservation ?');" style="display: inline-block;">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
+                <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>
 
         <table class="table">
             <tbody>
@@ -43,12 +63,15 @@
             </tbody>
         </table>
 
-        <a href="{{ path('unavailability_index') }}">Retour</a>
-
-        <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">Modifier</a>
-
-        {{ include('unavailability/_delete_form.html.twig') }}
-
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

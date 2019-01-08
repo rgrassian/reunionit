@@ -1,9 +1,10 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Merci de vous identifier{% endblock %}
+{% block page_title %}Connexion{% endblock %}
 
 {% block content %}
-    <div class="jumbotron col-md-3 mx-auto">
+
+    <div class="jumbotron col-md-3 mx-auto mt-4">
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -35,4 +36,5 @@
             </button>
         </form>
     </div>
+
 {% endblock %}

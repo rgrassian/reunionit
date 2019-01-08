@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="jumbotron col-md-6 mx-auto">
+    <div class="jumbotron col-md-6 mx-auto mt-4">
 
         <h1>Modifier la salle {{ room.name }}</h1>
 
@@ -22,17 +22,17 @@
         </div>
         {{ form_errors(form.features) }}
 
-        <button class="btn btn-primary" style="margin-top: 20px;">Mettre à jour</button>
-
-        <button type="button" class="btn btn-primary" style="margin-top: 20px;"><a href="{{ path('room_index') }}" style="color: #fff;">Retour à la liste</a></button>
+        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
+        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('room_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
         {{ form_end(form) }}
+
         <form method="post"
               action="{{ path('room_delete', {'id': room.id}) }}"
               onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');"
               style="position: relative;float: right;bottom: 38px;">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
-            <button class="btn btn-warning">Supprimer</button>
+            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
         </form>
 
     </div>
@@ -41,5 +41,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

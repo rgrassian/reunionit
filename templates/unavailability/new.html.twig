@@ -4,14 +4,25 @@
 
 {% block content %}
 
-    <div class="jumbotron col-md-9 mx-auto">
+    <div class="jumbotron col-md-6 mx-auto mt-4">
 
         <h1>Organiser une réunion</h1>
 
-        {{ include('unavailability/_form.html.twig') }}
-
-        <a href="{{ path('unavailability_index') }}">Retour</a>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
+        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('user_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+        {{ form_end(form) }}
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

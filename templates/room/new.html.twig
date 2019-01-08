@@ -1,17 +1,41 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}New Room{% endblock %}
+{% block page_title %}Nouvelle salle{% endblock %}
 
 {% block content %}
 
-    <div class="jumbotron col-md-9 mx-auto">
+    <div class="jumbotron col-md-6 mx-auto mt-4">
 
-    <h1>Create new Room</h1>
+    <h1>Créer une nouvelle salle</h1>
 
-        {{ include('room/_form.html.twig') }}
+        {{ form_start(form) }}
 
-        <a href="{{ path('room_index') }}">back to list</a>
+        {{ form_row(form.name) }}
+        {{ form_row(form.capacity) }}
+
+        <div class="form-group">
+            {{ form_label(form.features) }}
+            {% set salle = form.vars.value %}
+            {% for feature in form.features %}
+                {{ form_widget(feature) }}
+            {% endfor %}
+        </div>
+        {{ form_errors(form.features) }}
+
+        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
+        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('room_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+        {{ form_end(form) }}
+
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

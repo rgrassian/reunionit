@@ -4,16 +4,31 @@
 
 {% block content %}
 
-<div class="jumbotron col-md-9 mx-auto">
+<div class="jumbotron col-md-6 mx-auto mt-4">
 
     <h1>Modifier la réservation</h1>
 
-    {{ include('unavailability/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
+    <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('unavailability_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+    {{ form_end(form) }}
 
-    <a href="{{ path('unavailability_index') }}">retour</a>
-
-    {{ include('unavailability/_delete_form.html.twig') }}
+    <form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de cette réservation ?');" style="position: relative;float: right;bottom: 38px;">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
+        <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+    </form>
 
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}
