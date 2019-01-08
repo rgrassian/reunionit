@@ -45,6 +45,19 @@ class UnavailabilityController extends AbstractController
             $unavailability->setType(Unavailability::REUNION);
         }
 
+        // Si la réservation vient du calendrier, on intègre les dates de début et de fin choisies par l'utilisateur
+        if (!null == $request->query->get('startDate') && !null == $request->query->get('endDate')) {
+
+            $startDate = \DateTime::createFromFormat('d/m/Y H:i', $request->query->get('startDate'));
+            $unavailability->setStartDate($startDate);
+            $form->get('startDate')->setData($startDate);
+
+            $endDate = \DateTime::createFromFormat('d/m/Y H:i', $request->query->get('endDate'));
+            $unavailability->setEndDate($endDate);
+            $form->get('endDate')->setData($endDate);
+
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

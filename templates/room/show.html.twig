@@ -75,8 +75,11 @@
                 selectable: true,
                 selectOverlap: false,
                 select: function(startDate, endDate) {
-                    confirm('Réserver la salle pour la période de ' + startDate.format() + ' à ' + endDate.format() + ' ?');
-                },
+                    let r = confirm('Réserver la salle {{ room.name }} pour la période du ' + startDate.format('DD/MM/YYYY HH:mm') + ' au ' + endDate.format('DD/MM/YYYY HH:mm') + ' ?');
+                    if (r === true) {
+                            window.location.href = '{{ path('unavailability_new') }}' + '?startDate=' + encodeURIComponent(startDate.format('DD/MM/YYYY HH:mm')) + '&endDate=' + encodeURIComponent(endDate.format('DD/MM/YYYY HH:mm'));
+                        }
+                    },
                 eventSources: [
                     {
                         url: '/fc-load-events',

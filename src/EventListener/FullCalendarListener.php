@@ -33,7 +33,7 @@ class FullCalendarListener
         $startDate = $calendar->getStart();
         $endDate = $calendar->getEnd();
 
-        // si un id est défini on affiche une seule salle, sinon on affiche tout
+        // Si un id est défini on affiche une seule salle, sinon on affiche tout
         if (isset($calendar->getFilters()['id'])) {
             $roomId = $calendar->getFilters()['id'];
             $unavailabilities = $this->em->getRepository(Unavailability::class)
