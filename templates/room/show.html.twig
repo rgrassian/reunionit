@@ -68,8 +68,15 @@
                 },
                 lazyFetching: true,
                 navLinks: true,
-                selectOverlap: false,
+                slotDuration: '00:15:00',
+                weekends: false,
+                minTime: '08:00:00',
+                maxTime: '20:00:00',
                 selectable: true,
+                selectOverlap: false,
+                select: function(startDate, endDate) {
+                    confirm('Réserver la salle pour la période de ' + startDate.format() + ' à ' + endDate.format() + ' ?');
+                },
                 eventSources: [
                     {
                         url: '/fc-load-events',

@@ -49,7 +49,7 @@ class FullCalendarListener
             $bookingEvent  = new Event(
                 $unavailability->getRoom()->getName(),
                 $unavailability->getStartDate(),
-                $unavailability->getEndDate() // If the end date is null or not defined, it creates a all day event
+                $unavailability->getEndDate() // If the end date is null or not defined, it creates an all day event
             );
 
             $bookingEvent->setUrl(
