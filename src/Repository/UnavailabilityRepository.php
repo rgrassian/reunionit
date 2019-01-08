@@ -62,4 +62,13 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findUnavailabilitiesByDates($startDate, $endDate)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.startDate BETWEEN :startDate and :endDate')
+            ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
+            ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
 }

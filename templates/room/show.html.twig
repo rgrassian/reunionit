@@ -68,6 +68,8 @@
                 },
                 lazyFetching: true,
                 navLinks: true,
+                selectOverlap: false,
+                selectable: true,
                 eventSources: [
                     {
                         url: '/fc-load-events',
@@ -80,18 +82,6 @@
                         error: function () {
                             alert('There was an error while fetching FullCalendar!');
                         }
-                    }
-                ],
-                events: [
-                    {
-                        title:  'My Event',
-                        start:  '2019-01-08T14:30:00',
-                        allDay: false
-                    },
-                    {
-                        title:  'My Other Event',
-                        start:  '2019-01-08T15:30:00',
-                        allDay: false
                     }
                 ],
                 timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
