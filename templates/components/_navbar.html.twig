@@ -1,51 +1,42 @@
 {% set route = app.request.get('_route') %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="{{ path('index') }}">RéunionIT</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('index') }}">
+            <img src="{{ asset('images/reunionITwhite.svg') }}" alt="RéunionIT" style="height:1.25rem">&nbspRéunionIT
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">Calendrier</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">Nos salles</a>
-            </li>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="nav navbar-nav mr-auto">
+                <a class="nav-item nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">Calendrier</a>
+                <a class="nav-item nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">Salles</a>
+                <a class="nav-item nav-link" href="{{ path('unavailability_new') }}">Réservation</a>
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item">
-                    <a class="nav-link {{ route == 'user_index' ? 'active' : '' }}" href="{{ path('user_index') }}">Utilisateurs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">Historique</a>
-                </li>
+                <a class="nav-item nav-link {{ route == 'user_index' ? 'active' : '' }}" href="{{ path('user_index') }}">Utilisateurs</a>
+                <a class="nav-item nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">Historique</a>
             {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('unavailability_new') }}">Réserver une salle</a>
-            </li>
-        </ul>
-        {#<form class="form-inline my-2 my-lg-0">#}
+            </ul>
+            {#<form class="form-inline my-2 my-lg-0">#}
             {#<input class="form-control mr-sm-2" type="text" placeholder="Search">#}
             {#<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>#}
-        {#</form>#}
-        <ul class="navbar-nav mr-auto" style="margin-right: 50px !important;">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#" >Bonjour {{ app.user.firstName ~' '~ app.user.lastName }}</a>
-                </li>
-            {% endif %}
-            <li class="nav-item">
+            {#</form>#}
+            {#<ul class="navbar-nav mr-auto" style="margin-right: 50px !important;">#}
+            <ul class="nav navbar-nav">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="btn btn-info nav-link text-white" href="{{ path('app_logout') }}" >
-                        Déconnexion
-                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" >Bonjour {{ app.user.firstName }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-info nav-link text-white" href="{{ path('app_logout') }}" >Déconnexion</a>
+                    </li>
                 {% else %}
-                    <a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >
-                        Connexion
-                    </a>
+                    <li class="nav-item">
+                        <a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >Connexion</a>
+                    </li>
                 {% endif %}
-            </li>
-        </ul>
+            </ul>
+        </div>
     </div>
 </nav>

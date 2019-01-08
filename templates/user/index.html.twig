@@ -3,7 +3,7 @@
 {% block page_title %}Membres{% endblock %}
 
 {% block content %}
-    <div class="jumbotron col-md-9 mx-auto">
+    <div class="jumbotron col-md-9 mx-auto mt-4">
 
         <div class="row">
             <h1 class="col-sm-10">Utilisateurs</h1>
@@ -31,10 +31,15 @@
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastName }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.roles ? user.roles|join(', ')|role_format : '' }}</td>
+                    <td>{{ user.roles ? user.roles|join(', ')|role_formatPicto : '' }}</td>
                     <td>
-                        <a href="{{ path('user_show', {'id': user.id}) }}"><i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i></a>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-user-edit" data-toggle="tooltip" data-placement="top" title="Editer"></i></a>
+                        <a href="{{ path('user_show', {'id': user.id}) }}">
+                            <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" style="font-size: 1.4rem;"></i>
+                        </a>
+                        <span>&nbsp&nbsp&nbsp</span>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}">
+                            <i class="fas fa-user-edit" data-toggle="tooltip" data-placement="top" title="Editer" style="font-size: 1.4rem;"></i>
+                        </a>
                     </td>
                 </tr>
             {% else %}

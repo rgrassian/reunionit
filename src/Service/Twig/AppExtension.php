@@ -22,13 +22,13 @@ class AppExtension extends AbstractExtension
             new \Twig_Filter('role_formatPicto', function ($role) {
                 switch ($role) {
                     case 'ROLE_ADMIN':
-                        return '<i class="fas fa-user-ninja"></i>';
+                        return '<i class="fas fa-user-shield" style="font-size: 1.4rem;"></i>';
                         break;
                     case 'ROLE_EMPLOYEE':
-                        return '<i class="fas fa-user"></i>';
+                        return '<i class="fas fa-user" style="font-size: 1.4rem;"></i>';
                         break;
                 }
-            }),
+            }, ['is_safe' => ['html']]),
         ];
     }
 }
