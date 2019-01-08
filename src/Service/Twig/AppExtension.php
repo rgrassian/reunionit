@@ -10,7 +10,6 @@ class AppExtension extends AbstractExtension
     {
         return [
             new \Twig_Filter('role_format', function ($role) {
-
                 switch ($role) {
                     case 'ROLE_ADMIN':
                         return 'Administrateur';
@@ -19,8 +18,17 @@ class AppExtension extends AbstractExtension
                         return 'Salarié';
                         break;
                 }
-
-            })
+            }),
+            new \Twig_Filter('role_formatPicto', function ($role) {
+                switch ($role) {
+                    case 'ROLE_ADMIN':
+                        return '<i class="fas fa-user-ninja"></i>';
+                        break;
+                    case 'ROLE_EMPLOYEE':
+                        return '<i class="fas fa-user"></i>';
+                        break;
+                }
+            }),
         ];
     }
 }
