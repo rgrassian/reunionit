@@ -42,11 +42,9 @@ class FullCalendarListener
         // si un id est défini on affiche une seule salle, sinon on affiche tout
         if (isset($calendar->getFilters()['id'])) {
             $roomId = $calendar->getFilters()['id'];
-            //$unavailabilities = $this->unavailabilityRepository
             $unavailabilities = $this->em->getRepository(Unavailability::class)
                 ->findUnavailabilitiesByRoomByDates($roomId, $startDate, $endDate);
         } else {
-            //$unavailabilities = $this->unavailabilityRepository
             $unavailabilities = $this->em->getRepository(Unavailability::class)
                 ->findUnavailabilitiesByDates($startDate, $endDate);
         }
