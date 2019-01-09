@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Availability as UnavailabilityAssert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnavailabilityRepository")
+ * @UnavailabilityAssert
  */
 class Unavailability
 {
@@ -19,8 +23,10 @@ class Unavailability
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="datetime")
+     *
      */
     private $startDate;
 
@@ -36,6 +42,7 @@ class Unavailability
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un objet")
      */
     private $object;
 

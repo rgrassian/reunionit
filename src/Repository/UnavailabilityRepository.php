@@ -71,4 +71,14 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findUnavailabilitiesByRoom($roomId)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.room = :room_id')
+            ->setParameter('room_id', $roomId)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -8,10 +8,9 @@
 
         <h1>Organiser une réunion</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {attr:{novalidate: 'novalidate' }}) }}
         {{ form_widget(form) }}
         <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
-        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('user_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
         {{ form_end(form) }}
 
     </div>

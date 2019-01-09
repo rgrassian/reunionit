@@ -44,9 +44,10 @@ class UnavailabilityController extends AbstractController
      * @IsGranted("ROLE_EMPLOYEE")
      * @param Request $request
      * @param RoomRepository $roomRepository
+     * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
-    public function new(Request $request, RoomRepository $roomRepository): Response
+    public function new(Request $request, RoomRepository $roomRepository, UnavailabilityRepository $unavailabilityRepository): Response
     {
         $unavailability = new Unavailability();
 
@@ -60,8 +61,7 @@ class UnavailabilityController extends AbstractController
             $unavailability->setType(Unavailability::REUNION);
         }
 
-        // Si la réservation vient du calendrier, on intègre la salle
-        // et les dates sélectionnées par l'utilisateur.
+        // Pré-remplissage des dates et de la salle sélectionnées
         if (!null == $request->query->get('startDate')
             && !null == $request->query->get('endDate')
             && !null == $request->query->get('roomId')) {
@@ -82,6 +82,8 @@ class UnavailabilityController extends AbstractController
 
         $form->handleRequest($request);
 
+        $unavailabilities = $unavailabilityRepository->findUnavailabilitiesByRoom($room->getId());
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($unavailability);
@@ -93,6 +95,7 @@ class UnavailabilityController extends AbstractController
         return $this->render('unavailability/new.html.twig', [
             'unavailability' => $unavailability,
             'form' => $form->createView(),
+            'unavailabilities' => $unavailabilities,
         ]);
     }
 
