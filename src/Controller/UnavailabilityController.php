@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +19,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class UnavailabilityController extends AbstractController
 {
     /**
-     * Affiche l'historique de l'occupation des salles.
-     * @Route("/admin/historique.html", name="unavailability_index", methods={"GET"})
+     * Affiche les réunions organisées par l'utilisateur ou
+     * toutes les réunions si l'utilisateur est admin.
+     * @Route("/historique.html", name="unavailability_index", methods={"GET"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
     public function index(UnavailabilityRepository $unavailabilityRepository): Response
     {
-        return $this->render('unavailability/index.html.twig', ['unavailabilities' => $unavailabilityRepository->findAll()]);
+        if ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $unavailabilities = $unavailabilityRepository->findAll();
+        } else {
+            $unavailabilities = $unavailabilityRepository->findByOrganiser($this->getUser());
+        }
+        return $this->render('unavailability/index.html.twig', [
+            'unavailabilities' => $unavailabilities
+        ]);
     }
 
     /**
      * Permet de créer une nouvelle réservation.
      * @Route("/nouvelle-reservation.html", name="unavailability_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param Request $request
+     * @param RoomRepository $roomRepository
      * @return Response
      */
     public function new(Request $request, RoomRepository $roomRepository): Response
@@ -47,7 +60,8 @@ class UnavailabilityController extends AbstractController
             $unavailability->setType(Unavailability::REUNION);
         }
 
-        // Si la réservation vient du calendrier, on intègre les dates de début et de fin choisies par l'utilisateur
+        // Si la réservation vient du calendrier, on intègre la salle
+        // et les dates sélectionnées par l'utilisateur.
         if (!null == $request->query->get('startDate')
             && !null == $request->query->get('endDate')
             && !null == $request->query->get('roomId')) {
@@ -85,6 +99,7 @@ class UnavailabilityController extends AbstractController
     /**
      * Affiche les infos sur une réservation.
      * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param Unavailability $unavailability
      * @return Response
      */
@@ -94,8 +109,9 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * Permet de modifier une réservation.
+     * Permet à l'admin ou à l'organisateur de modifier une réservation.
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
+     * @Security("unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')")
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response
@@ -122,16 +138,17 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
-     * Permet de supprimer une réservation.
+     * Permet à l'admin ou à l'organisateur de supprimer une réservation.
      * @Route("/supprimer/reservation-{id}.html", name="unavailability_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param Request $request
+     * @param ObjectManager $entityManager
      * @param Unavailability $unavailability
      * @return Response
      */
-    public function delete(Request $request, Unavailability $unavailability): Response
+    public function delete(Request $request, ObjectManager $entityManager, Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($unavailability);
             $entityManager->flush();
         }

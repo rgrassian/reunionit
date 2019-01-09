@@ -10,19 +10,17 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="nav navbar-nav mr-auto">
+            {% if is_granted('ROLE_EMPLOYEE') %}
                 <a class="nav-item nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">Calendrier</a>
                 <a class="nav-item nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">Salles</a>
-                <a class="nav-item nav-link" href="{{ path('unavailability_new') }}">Réservation</a>
-            {% if is_granted('ROLE_ADMIN') %}
+                {#{% if app.user.unavailabilities is defined and app.user.unavailabilities is not empty %}#}
+                    <a class="nav-item nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">Historique</a>
+                {#{% endif %}#}
+            {% endif %}
+            {% if is_granted ('ROLE_ADMIN') %}
                 <a class="nav-item nav-link {{ route == 'user_index' ? 'active' : '' }}" href="{{ path('user_index') }}">Utilisateurs</a>
-                <a class="nav-item nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">Historique</a>
             {% endif %}
             </ul>
-            {#<form class="form-inline my-2 my-lg-0">#}
-            {#<input class="form-control mr-sm-2" type="text" placeholder="Search">#}
-            {#<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>#}
-            {#</form>#}
-            {#<ul class="navbar-nav mr-auto" style="margin-right: 50px !important;">#}
             <ul class="nav navbar-nav">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
@@ -32,6 +30,9 @@
                         <a class="btn btn-info nav-link text-white" href="{{ path('app_logout') }}" >Déconnexion</a>
                     </li>
                 {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" >Bienvenue, veuillez vous connecter</a>
+                    </li>
                     <li class="nav-item">
                         <a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >Connexion</a>
                     </li>

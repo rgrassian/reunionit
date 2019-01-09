@@ -47,7 +47,7 @@ class FullCalendarListener
         foreach($unavailabilities as $unavailability) {
 
             $bookingEvent  = new Event(
-                $unavailability->getRoom()->getName(),
+                $unavailability->getObject(),
                 $unavailability->getStartDate(),
                 $unavailability->getEndDate() // If the end date is null or not defined, it creates an all day event
             );
@@ -58,6 +58,7 @@ class FullCalendarListener
                     'id' => $unavailability->getId(),
                 ])
             );
+
             // Ajout de l'évènement au calendrier
             $calendar->addEvent($bookingEvent);
         }

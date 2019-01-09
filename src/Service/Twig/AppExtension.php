@@ -31,4 +31,5 @@ class AppExtension extends AbstractExtension
             }, ['is_safe' => ['html']]),
         ];
     }
+
 }

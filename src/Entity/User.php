@@ -139,7 +139,7 @@ class User implements UserInterface
     /**
      * @return Collection|Unavailability[]
      */
-    public function getUnavailability(): Collection
+    public function getUnavailabilities(): Collection
     {
         return $this->unavailabilities;
     }

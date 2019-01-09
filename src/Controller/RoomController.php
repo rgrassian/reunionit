@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Room;
 use App\Form\RoomType;
 use App\Repository\RoomRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ class RoomController extends AbstractController
     /**
      * Liste de toutes les salles.
      * @Route("/liste-des-salles.html", name="room_index", methods={"GET"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param RoomRepository $roomRepository
      * @return Response
      */
@@ -53,6 +55,7 @@ class RoomController extends AbstractController
     /**
      * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param Room $room
      * @return Response
      */
@@ -66,7 +69,7 @@ class RoomController extends AbstractController
      * les caractéristiques d'une salle.
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
-     *     methods={"GET","POST"})
+     *     methods={"GET","POST"}))
      * @param Request $request
      * @param Room $room
      * @return Response

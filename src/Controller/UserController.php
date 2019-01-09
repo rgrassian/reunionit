@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserAdminType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +55,7 @@ class UserController extends AbstractController
     /**
      * Affiche les infos sur un utilisateur.
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
+     * @IsGranted("ROLE_EMPLOYEE")
      * @param User $user
      * @return Response
      */

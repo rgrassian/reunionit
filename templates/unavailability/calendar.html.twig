@@ -4,8 +4,6 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
-        <a href="{{ path('unavailability_new') }}">Nouvelle réservation</a>
-
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
 
     </div>
@@ -35,6 +33,13 @@
                 },
                 lazyFetching: true,
                 navLinks: true,
+                eventLimit: true,
+                eventLimitText: "de plus",
+                slotDuration: '00:15:00',
+                slotLabelInterval: '00:15:00',
+                weekends: false,
+                minTime: '08:00:00',
+                maxTime: '20:00:00',
                 eventSources: [
                     {
                         url: '/fc-load-events',
@@ -44,7 +49,7 @@
                             }
                         },
                         error: function () {
-                            alert('There was an error while fetching FullCalendar!');
+                            alert('L\'affichage du calendrier a renvoyé une erreur !');
                         }
                     }
                 ],

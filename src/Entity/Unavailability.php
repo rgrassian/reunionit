@@ -143,4 +143,14 @@ class Unavailability
         return $this;
     }
 
+    /**
+     * Vérifie qu'un utilisateur est bien
+     * l'organisateur de la réunion.
+     * @param User|null $user
+     * @return bool
+     */
+    public function isOrganiser(?User $user = null): bool
+    {
+        return $user && $this->getOrganiser()->getId() === $user->getId();
+    }
 }

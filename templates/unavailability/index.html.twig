@@ -6,18 +6,25 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
-    <h1>Historique de l'occupation des salles</h1>
-
+        {% if is_granted('ROLE_ADMIN') %}
+            <h1>Historique de l'occupation des salles</h1>
+        {% else %}
+            <h1>Vos réunions</h1>
+        {% endif %}
+        {% if unavailabilities is not empty %}
         <table class="table">
             <thead>
                 <tr>
                     <th>Salle</th>
-                    <th>Organisateur</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th>Organisateur</th>
+                    {% endif %}
                     <th>Début</th>
                     <th>Fin</th>
-                    <th>Invités</th>
                     <th>Objet</th>
-                    <th>Type</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th>Type</th>
+                    {% endif %}
                     <th>Voir</th>
                 </tr>
             </thead>
@@ -25,25 +32,25 @@
             {% for unavailability in unavailabilities %}
                 <tr>
                     <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
-                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
-                    <td>{{ unavailability.startDate ? unavailability.startDate|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ unavailability.endDate ? unavailability.endDate|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
+                    {% endif %}
+                    <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
+                    <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
                     <td>{{ unavailability.object }}</td>
-                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
+                    {% endif %}
                     <td>
                         <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}"><i class="far fa-eye"></i></a>
                     </td>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7">Aucun enregistrement disponible</td>
-                </tr>
             {% endfor %}
             </tbody>
         </table>
-
+        {% else %}
+            <p class="lead">Vous n'avez encore organisé aucune réunion.</p>
+        {% endif %}
     </div>
-
 
 {% endblock %}
