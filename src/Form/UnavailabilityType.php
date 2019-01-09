@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Room;
 use App\Entity\Unavailability;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -27,6 +28,14 @@ class UnavailabilityType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('guests')
+//            ->add('guests', EntityType::class, [
+//                'label' => 'Invités',
+//                'class' => User::class,
+//                'choice_label' => 'email',
+//                'attr' => [
+//                    'multiple' => true
+//                ]
+//            ])
             ->add('object', TextType::class, [
                 'label' => 'Objet'
             ])
