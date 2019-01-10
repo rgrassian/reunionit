@@ -3,15 +3,15 @@
 namespace App\EventListener;
 
 use App\Entity\Unavailability;
-use App\Repository\UnavailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Toiba\FullCalendarBundle\Entity\Event;
 use Toiba\FullCalendarBundle\Event\CalendarEvent;
 
 class FullCalendarListener
 {
+    private $requestStack;
     /**
      * @var EntityManagerInterface
      */
@@ -22,8 +22,9 @@ class FullCalendarListener
      */
     private $router;
 
-    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router)
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, UrlGeneratorInterface $router)
     {
+        $this->requestStack = $requestStack;
         $this->em = $em;
         $this->router = $router;
     }
@@ -46,11 +47,25 @@ class FullCalendarListener
         // On crée un évènement pour chaque unavailability
         foreach($unavailabilities as $unavailability) {
 
+            $eventTitle = $unavailability->getObject();
+
+            // S'il s'agit du calendrier général,
+            // on affiche le nom des salles sur les events.
+            if (!isset($calendar->getFilters()['id'])) {
+                $eventTitle = $unavailability->getRoom()->getName() . ' | ' . $eventTitle;
+            }
+
+            // Chaque event prend trois arguments : titre, date de début, date de fin.
             $bookingEvent  = new Event(
-                $unavailability->getObject(),
+                $eventTitle,
                 $unavailability->getStartDate(),
                 $unavailability->getEndDate() // If the end date is null or not defined, it creates an all day event
             );
+
+            if($unavailability->getStartDate()->format('H') === '08'
+                && $unavailability->getEndDate()->format('H') === '20') {
+                $bookingEvent->setAllDay(true);
+            }
 
             // Création du lien vers l'unavailability sur le calendrier
             $bookingEvent->setUrl(

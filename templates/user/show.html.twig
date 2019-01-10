@@ -30,21 +30,23 @@
 
         <table class="table">
             <tbody>
-                {#<tr>#}
-                    {#<th>FirstName</th>#}
-                    {#<td>{{ user.firstName }}</td>#}
-                {#</tr>#}
-                {#<tr>#}
-                    {#<th>LastName</th>#}
-                    {#<td>{{ user.lastName }}</td>#}
-                {#</tr>#}
                 <tr>
-                    <th>Email</th>
-                    <td>{{ user.email }}</td>
+                    <th>
+                        Email
+                    </th>
+                    <td>
+                        <a href="mailto:{{ user.email }}">
+                            {{ user.email }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
-                    <th>Roles</th>
-                    <td>{{ user.roles ? user.roles|join(', ') |role_format : '' }}</td>
+                    <th>
+                        Statut
+                    </th>
+                    <td>
+                        {{ user.roles ? user.roles|join(', ') |role_format : '' }}
+                    </td>
                 </tr>
             </tbody>
         </table>

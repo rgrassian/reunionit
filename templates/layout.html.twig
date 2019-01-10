@@ -1,12 +1,13 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheets %}
+    <link rel="icon" href="{{ asset('images/gecko.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" >
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <style>
         body:after {
             content: "";
-            background-image: url(https://www.edding.com/fileadmin/templates/templates-animal/template-gecko.svg);
+            background-image: url({{ asset('images/template-gecko.svg') }});
             background-repeat:no-repeat;
             background-position:center center;
             opacity: 0.2;

@@ -161,7 +161,7 @@ class UnavailabilityController extends AbstractController
 
 
     /**
-     * @Route("/calendrier", name="unavailability_calendar")
+     * @Route("/calendrier.html", name="unavailability_calendar")
      */
     public function calendar()
     {

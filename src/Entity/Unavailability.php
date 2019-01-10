@@ -13,8 +13,11 @@ use App\Validator\Availability as UnavailabilityAssert;
  */
 class Unavailability
 {
-    const REUNION = 0;
-    const AUTRE = 1;
+    const   REUNION = 0,
+            AUTRE = 1;
+
+    const   DAY_START = '08:00',
+            DAY_END = '20:00';
 
     /**
      * @ORM\Id()
@@ -26,7 +29,6 @@ class Unavailability
 
     /**
      * @ORM\Column(type="datetime")
-     *
      */
     private $startDate;
 

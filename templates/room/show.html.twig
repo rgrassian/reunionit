@@ -69,25 +69,45 @@
                     center: 'title',
                     right: 'month, agendaWeek, agendaDay, next'
                 },
+                businessHours: {
+                    start: '08:00',
+                    end: '20:00',
+                    dow: [1, 2, 3, 4, 5]
+                },
                 lazyFetching: true,
                 navLinks: true,
+                defaultView: 'agendaWeek',
                 slotDuration: '00:15:00',
                 weekends: false,
                 minTime: '08:00:00',
                 maxTime: '20:00:00',
+                nowIndicator: true,
                 selectable: true,
                 selectOverlap: false,
                 select: function(startDate, endDate) {
-                    let r = confirm('Réserver la salle {{ room.name }} pour la période du '
-                        + startDate.format('DD/MM/YYYY à HH:mm') + ' au '
-                        + endDate.format('DD/MM/YYYY à HH:mm') + ' ?');
-                    if (true === r) {
+                    // On fixe l'heure de début à 08h minimum et l'heure de fin à 20h max.
+                    let start = 8 < parseInt(startDate.format('HH')) ?
+                        startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' +
+                        '{{ constant('App\\Entity\\Unavailability::DAY_START') }}');
+
+                    let end = 8 < parseInt(endDate.format('HH')) && parseInt(endDate.format('HH')) < 20 ?
+                        endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' +
+                        '{{ constant('App\\Entity\\Unavailability::DAY_END') }}');
+
+                    // On demande une confirmation à l'utilisateur
+                    let confirmation = confirm('Réserver la salle {{ room.name }} pour la période du '
+                        + start + ' au '
+                        + end + ' ?');
+
+                    if (true === confirmation) {
                             window.location.href = '{{ path('unavailability_new') }}'
-                                + '?startDate=' + encodeURIComponent(startDate.format('DD/MM/YYYY HH:mm'))
-                                + '&endDate=' + encodeURIComponent(endDate.format('DD/MM/YYYY HH:mm'))
+                                + '?startDate=' + encodeURIComponent(start)
+                                + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
                     }
                 },
+                // editable: true,
+                // eventDurationEditable: true,
                 eventSources: [
                     {
                         url: '/fc-load-events',
