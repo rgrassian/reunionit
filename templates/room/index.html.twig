@@ -18,17 +18,27 @@
             {% endif %}
         </div>
 
+        <button type="button" onclick="displaySearch(this)" class="btn btn-info btn-lg btn-block btn-group-toggle" data-toggle="buttons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-angle-down" id="arrowDown"></i>
+            <i class="fas fa-angle-up" id="arrowUp" style="display:none;"></i>
+        </button>
+
+        <div id="room_search" style="display:none;">
+            {{ include('room/_search.html.twig') }}
+        </div>
+
         <hr>
             <div class="row text-center">
                 {% for room in rooms %}
                     <div class="col-lg-3 col-md-6 mb-4" style="position:relative;">
                         <div class="card mb-3" style="max-width: 18rem;">
-                            <a href="{{ path('room_show', {'id': room.id}) }}"><img class="card-img-top" src="https://pictures.bureauxapartager.com/381cb905-5ed1-4f57-b745-e04a8d8650df/-/resize/1540x/" alt="Card image cap"></a>
+                            <a href="{{ path('room_show', {'id': room.id}) }}">
+                                <img class="card-img-top" src="https://pictures.bureauxapartager.com/381cb905-5ed1-4f57-b745-e04a8d8650df/-/resize/1540x/" alt="Card image cap">
+                            </a>
                             <div class="card-body">
-                                <a href="{{ path('room_show', {'id': room.id}) }}"><h2 class="card-title" style="font-size: 1.5rem;">{{ room.name }}</h2></a>
-                                {#<p class="card-text"><i class="fas fa-user" style="font-size:1.5rem"></i>&nbsp&nbsp<span class="badge badge-light">{{ room.capacity }}</span></p>#}
+                                <a href="{{ path('room_show', {'id': room.id}) }}"><h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">{{ room.name }}</h2></a>
                                 <p class="card-text"><i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;">{{ room.capacity }}</sup></p>
-                                <p class="card-text">{{ room.features ? room.features|join(', ') : '' }}</p>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;"><i class="fas fa-edit"></i></a>
                                 {% endif %}
@@ -48,5 +58,21 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+    </script>
+    <script type="text/javascript">
+        var element = document.getElementById("room_search");
+        var arrowUp = document.getElementById("arrowUp");
+        var arrowDown = document.getElementById("arrowDown");
+        function displaySearch(button) {
+            if (element.style.display === 'none') {
+                element.style.display = 'block';
+                arrowUp.style.display = 'inline-block';
+                arrowDown.style.display = 'none';
+            } else {
+                element.style.display = 'none';
+                arrowUp.style.display = 'none';
+                arrowDown.style.display = 'inline-block';
+            }
+        }
     </script>
 {% endblock %}

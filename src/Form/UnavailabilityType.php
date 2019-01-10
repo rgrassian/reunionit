@@ -20,7 +20,10 @@ class UnavailabilityType extends AbstractType
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Début',
                 'date_format' => 'dd/MM/yyyy HH:ii',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'blabla'
+                ]
             ])
             ->add('endDate', DateTimeType::class, [
                 'label' => 'Fin',

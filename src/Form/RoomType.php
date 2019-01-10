@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Room;
+use App\Provider\FeaturesProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -12,8 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoomType extends AbstractType
 {
+    private $featuresProvider;
+
+    public function __construct(FeaturesProvider $featuresProvider)
+    {
+        $this->featuresProvider = $featuresProvider;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $features = $this->featuresProvider->getFeatures();
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom'
@@ -26,14 +35,7 @@ class RoomType extends AbstractType
                 'attr' => [
                     'class' => 'btn-group btn-group-toggle'
                 ],
-                'choices' => [
-                    'Wifi' => 'Wifi',
-                    'Vidéoprojecteur' => 'Vidéoprojecteur',
-                    'Paperboard' => 'Paperboard',
-                    'Chauffage au sol' => 'Chauffage au sol',
-                    'Balcon ou terrasse' => 'Balcon',
-                    'Estrade' => 'Estrade',
-                ],
+                'choices' => $features,
                 'expanded' => true,
                 'multiple' => true
             ])
