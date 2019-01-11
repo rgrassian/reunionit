@@ -162,4 +162,9 @@ class Unavailability
     {
         return $user && $this->getOrganiser()->getId() === $user->getId();
     }
+
+    public function isNotPast()
+    {
+        return $this->getStartDate() > new \DateTime();
+    }
 }

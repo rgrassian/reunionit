@@ -27,20 +27,20 @@
             $('#calendar-holder').fullCalendar({
                 locale: 'fr',
                 header: {
-                    left: 'prev, today',
+                    left: 'today',
                     center: 'title',
-                    right: 'month, agendaWeek, agendaDay, next'
+                    right: 'month, agendaWeek, agendaDay, prev, next'
                 },
                 lazyFetching: true,
                 navLinks: true,
-                defaultView: 'basicWeek',
+                // defaultView: 'basicWeek',
                 eventLimit: true,
                 eventLimitText: "de plus",
                 slotDuration: '00:15:00',
                 slotLabelInterval: '00:15:00',
                 weekends: false,
-                minTime: '08:00:00',
-                maxTime: '20:00:00',
+                minTime: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
+                maxTime: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
                 eventSources: [
                     {
                         url: '/fc-load-events',

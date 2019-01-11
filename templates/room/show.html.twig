@@ -64,14 +64,15 @@
         $(function () {
             $('#calendar-holder').fullCalendar({
                 locale: 'fr',
+                now: '{{ "now"|date("m/d/Y H:i") }}',
                 header: {
-                    left: 'prev, today',
+                    left: 'today',
                     center: 'title',
-                    right: 'month, agendaWeek, agendaDay, next'
+                    right: 'month, agendaWeek, agendaDay, prev, next'
                 },
                 businessHours: {
-                    start: '08:00',
-                    end: '20:00',
+                    start: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
+                    end: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
                     dow: [1, 2, 3, 4, 5]
                 },
                 lazyFetching: true,
@@ -79,35 +80,46 @@
                 defaultView: 'agendaWeek',
                 slotDuration: '00:15:00',
                 weekends: false,
-                minTime: '08:00:00',
-                maxTime: '20:00:00',
+                minTime: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
+                maxTime: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
                 nowIndicator: true,
+                validRange: function(nowDate) {
+                    return {
+                        // On n'autorise la réservation qu'à partir du jour courant
+                        start: nowDate.clone().add(-1, 'days'),
+                    };
+                },
                 selectable: true,
                 selectOverlap: false,
                 select: function(startDate, endDate) {
-                    // On fixe l'heure de début à 08h minimum et l'heure de fin à 20h max.
-                    let start = 8 < parseInt(startDate.format('HH')) ?
-                        startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' +
-                        '{{ constant('App\\Entity\\Unavailability::DAY_START') }}');
+                    if (startDate < $('#calendar-holder').fullCalendar('getDate')) {
+                        alert('L\'heure de début que vous avez sélectionnée est passée');
+                    } else {
+                        // On fixe l'heure de début mini et l'heure de fin maxi.
+                        const start = parseInt(startDate.format("{{ constant('App\\Entity\\Unavailability::DAY_START') }}"))
+                        <= parseInt(startDate.format('HH')) ?
+                            startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' +
+                                '{{ constant('App\\Entity\\Unavailability::DAY_START') }}');
 
-                    let end = 8 < parseInt(endDate.format('HH')) && parseInt(endDate.format('HH')) < 20 ?
-                        endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' +
-                        '{{ constant('App\\Entity\\Unavailability::DAY_END') }}');
+                        const end = parseInt(startDate.format("{{ constant('App\\Entity\\Unavailability::DAY_START') }}"))
+                        <= parseInt(endDate.format('HH')) && parseInt(endDate.format('HH'))
+                        <= parseInt(endDate.format("{{ constant('App\\Entity\\Unavailability::DAY_END') }}")) ?
+                            endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' +
+                                '{{ constant('App\\Entity\\Unavailability::DAY_END') }}');
 
-                    // On demande une confirmation à l'utilisateur
-                    let confirmation = confirm('Réserver la salle {{ room.name }} pour la période du '
-                        + start + ' au '
-                        + end + ' ?');
+                        // On demande une confirmation à l'utilisateur
+                        const confirmation = confirm('Réserver la salle {{ room.name }} pour la période du '
+                            + start + ' au '
+                            + end + ' ?');
 
-                    if (true === confirmation) {
+                        if (true === confirmation) {
                             window.location.href = '{{ path('unavailability_new') }}'
                                 + '?startDate=' + encodeURIComponent(start)
                                 + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
+                        }
                     }
                 },
-                // editable: true,
-                // eventDurationEditable: true,
                 eventSources: [
                     {
                         url: '/fc-load-events',

@@ -25,24 +25,34 @@ class AvailabilityValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        /* @var $constraint App\Validator\Availability */
-
-        if($this->availability($value)) {
-            $this->context->buildViolation($constraint->availabilityMessage)
-                ->addViolation();
+        if ($this->availability($value)) {
+            $violation = $constraint->availabilityMessage;
         }
 
-        if($this->endAfterStart($value)) {
-            $this->context->buildViolation($constraint->endAfterStartMessage)
-                ->addViolation();
+        if ($this->endAfterStart($value)) {
+            $violation = $constraint->endAfterStartMessage;
         }
 
+        if ($this->pastDates($value)) {
+            $violation = $constraint->pastDatesMessage;
+        }
+
+        if ($this->weekEndDates($value)) {
+            $violation = $constraint->weekEndDatesMessage;
+        }
+        $this->setViolation($violation ?? null);
+    }
+
+    public function setViolation($violation)
+    {
+        $this->context->buildViolation($violation)
+            ->addViolation();
     }
 
     public function availability($value)
     {
-        $unavailabilities = $this->unavailabilityRepository->findUnavailabilitiesByRoom($value->getRoom());
-
+        $unavailabilities = $this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($value->getRoom());
+        dd($unavailabilities);
         foreach ($unavailabilities as $unavailability) {
             if ($unavailability->getStartDate() < $value->getStartDate() && $value->getStartDate() < $unavailability->getEndDate()) {
                 return true;
@@ -56,8 +66,8 @@ class AvailabilityValidator extends ConstraintValidator
             if ($value->getStartDate() < $unavailability->getEndDate() && $unavailability->getStartDate() < $value->getEndDate()) {
                 return true;
             }
-            //return false;
         }
+        return false;
     }
 
     public function endAfterStart($value)
@@ -65,5 +75,29 @@ class AvailabilityValidator extends ConstraintValidator
         if ($value->getEndDate() < $value->getStartDate()) {
             return true;
         }
+        return false;
+    }
+
+    public function pastDates($value)
+    {
+        $now = new \DateTime();
+        if ($value->getStartDate() < $now) {
+            return true;
+        }
+        return false;
+    }
+
+    public function weekEndDates($value)
+    {
+        if ($this->isWeekEndDate($value->getStartDate()) || $this->isWeekEndDate($value->getEndDate())) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isWeekEndDate(\DateTime $date) : bool
+    {
+        $day = $date->format('w');
+        return $day == 0 || $day == 6;
     }
 }

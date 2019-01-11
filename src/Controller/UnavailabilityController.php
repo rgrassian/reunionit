@@ -114,7 +114,7 @@ class UnavailabilityController extends AbstractController
     /**
      * Permet à l'admin ou à l'organisateur de modifier une réservation.
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
-     * @Security("unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')")
+     * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response

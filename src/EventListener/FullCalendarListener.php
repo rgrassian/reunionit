@@ -52,7 +52,7 @@ class FullCalendarListener
             // S'il s'agit du calendrier général,
             // on affiche le nom des salles sur les events.
             if (!isset($calendar->getFilters()['id'])) {
-                $eventTitle = $unavailability->getRoom()->getName() . ' | ' . $eventTitle;
+                $eventTitle = 'Salle ' . $unavailability->getRoom()->getName() . ' | ' . $eventTitle;
             }
 
             // Chaque event prend trois arguments : titre, date de début, date de fin.

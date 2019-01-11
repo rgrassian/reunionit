@@ -5,8 +5,6 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'fr'
-#    day_start: '08:00'
-#    day_end: '20:00'
 
 services:
     # default configuration for services in *this* file

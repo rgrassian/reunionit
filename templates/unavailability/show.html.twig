@@ -15,11 +15,14 @@
                 </button>
             </a>
             {% if is_granted('ROLE_ADMIN') or unavailability.organiser == app.user %}
-                <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}" style="color: #fff;">
-                    <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </a>
+                {# On n'affiche le bouton Modifier que si la réunion n'a pas encore commencé #}
+                {% if date(unavailability.startDate) > date() %}
+                    <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}" style="color: #fff;">
+                        <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
+                {% endif %}
                 <form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la réservation ?');" style="display: inline-block;">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
