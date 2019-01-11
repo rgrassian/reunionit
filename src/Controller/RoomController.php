@@ -8,6 +8,10 @@ use App\Repository\RoomRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +41,32 @@ class RoomController extends AbstractController
         $room = new Room();
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
+
+        /** @var UploadedFile $picture */
+        $picture = $room->getPicture();
+
+        if (null !== $picture) {
+            $fileName = strtolower($room->getName())
+                . '.' . $picture->guessExtension();
+
+            try {
+                $picture->move(
+                    $this->getParameter('rooms_assets_dir'),
+                    $fileName
+                );
+            } catch (FileException $e) {
+                //TODO: ???
+            }
+
+            # Mise à jour de l'image
+            $room->setPicture($fileName);
+
+        } else {
+
+            # 4. Notification
+            $this->addFlash('error',
+                "N'oubliez pas de choisir une image d'illustration");
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -72,10 +102,27 @@ class RoomController extends AbstractController
      *     methods={"GET","POST"}))
      * @param Request $request
      * @param Room $room
+     * @param Packages $packages
      * @return Response
      */
-    public function edit(Request $request, Room $room): Response
+    public function edit(Request $request, Room $room, Packages $packages): Response
     {
+        # On passe à notre formulaire l'URL de la picture
+        $options = [
+            'image_url' => $packages->getUrl('images/room/'
+                . $room->getPicture())
+        ];
+
+        # Récupération de l'image
+        $pictureName = $room->getPicture();
+
+        # Notre formulaire attend une instance de File pour l'edition
+        # de la featuredImage
+        $room->setPicture(
+            new File($this->getParameter('rooms_assets_dir')
+                . '/' . $pictureName)
+        );
+
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
 

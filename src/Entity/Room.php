@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
@@ -37,6 +39,15 @@ class Room
      * @ORM\OneToMany(targetEntity="App\Entity\Unavailability", mappedBy="room")
      */
     private $unavailabilities;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image(
+     *     mimeTypesMessage="Vérifiez le format de votre image",
+     *     maxSize="2M", maxSizeMessage="Attention, votre image est trop lourde."
+     * )
+     */
+    private $picture;
 
     public function __construct()
     {
@@ -111,6 +122,18 @@ class Room
                 $unavailability->setRoom(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }
