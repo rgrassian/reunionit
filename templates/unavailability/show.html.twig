@@ -46,15 +46,19 @@
                 </tr>
                 <tr>
                     <th>Salle</th>
-                    <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
+                    <td>
+                        <a href="{{ path('room_show', {'id': unavailability.room.id}) }}">
+                            {{ unavailability.room.name }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>Début</th>
-                    <td>{{ unavailability.startDate ? unavailability.startDate|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ unavailability.startDate ? unavailability.startDate|date('\\L\\e d/m/Y à H:i') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Fin</th>
-                    <td>{{ unavailability.endDate ? unavailability.endDate|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ unavailability.endDate ? unavailability.endDate|date('\\L\\e d/m/Y à H:i') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Invités</th>

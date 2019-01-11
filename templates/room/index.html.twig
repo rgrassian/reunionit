@@ -12,7 +12,9 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
                  <div class="col-sm-3">
                     <button class="btn btn-info float-right" data-toggle="tooltip" data-placement="top" title="Ajouter une salle">
-                        <a class="text-white" href="{{ path('room_new') }}"><i class="fas fa-plus"></i></a>
+                        <a class="text-white" href="{{ path('room_new') }}">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </button>
                 </div>
             {% endif %}
@@ -37,10 +39,18 @@
                                 <img class="card-img-top" src="https://pictures.bureauxapartager.com/381cb905-5ed1-4f57-b745-e04a8d8650df/-/resize/1540x/" alt="Card image cap">
                             </a>
                             <div class="card-body">
-                                <a href="{{ path('room_show', {'id': room.id}) }}"><h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">{{ room.name }}</h2></a>
-                                <p class="card-text"><i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;">{{ room.capacity }}</sup></p>
+                                <a href="{{ path('room_show', {'id': room.id}) }}">
+                                    <h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">
+                                        {{ room.name }}
+                                    </h2>
+                                </a>
+                                <p class="card-text">
+                                    <i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;">{{ room.capacity }}</sup>
+                                </p>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                                 {% endif %}
                             </div>
                         </div>
