@@ -1,28 +1,25 @@
 <form class="mt-3" action="">
     <div class="form-group">
-        <label for="room_capacity_select">Capacité</label>
-        <select class="custom-select" id="room_capacity_select">
+        <label for="roomCapacitySelect">Capacité</label>
+        <select class="custom-select" id="roomCapacitySelect">
             <option selected disabled>Capacité</option>
-            <option>moins de 5 personnes</option>
-            <option>entre 5 et 10 personnes</option>
-            <option>entre 10 et 20 personnes</option>
+            <option value="5">moins de 5 personnes</option>
+            <option value="10">entre 5 et 10 personnes</option>
+            <option value="20">entre 10 et 20 personnes</option>
             <option>20 personnes et plus</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="exampleFormControlSelect2">Options</label>
-        <select multiple class="form-control" id="exampleFormControlSelect2">
-            <option>Wifi</option>
-            <option>Vidéoprojecteur</option>
-            <option>Paperboard</option>
-            <option>Chauffage au sol</option>
-            <option>Balcon ou terrasse</option>
-            <option>Estrade</option>
+        <label for="featuresList">Options</label>
+        <select multiple class="form-control" id="featuresList">
+            {% for feature in features %}
+            <option value="{{ feature }}">{{ feature }}</option>
+            {% endfor %}
         </select>
     </div>
     <div class="form-group row mx-0 mt-0">
-        <button type="button" class="btn btn-info col-md-5 mt-0"><i class="fas fa-search"></i></button>
-        <button type="button" class="btn btn-info col-md-5 offset-2 mt-0"><i class="fas fa-redo"></i></button>
+        <button type="button" onclick="initSearch()" class="btn btn-info col-md-5 mt-0"><i class="fas fa-redo"></i></button>
+        <button type="button" onclick="updateRooms()" class="btn btn-info col-md-5 offset-2 mt-0"><i class="fas fa-search"></i></button>
     </div>
     {#<div class="form-group">#}
         {#<legend class="col-form-label required">Options</legend>#}
