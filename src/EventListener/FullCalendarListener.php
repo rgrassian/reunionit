@@ -48,9 +48,10 @@ class FullCalendarListener
         // On crée un event pour chaque unavailability.
         foreach($unavailabilities as $unavailability) {
 
+            // S'il s'agit du calendrier d'une salle, on n'affiche que l'objet de chaque event.
             $eventTitle = $unavailability->getObject();
 
-            // S'il s'agit du calendrier général, on affiche le nom des salles sur les events.
+            // S'il s'agit du calendrier général, on affiche aussi le nom des salles sur les events.
             if (!isset($calendar->getFilters()['id'])) {
                 $eventTitle = 'Salle ' . $unavailability->getRoom()->getName() . ' | ' . $eventTitle;
             }
@@ -62,12 +63,14 @@ class FullCalendarListener
                 $unavailability->getEndDate()
             );
 
-            if($unavailability->getStartDate()->format('H') === '08'
-                && $unavailability->getEndDate()->format('H') === '20') {
+            // Si les heures de début et de fin sont la première et la dernière heure ouvrable,
+            // on set la propriété AllDay de l'event.
+            if($unavailability->getStartDate()->format('H:i') === Unavailability::DAY_START
+                && $unavailability->getEndDate()->format('H:i') === Unavailability::DAY_END) {
                 $bookingEvent->setAllDay(true);
             }
 
-            // Création du lien vers l'unavailability sur l'event affiché par le calendrier.
+            // Création du lien vers la réservation sur l'event affiché dans le calendrier.
             $bookingEvent->setUrl(
                 $this->router->generate('unavailability_show', [
                     'id' => $unavailability->getId(),

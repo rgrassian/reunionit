@@ -55,13 +55,17 @@ class RoomController extends AbstractController
     /**
      * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
+     * @param RoomRepository $roomRepository
      * @param Room $room
      * @return Response
      */
-    public function show(Room $room): Response
+    public function show(RoomRepository $roomRepository, Room $room = null): Response
     {
-        return $this->render('room/show.html.twig', ['room' => $room]);
+        return $this->render('room/show.html.twig', [
+            'room' => $room
+        ]);
     }
 
     /**
@@ -70,11 +74,13 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
+     * @param RoomRepository $roomRepository
      * @param Room $room
      * @return Response
      */
-    public function edit(Request $request, Room $room): Response
+    public function edit(Request $request, RoomRepository $roomRepository, Room $room = null): Response
     {
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);

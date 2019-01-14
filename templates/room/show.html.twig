@@ -66,8 +66,10 @@
     <script>
         $(function () {
             $('#calendar-holder').fullCalendar({
-                locale: 'fr',
                 themeSystem: 'bootstrap4',
+                contentHeight: "auto",
+                locale: 'fr',
+                timezone: "Europe/Paris",
                 now: '{{ "now"|date("m/d/Y H:i") }}',
                 header: {
                     left: 'today',
@@ -95,6 +97,7 @@
                 },
                 selectable: true,
                 selectOverlap: false,
+                // selectConstraint: "businessHours",
                 select: function(startDate, endDate) {
                     if (startDate < $('#calendar-holder').fullCalendar('getDate')) {
                         alert('L\'heure de début que vous avez sélectionnée est passée');
