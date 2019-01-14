@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Room;
 use App\Form\RoomType;
+use App\Provider\FeaturesProvider;
 use App\Repository\RoomRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,9 +22,13 @@ class RoomController extends AbstractController
      * @param RoomRepository $roomRepository
      * @return Response
      */
-    public function index(RoomRepository $roomRepository): Response
+    public function index(RoomRepository $roomRepository, FeaturesProvider $featuresProvider): Response
     {
-        return $this->render('room/index.html.twig', ['rooms' => $roomRepository->findAll()]);
+        $features = $featuresProvider->getFeatures();
+        return $this->render('room/index.html.twig', [
+            'rooms' => $roomRepository->findAll(),
+            'features' => $features
+        ]);
     }
 
     /**
