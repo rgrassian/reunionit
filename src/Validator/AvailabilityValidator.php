@@ -46,11 +46,6 @@ class AvailabilityValidator extends ConstraintValidator
         }
     }
 
-//    public function setViolation($violation)
-//    {
-//        return $this->context->buildViolation($violation);
-//    }
-
     public function availability($value)
     {
         $unavailabilities = $this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($value->getRoom());
@@ -99,6 +94,7 @@ class AvailabilityValidator extends ConstraintValidator
     public function isWeekEndDate(\DateTime $date) : bool
     {
         $day = $date->format('w');
+        // Retourne true si le jour est un samedi ou un dimanche
         return $day == 0 || $day == 6;
     }
 }
