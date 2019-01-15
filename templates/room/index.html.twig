@@ -33,7 +33,7 @@
         <hr>
             <div class="row text-center" id="roomList">
                 {% for room in rooms %}
-                    <div class="roomCard col-lg-3 col-md-6 mb-4"
+                    <div class="roomCard card col-lg-3 col-md-6 mb-4"
                          data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'
                          style="position:relative;">
                         <div class="card mb-3" style="max-width: 18rem;">
@@ -83,35 +83,25 @@
         }
 
         function updateRooms() {
-            var selectedFeatures = $('#featuresList').val();
-            //console.log(selectedFeatures);
-
             $('.roomCard').show();
-            //
-            // $('#roomList .roomCard').each(function () {
-            //     var card = $(this);
-            //     var infos = JSON.parse(card.data('infos'));
-            //     console.log(infos);
-            // })
 
+            var selectedFeatures = $('#featuresList').val();
+            var selectedCapacity = JSON.parse($('#roomCapacitySelect').val());
+            console.log(selectedCapacity);
 
-            for(var i = 1; i < $('#roomList .roomCard').length + 1; i++){
+            $('#roomList .roomCard').each(function () {
+                var card = $(this);
+                var infos = card.data('infos');
 
-                var element = $('#roomList .roomCard:nth-child(' + i + ')');
+                var featuresByRoom = infos.features;
+                var capacityByRoom = infos.capacity;
 
-                var featuresByRoom = $('#roomList .roomCard:nth-child(' + i + ') .card-title').attr('data-original-title');
-                //var featuresByRoom = element.$('.card-title').attr('data-original-title');
-                featuresByRoom = featuresByRoom.split(', ');
-
-                var capacityByRoom = $('#roomList .roomCard:nth-child(' + i + ') .roomCapacity').text();
-
-                if(findRoomWithThisFeatures(selectedFeatures, featuresByRoom)){
-                    //console.log(element);
+                if(findRoomWithThisFeatures(selectedFeatures, featuresByRoom) && findRoomWithThisCapacity(selectedCapacity, capacityByRoom)){
+                    //console.log(card);
                 } else {
-                    element.hide();
+                    card.hide();
                 };
-                console.log(capacityByRoom);
-            }
+            })
         }
         function initSearch() {
             var capacity = document.getElementById("roomCapacitySelect").options;
@@ -127,5 +117,16 @@
         var findRoomWithThisFeatures = function (haystack, arr) {
             return haystack.every(o => arr.includes(o));
         };
+        var findRoomWithThisCapacity = function (selectedCapacity, capacityByRoom) {
+            var minSelectedCapacity = selectedCapacity.min;
+
+            if(selectedCapacity.max === undefined) {
+                return minSelectedCapacity < capacityByRoom;
+            }
+
+            var maxSelectedCapacity = selectedCapacity.max;
+
+            return ( minSelectedCapacity < capacityByRoom && capacityByRoom < maxSelectedCapacity );
+        }
     </script>
 {% endblock %}
