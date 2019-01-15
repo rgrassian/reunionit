@@ -44,6 +44,10 @@
             </tbody>
         </table>
 
+        <div class="jumbotron text-center">
+            <img src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle">
+        </div>
+
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
     </div>
 
@@ -56,7 +60,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/jquery.min.js') }}"></script>
+    {#<script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/jquery.min.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/fullcalendar.min.js') }}"></script>
     <script src='{{ asset('bundles/fullcalendar/js/fullcalendar/locale/fr.js') }}'></script>

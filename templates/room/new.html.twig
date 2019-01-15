@@ -8,11 +8,13 @@
 
     <h1>Créer une nouvelle salle</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         {{ form_row(form.name) }}
+
         {{ form_row(form.capacity) }}
 
+        {{ form_errors(form.features) }}
         <div class="form-group">
             {{ form_label(form.features) }}
             {% set salle = form.vars.value %}
@@ -20,12 +22,20 @@
                 {{ form_widget(feature) }}
             {% endfor %}
         </div>
-        {{ form_errors(form.features) }}
 
-        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
-        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('room_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+        {{ form_row(form.picture) }}
+
+
+        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer">
+            <i class="fas fa-check"></i>
+        </button>
+        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour">
+            <a href="{{ path('room_index') }}" style="color: #fff;">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </button>
+
         {{ form_end(form) }}
-
 
     </div>
 
@@ -44,8 +54,8 @@
     <script>
         $('.dropify').dropify({
             messages: {
-                default: 'Glissez-d&eacute;posez un fichier ici ou cliquez',
-                replace: 'Glissez-d&eacute;posez un fichier ou cliquez pour remplacer',
+                default: 'Glissez-d&eacute;posez une image ici ou cliquez',
+                replace: 'Glissez-d&eacute;posez une image ou cliquez pour remplacer',
                 remove:  'Supprimer',
                 error:   'D&eacute;sol&eacute;, le fichier est trop volumineux'
             }

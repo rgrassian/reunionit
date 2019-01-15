@@ -8,10 +8,13 @@
 
         <h1>Modifier la salle {{ room.name }}</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         {{ form_row(form.name) }}
+
         {{ form_row(form.capacity) }}
+
+        {{ form_errors(form.features) }}
 
         <div class="form-group">
         {{ form_label(form.features) }}
@@ -20,10 +23,12 @@
                     {{ form_widget(feature) }}
                 {% endfor %}
         </div>
-        {{ form_errors(form.features) }}
+
+        {{ form_row(form.picture) }}
 
         <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
         <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('room_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+
         {{ form_end(form) }}
 
         <form method="post"

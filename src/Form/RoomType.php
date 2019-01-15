@@ -34,7 +34,7 @@ class RoomType extends AbstractType
             ->add('features', ChoiceType::class, [
                 'label' => 'Options',
                 'attr' => [
-                    'class' => 'btn-group btn-group-toggle'
+                    'class' => 'custom-control custom-checkbox'
                 ],
                 'choices' => $features,
                 'expanded' => true,

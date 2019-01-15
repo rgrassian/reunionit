@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Room;
 use App\Form\RoomType;
 use App\Repository\RoomRepository;
+use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\LogicException;
 
 class RoomController extends AbstractController
 {
@@ -39,46 +41,63 @@ class RoomController extends AbstractController
     public function new(Request $request): Response
     {
         $room = new Room();
+
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
 
-        /** @var UploadedFile $picture */
-        $picture = $room->getPicture();
-
-        if (null !== $picture) {
-            $fileName = strtolower($room->getName())
-                . '.' . $picture->guessExtension();
-
-            try {
-                $picture->move(
-                    $this->getParameter('rooms_assets_dir'),
-                    $fileName
-                );
-            } catch (FileException $e) {
-                //TODO: ???
-            }
-
-            # Mise à jour de l'image
-            $room->setPicture($fileName);
-
-        } else {
-
-            # 4. Notification
-            $this->addFlash('error',
-                "N'oubliez pas de choisir une image d'illustration");
-        }
-
+        # Si le formulaire est soumis et qu'il est valide
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($room);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('room_index');
+            #dump($article);
+            # 1. Traitement de l'upload de l'image
+
+            /** @var UploadedFile $picture */
+            $picture = $room->getPicture();
+
+            if (null !== $picture) {
+                $fileName = strtolower($room->getName())
+                    . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('rooms_assets_dir'),
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    // TODO: ??
+                }
+
+                # Mise à jour de l'image
+                $room->setPicture($fileName);
+
+                try {
+                    # 3. Sauvegarde en BDD
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($room);
+                    $em->flush();
+
+                    # 5. Redirection vers l'article créé
+                    return $this->redirectToRoute('room_show', [
+                        'id' => $room->getId()
+                    ]);
+
+                } catch (LogicException $e) {
+
+                    # Transition non autorisé...
+                    $this->addFlash('error',
+                        $e->getMessage());
+                }
+
+            } else {
+
+                # 4. Notification
+                $this->addFlash('error',
+                    "N'oubliez pas de choisir une image d'illustration");
+            }
         }
 
         return $this->render('room/new.html.twig', [
-            'room' => $room,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -91,7 +110,9 @@ class RoomController extends AbstractController
      */
     public function show(Room $room): Response
     {
-        return $this->render('room/show.html.twig', ['room' => $room]);
+        return $this->render('room/show.html.twig', [
+            'room' => $room
+        ]);
     }
 
     /**
@@ -105,7 +126,9 @@ class RoomController extends AbstractController
      * @param Packages $packages
      * @return Response
      */
-    public function edit(Request $request, Room $room, Packages $packages): Response
+    public function edit(Request $request,
+                         Room $room,
+                         Packages $packages): Response
     {
         # On passe à notre formulaire l'URL de la picture
         $options = [
@@ -123,13 +146,15 @@ class RoomController extends AbstractController
                 . '/' . $pictureName)
         );
 
-        $form = $this->createForm(RoomType::class, $room);
+        $form = $this->createForm(RoomType::class, $room, $options);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('room_index', ['id' => $room->getId()]);
+            return $this->redirectToRoute('room_show', [
+                'id' => $room->getId()
+            ]);
         }
 
         return $this->render('room/edit.html.twig', [
