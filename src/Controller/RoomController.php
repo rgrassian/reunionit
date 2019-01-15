@@ -139,7 +139,7 @@ class RoomController extends AbstractController
                          Room $room,
                          Packages $packages): Response
     {
-        # On passe à notre formulaire l'URL de la picture
+        # On passe à notre formulaire l'URL de la featuredImage
         $options = [
             'image_url' => $packages->getUrl('images/room/'
                 . $room->getPicture())
@@ -155,20 +155,56 @@ class RoomController extends AbstractController
                 . '/' . $pictureName)
         );
 
-        $form = $this->createForm(RoomType::class, $room, $options);
-        $form->handleRequest($request);
+        # Création / Récupération du Formulaire
+        $form = $this->createForm(RoomType::class, $room, $options)
+            ->handleRequest($request);
 
+        # Si le formulaire est soumis et qu'il est valide
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
+            #dump($article);
+            # 1. Traitement de l'upload de l'image
+
+            /** @var UploadedFile $picture */
+            $picture = $room->getPicture();
+
+            if (null !== $picture) {
+
+                $fileName = strtolower($room->getName())
+                    . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('rooms_assets_dir'),
+                        $fileName
+                    );
+                } catch (FileException $e) {
+
+                }
+
+                # Mise à jour de l'image
+                $room->setPicture($fileName);
+
+            } else {
+                $room->setPicture($pictureName);
+            }
+
+            # 3. Sauvegarde en BDD
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($room);
+            $em->flush();
+
+            # 5. Redirection vers l'article créé
             return $this->redirectToRoute('room_show', [
                 'id' => $room->getId()
             ]);
+
         }
 
+        # Affichage du Formulaire
         return $this->render('room/edit.html.twig', [
-            'room' => $room,
             'form' => $form->createView(),
+            'room' => $room
         ]);
     }
 

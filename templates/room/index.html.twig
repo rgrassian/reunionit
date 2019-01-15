@@ -11,11 +11,11 @@
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
                  <div class="col-sm-3">
-                    <button class="btn btn-info float-right" data-toggle="tooltip" data-placement="top" title="Ajouter une salle">
-                        <a class="text-white" href="{{ path('room_new') }}">
+                     <a class="text-white" href="{{ path('room_new') }}">
+                         <button class="btn btn-info float-right" data-toggle="tooltip" data-placement="top" title="Ajouter une salle">
                             <i class="fas fa-plus"></i>
-                        </a>
-                    </button>
+                         </button>
+                     </a>
                 </div>
             {% endif %}
         </div>

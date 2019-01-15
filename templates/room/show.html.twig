@@ -9,8 +9,6 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4" style="position: relative">
 
-        <h1>Salle {{ room.name }}</h1>
-
         <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
             <a href="{{ path('room_index') }}" style="color: #fff;">
                 <button type="button" class="btn btn-info" style="width: 45px;">
@@ -34,21 +32,30 @@
             {% endif %}
         </div>
 
-        <table class="table table-active">
-            <tbody>
-                <tr class="lead">
-                    <th>Capacité :</th>
-                    <td>{{ room.capacity }} personnes</td>
-                </tr>
-                <tr class="lead">
-                    <th>Options :</th>
-                    <td>{{ room.features ? room.features|join(', ') : '' }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row mb-3">
+            <div class="col col-lg-3">
+                <img class="card-img-top" src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle {{ room.name }}">
+            </div>
+            <div class="col-lg-9 d-flex align-items-stretch flex-column">
+                <div class="mb-auto">
+                    <h1>Salle {{ room.name }}</h1>
+                </div>
+                <div class="">
+                    <table class="table table-active">
+                        <tbody>
+                            <tr class="lead">
+                                <th>Capacité :</th>
+                                <td>{{ room.capacity }} personnes</td>
+                            </tr>
+                            <tr class="lead">
+                                <th>Options :</th>
+                                <td>{{ room.features ? room.features|join(', ') : '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        <div class="jumbotron text-center">
-            <img src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle">
         </div>
 
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
