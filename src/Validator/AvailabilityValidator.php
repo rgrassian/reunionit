@@ -50,6 +50,8 @@ class AvailabilityValidator extends ConstraintValidator
     {
         $unavailabilities = $this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($value->getRoom());
         foreach ($unavailabilities as $unavailability) {
+            if($value->getId() === $unavailability->getId())
+                continue;
             if ($unavailability->getStartDate() < $value->getStartDate()
                 && $value->getStartDate() < $unavailability->getEndDate()) {
                 return true;

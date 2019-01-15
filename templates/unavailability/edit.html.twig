@@ -23,12 +23,3 @@
 </div>
 
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-{% endblock %}

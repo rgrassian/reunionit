@@ -7,6 +7,7 @@ use App\Entity\Unavailability;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,24 +22,20 @@ class UnavailabilityType extends AbstractType
                 'label' => 'Début',
                 'date_format' => 'dd/MM/yyyy HH:ii',
                 'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'blabla'
-                ]
             ])
             ->add('endDate', DateTimeType::class, [
                 'label' => 'Fin',
                 'date_format' => 'dd/MM/yyyy HH:ii',
                 'widget' => 'single_text'
             ])
-            ->add('guests')
-//            ->add('guests', EntityType::class, [
-//                'label' => 'Invités',
-//                'class' => User::class,
-//                'choice_label' => 'email',
-//                'attr' => [
-//                    'multiple' => true
-//                ]
-//            ])
+            //->add('guests')
+            ->add('guests', EntityType::class, [
+                'label' => 'Invités',
+                'class' => User::class,
+                'choice_label' => 'email',
+                'multiple' => true
+
+            ])
             ->add('object', TextType::class, [
                 'label' => 'Objet'
             ])
