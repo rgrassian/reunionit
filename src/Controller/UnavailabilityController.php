@@ -53,6 +53,7 @@ class UnavailabilityController extends AbstractController
     {
         $unavailability = new Unavailability();
 
+
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
             $unavailability->setOrganiser($this->getUser());
@@ -91,7 +92,9 @@ class UnavailabilityController extends AbstractController
             $entityManager->persist($unavailability);
             $entityManager->flush();
 
-            return $this->redirectToRoute('room_show', ['id' => $unavailability->getRoom()->getId()]);
+            return $this->redirectToRoute('room_show', [
+                'id' => $unavailability->getRoom()->getId()
+            ]);
         }
 
         return $this->render('unavailability/new.html.twig', [
@@ -125,7 +128,8 @@ class UnavailabilityController extends AbstractController
      * @param Unavailability $unavailability
      * @return Response
      */
-    public function edit(Request $request, Unavailability $unavailability = null): Response
+    public function edit(Request $request,
+                         Unavailability $unavailability = null): Response
     {
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
@@ -137,7 +141,9 @@ class UnavailabilityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('unavailability_index', ['id' => $unavailability->getId()]);
+            return $this->redirectToRoute('unavailability_show', [
+                'id' => $unavailability->getId()
+            ]);
         }
 
         return $this->render('unavailability/edit.html.twig', [

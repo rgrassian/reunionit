@@ -34,19 +34,19 @@
             {% endif %}
         </div>
 
-        <table class="table">
+        <table class="table table-active">
             <tbody>
-                <tr>
-                    <th>Capacité</th>
-                    <td>{{ room.capacity }}</td>
+                <tr class="lead">
+                    <th>Capacité :</th>
+                    <td>{{ room.capacity }} personnes</td>
                 </tr>
-                <tr>
-                    <th>Options</th>
+                <tr class="lead">
+                    <th>Options :</th>
                     <td>{{ room.features ? room.features|join(', ') : '' }}</td>
                 </tr>
             </tbody>
         </table>
-
+        <hr>
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
     </div>
 
@@ -55,6 +55,17 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+    <style>
+        .fc-today {
+            background: #45585055 !important;
+            /*border: none !important;*/
+            /*border-top: 1px solid #ddd !important;*/
+            /*font-weight: bold;*/
+        }
+        .fc-event {
+            height:60px !important;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -126,12 +137,13 @@
                             + start + ' au '
                             + end + ' ?');
 
-                        if (true === confirmation) {
+                        if (confirmation) {
                             window.location.href = '{{ path('unavailability_new') }}'
                                 + '?startDate=' + encodeURIComponent(start)
                                 + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
                         }
+                        this.unselect();
                     }
                 },
                 eventSources: [
@@ -153,3 +165,5 @@
         });
     </script>
 {% endblock %}
+
+

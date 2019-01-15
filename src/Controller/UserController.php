@@ -97,6 +97,7 @@ class UserController extends AbstractController
     /**
      * Permet à l'admin de supprimer un utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
+     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param User $user
      * @return Response

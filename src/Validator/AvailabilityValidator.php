@@ -50,16 +50,20 @@ class AvailabilityValidator extends ConstraintValidator
     {
         $unavailabilities = $this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($value->getRoom());
         foreach ($unavailabilities as $unavailability) {
-            if ($unavailability->getStartDate() < $value->getStartDate() && $value->getStartDate() < $unavailability->getEndDate()) {
+            if ($unavailability->getStartDate() < $value->getStartDate()
+                && $value->getStartDate() < $unavailability->getEndDate()) {
                 return true;
             }
-            if ($unavailability->getStartDate() < $value->getEndDate() && $value->getEndDate() < $unavailability->getEndDate()) {
+            if ($unavailability->getStartDate() < $value->getEndDate()
+                && $value->getEndDate() < $unavailability->getEndDate()) {
                 return true;
             }
-            if ($value->getStartDate() < $unavailability->getStartDate() && $unavailability->getStartDate() < $value->getEndDate()) {
+            if ($value->getStartDate() < $unavailability->getStartDate()
+                && $unavailability->getStartDate() < $value->getEndDate()) {
                 return true;
             }
-            if ($value->getStartDate() < $unavailability->getEndDate() && $unavailability->getStartDate() < $value->getEndDate()) {
+            if ($value->getStartDate() < $unavailability->getEndDate()
+                && $unavailability->getStartDate() < $value->getEndDate()) {
                 return true;
             }
         }
@@ -85,10 +89,7 @@ class AvailabilityValidator extends ConstraintValidator
 
     public function weekEndDates($value)
     {
-        if ($this->isWeekEndDate($value->getStartDate()) || $this->isWeekEndDate($value->getEndDate())) {
-            return true;
-        }
-        // return false;
+        return $this->isWeekEndDate($value->getStartDate()) || $this->isWeekEndDate($value->getEndDate());
     }
 
     public function isWeekEndDate(\DateTime $date) : bool

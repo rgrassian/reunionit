@@ -13,6 +13,14 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+    <style>
+        .fc-today {
+            background: #45585055 !important;
+            /*border: none !important;*/
+            /*border-top: 1px solid #ddd !important;*/
+            /*font-weight: bold;*/
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}

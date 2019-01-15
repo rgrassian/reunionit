@@ -105,6 +105,7 @@ class RoomController extends AbstractController
     /**
      * Permet à l'admin de supprimer une salle.
      * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
      * @return Response
