@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Availability as UnavailabilityAssert;
@@ -38,11 +40,6 @@ class Unavailability
     private $endDate;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $guests = [];
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un objet")
      */
@@ -64,6 +61,17 @@ class Unavailability
      * @ORM\JoinColumn(nullable=false)
      */
     private $room;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="invitations")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $guests;
+
+    public function __construct()
+    {
+        $this->guests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,16 +100,6 @@ class Unavailability
         $this->endDate = $endDate;
 
         return $this;
-    }
-
-    public function getGuests()
-    {
-        return $this->guests;
-    }
-
-    public function setGuests($guests): void
-    {
-        $this->guests = $guests;
     }
 
     public function getObject(): ?string
@@ -166,5 +164,31 @@ class Unavailability
     public function isNotPast()
     {
         return $this->getStartDate() > new \DateTime();
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getGuests(): Collection
+    {
+        return $this->guests;
+    }
+
+    public function addGuest(User $guest): self
+    {
+        if (!$this->guests->contains($guest)) {
+            $this->guests[] = $guest;
+        }
+
+        return $this;
+    }
+
+    public function removeGuest(User $guest): self
+    {
+        if ($this->guests->contains($guest)) {
+            $this->guests->removeElement($guest);
+        }
+
+        return $this;
     }
 }

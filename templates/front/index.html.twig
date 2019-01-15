@@ -13,7 +13,7 @@
         <hr class="my-4">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <p class="lead">
-                <a class="btn btn-primary btn-lg" href="{{ path('unavailability_new') }}" role="button">Réserver une salle</a>
+                <a class="btn btn-primary btn-lg" href="{{ path('room_index') }}" role="button">Réserver une salle</a>
             </p>
         {% else %}
             <p class="lead">

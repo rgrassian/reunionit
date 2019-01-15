@@ -42,7 +42,11 @@
                 </tr>
                 <tr>
                     <th>Organisateur</th>
-                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
+                    <td>
+                        <a href="{{ path('user_show', {'id': unavailability.organiser.id}) }}">
+                            {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>Salle</th>
@@ -62,7 +66,14 @@
                 </tr>
                 <tr>
                     <th>Invités</th>
-                    <td>{{ unavailability.guests ? unavailability.guests|join(', ') : '' }}</td>
+                    <td>
+                        {% for guest in unavailability.guests %}
+                            <a href="{{ path('user_show', {'id': guest.id}) }}">
+                                {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
+                            </a>
+                        {% endfor %}
+                    </td>
+                    {#<td>{{ unavailability.guests ? guests|join(', ') : '' }}</td>#}
                 </tr>
                 {% if is_granted('ROLE_ADMIN') %}
                     <tr>
@@ -75,13 +86,4 @@
 
     </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
 {% endblock %}

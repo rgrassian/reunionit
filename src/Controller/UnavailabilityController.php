@@ -47,9 +47,12 @@ class UnavailabilityController extends AbstractController
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
-    public function new(Request $request, RoomRepository $roomRepository, UnavailabilityRepository $unavailabilityRepository): Response
+    public function new(Request $request,
+                        RoomRepository $roomRepository,
+                        UnavailabilityRepository $unavailabilityRepository): Response
     {
         $unavailability = new Unavailability();
+
 
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
@@ -89,7 +92,9 @@ class UnavailabilityController extends AbstractController
             $entityManager->persist($unavailability);
             $entityManager->flush();
 
-            return $this->redirectToRoute('room_show', ['id' => $unavailability->getRoom()->getId()]);
+            return $this->redirectToRoute('room_show', [
+                'id' => $unavailability->getRoom()->getId()
+            ]);
         }
 
         return $this->render('unavailability/new.html.twig', [
@@ -102,24 +107,29 @@ class UnavailabilityController extends AbstractController
     /**
      * Affiche les infos sur une réservation.
      * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
+     * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
      * @param Unavailability $unavailability
      * @return Response
      */
-    public function show(Unavailability $unavailability): Response
+    public function show(Unavailability $unavailability = null): Response
     {
-        return $this->render('unavailability/show.html.twig', ['unavailability' => $unavailability]);
+        return $this->render('unavailability/show.html.twig', [
+            'unavailability' => $unavailability
+        ]);
     }
 
     /**
      * Permet à l'admin ou à l'organisateur de modifier une réservation.
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
+     * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
      * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response
      */
-    public function edit(Request $request, Unavailability $unavailability): Response
+    public function edit(Request $request,
+                         Unavailability $unavailability = null): Response
     {
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
@@ -131,7 +141,9 @@ class UnavailabilityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('unavailability_index', ['id' => $unavailability->getId()]);
+            return $this->redirectToRoute('unavailability_show', [
+                'id' => $unavailability->getId()
+            ]);
         }
 
         return $this->render('unavailability/edit.html.twig', [
@@ -143,13 +155,16 @@ class UnavailabilityController extends AbstractController
     /**
      * Permet à l'admin ou à l'organisateur de supprimer une réservation.
      * @Route("/supprimer/reservation-{id}.html", name="unavailability_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
+     * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
      * @param ObjectManager $entityManager
      * @param Unavailability $unavailability
      * @return Response
      */
-    public function delete(Request $request, ObjectManager $entityManager, Unavailability $unavailability): Response
+    public function delete(Request $request,
+                           ObjectManager $entityManager,
+                           Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
             $entityManager->remove($unavailability);

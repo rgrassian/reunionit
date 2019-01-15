@@ -34,7 +34,8 @@ class FullCalendarListener
         $startDate = $calendar->getStart();
         $endDate = $calendar->getEnd();
 
-        // Si un id est défini on affiche une seule salle, sinon on affiche tout
+        // Si un id est défini on affiche les events d'une seule salle,
+        // sinon on affiche tous les events de toutes les salles.
         if (isset($calendar->getFilters()['id'])) {
             $roomId = $calendar->getFilters()['id'];
             $unavailabilities = $this->em->getRepository(Unavailability::class)
@@ -44,13 +45,13 @@ class FullCalendarListener
                 ->findUnavailabilitiesByDates($startDate, $endDate);
         }
 
-        // On crée un évènement pour chaque unavailability
+        // On crée un event pour chaque unavailability.
         foreach($unavailabilities as $unavailability) {
 
+            // S'il s'agit du calendrier d'une salle, on n'affiche que l'objet de chaque event.
             $eventTitle = $unavailability->getObject();
 
-            // S'il s'agit du calendrier général,
-            // on affiche le nom des salles sur les events.
+            // S'il s'agit du calendrier général, on affiche aussi le nom des salles sur les events.
             if (!isset($calendar->getFilters()['id'])) {
                 $eventTitle = 'Salle ' . $unavailability->getRoom()->getName() . ' | ' . $eventTitle;
             }
@@ -59,20 +60,31 @@ class FullCalendarListener
             $bookingEvent  = new Event(
                 $eventTitle,
                 $unavailability->getStartDate(),
-                $unavailability->getEndDate() // If the end date is null or not defined, it creates an all day event
+                $unavailability->getEndDate()
             );
 
-            if($unavailability->getStartDate()->format('H') === '08'
-                && $unavailability->getEndDate()->format('H') === '20') {
+            // Si les heures de début et de fin sont la première et la dernière heure ouvrable,
+            // on set la propriété AllDay de l'event.
+            if($unavailability->getStartDate()->format('H:i') === Unavailability::DAY_START
+                && $unavailability->getEndDate()->format('H:i') === Unavailability::DAY_END) {
                 $bookingEvent->setAllDay(true);
             }
 
-            // Création du lien vers l'unavailability sur le calendrier
+            // Création du lien vers la réservation sur l'event affiché dans le calendrier.
             $bookingEvent->setUrl(
                 $this->router->generate('unavailability_show', [
                     'id' => $unavailability->getId(),
                 ])
             );
+
+            // Si l'event couvre une ou plusieurs journées complète(s),
+            // on reset les dates à 00h pour que le calendrier l'affiche dans la ligne "Toute la journée".
+            if ($bookingEvent->isAllDay()) {
+                $bookingEvent->setStartDate(\DateTime::createFromFormat('Y/m/d H:i:s', $bookingEvent
+                        ->getStartDate()->format('Y/m/d') . ' 00:00:00'));
+                $bookingEvent->setEndDate(\DateTime::createFromFormat('Y/m/d H:i:s', $bookingEvent
+                        ->getEndDate()->format('Y/m/d') . ' 00:00:00')->modify('+1 day'));
+            }
 
             // Ajout de l'évènement au calendrier
             $calendar->addEvent($bookingEvent);

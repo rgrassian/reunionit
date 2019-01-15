@@ -13,6 +13,14 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+    <style>
+        .fc-today {
+            background: #45585055 !important;
+            /*border: none !important;*/
+            /*border-top: 1px solid #ddd !important;*/
+            /*font-weight: bold;*/
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -26,6 +34,7 @@
         $(function () {
             $('#calendar-holder').fullCalendar({
                 locale: 'fr',
+                themeSystem: 'bootstrap4',
                 header: {
                     left: 'today',
                     center: 'title',
@@ -37,7 +46,6 @@
                 eventLimit: true,
                 eventLimitText: "de plus",
                 slotDuration: '00:15:00',
-                slotLabelInterval: '00:15:00',
                 weekends: false,
                 minTime: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
                 maxTime: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",

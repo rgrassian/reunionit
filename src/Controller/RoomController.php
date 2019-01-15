@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Room;
 use App\Form\RoomType;
+use App\Provider\FeaturesProvider;
 use App\Repository\RoomRepository;
 use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -27,9 +28,13 @@ class RoomController extends AbstractController
      * @param RoomRepository $roomRepository
      * @return Response
      */
-    public function index(RoomRepository $roomRepository): Response
+    public function index(RoomRepository $roomRepository, FeaturesProvider $featuresProvider): Response
     {
-        return $this->render('room/index.html.twig', ['rooms' => $roomRepository->findAll()]);
+        $features = $featuresProvider->getFeatures();
+        return $this->render('room/index.html.twig', [
+            'rooms' => $roomRepository->findAll(),
+            'features' => $features
+        ]);
     }
 
     /**
@@ -97,14 +102,17 @@ class RoomController extends AbstractController
         }
 
         return $this->render('room/new.html.twig', [
-            'form' => $form->createView()
+            'room' => $room,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
+     * @param RoomRepository $roomRepository
      * @param Room $room
      * @return Response
      */
@@ -121,6 +129,7 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
      * @param Packages $packages
@@ -166,6 +175,7 @@ class RoomController extends AbstractController
     /**
      * Permet à l'admin de supprimer une salle.
      * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
+     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
      * @return Response

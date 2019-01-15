@@ -1,3 +1,6 @@
+{% set day_start = constant('App\\Entity\\Unavailability::DAY_START') %}
+{% set day_end = constant('App\\Entity\\Unavailability::DAY_END') %}
+
 {% extends 'layout.html.twig' %}
 
 {% block page_title %}Salle {{ room.name }}{% endblock %}
@@ -31,14 +34,14 @@
             {% endif %}
         </div>
 
-        <table class="table">
+        <table class="table table-active">
             <tbody>
-                <tr>
-                    <th>Capacité</th>
-                    <td>{{ room.capacity }}</td>
+                <tr class="lead">
+                    <th>Capacité :</th>
+                    <td>{{ room.capacity }} personnes</td>
                 </tr>
-                <tr>
-                    <th>Options</th>
+                <tr class="lead">
+                    <th>Options :</th>
                     <td>{{ room.features ? room.features|join(', ') : '' }}</td>
                 </tr>
             </tbody>
@@ -56,6 +59,17 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+    <style>
+        .fc-today {
+            background: #45585055 !important;
+            /*border: none !important;*/
+            /*border-top: 1px solid #ddd !important;*/
+            /*font-weight: bold;*/
+        }
+        .fc-event {
+            height:60px !important;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -67,7 +81,10 @@
     <script>
         $(function () {
             $('#calendar-holder').fullCalendar({
+                themeSystem: 'bootstrap4',
+                contentHeight: "auto",
                 locale: 'fr',
+                timezone: "Europe/Paris",
                 now: '{{ "now"|date("m/d/Y H:i") }}',
                 header: {
                     left: 'today',
@@ -75,8 +92,8 @@
                     right: 'month, agendaWeek, agendaDay, prev, next'
                 },
                 businessHours: {
-                    start: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
-                    end: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
+                    start: "{{ day_start }}",
+                    end: "{{ day_end }}",
                     dow: [1, 2, 3, 4, 5]
                 },
                 lazyFetching: true,
@@ -84,8 +101,8 @@
                 defaultView: 'agendaWeek',
                 slotDuration: '00:15:00',
                 weekends: false,
-                minTime: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
-                maxTime: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
+                minTime: "{{ day_start }}",
+                maxTime: "{{ day_end }}",
                 nowIndicator: true,
                 validRange: function(nowDate) {
                     return {
@@ -99,29 +116,37 @@
                     if (startDate < $('#calendar-holder').fullCalendar('getDate')) {
                         alert('L\'heure de début que vous avez sélectionnée est passée');
                     } else {
-                        // On fixe l'heure de début mini et l'heure de fin maxi.
-                        const start = parseInt(startDate.format("{{ constant('App\\Entity\\Unavailability::DAY_START') }}"))
-                        <= parseInt(startDate.format('HH')) ?
-                            startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' +
-                                '{{ constant('App\\Entity\\Unavailability::DAY_START') }}');
+                        // S'il s'agit de journée(s) complète(s), on fixe les heures de début et de fin.
+                        if (!startDate.hasTime() || !endDate.hasTime()) {
+                            startDate.time('{{ day_start }}');
+                            endDate.time('{{ day_end }}');
+                            if (endDate >= startDate.clone().add(1, 'days')) {
+                                endDate.add(-1, 'days')
+                            }
+                        }
 
-                        const end = parseInt(startDate.format("{{ constant('App\\Entity\\Unavailability::DAY_START') }}"))
+                        // On fixe l'heure de début mini et l'heure de fin maxi.
+                        const start = parseInt(startDate.format("{{ day_start }}"))
+                        <= parseInt(startDate.format('HH')) ?
+                            startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' + '{{ day_start }}');
+
+                        const end = parseInt(startDate.format("{{ day_start }}"))
                         <= parseInt(endDate.format('HH')) && parseInt(endDate.format('HH'))
-                        <= parseInt(endDate.format("{{ constant('App\\Entity\\Unavailability::DAY_END') }}")) ?
-                            endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' +
-                                '{{ constant('App\\Entity\\Unavailability::DAY_END') }}');
+                        <= parseInt(endDate.format("{{ day_end }}")) ?
+                            endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' + '{{ day_end }}');
 
                         // On demande une confirmation à l'utilisateur
                         const confirmation = confirm('Réserver la salle {{ room.name }} pour la période du '
                             + start + ' au '
                             + end + ' ?');
 
-                        if (true === confirmation) {
+                        if (confirmation) {
                             window.location.href = '{{ path('unavailability_new') }}'
                                 + '?startDate=' + encodeURIComponent(start)
                                 + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
                         }
+                        this.unselect();
                     }
                 },
                 eventSources: [

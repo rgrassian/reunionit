@@ -46,25 +46,26 @@ class AvailabilityValidator extends ConstraintValidator
         }
     }
 
-//    public function setViolation($violation)
-//    {
-//        return $this->context->buildViolation($violation);
-//    }
-
     public function availability($value)
     {
         $unavailabilities = $this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($value->getRoom());
         foreach ($unavailabilities as $unavailability) {
-            if ($unavailability->getStartDate() < $value->getStartDate() && $value->getStartDate() < $unavailability->getEndDate()) {
+            if($value->getId() === $unavailability->getId())
+                continue;
+            if ($unavailability->getStartDate() < $value->getStartDate()
+                && $value->getStartDate() < $unavailability->getEndDate()) {
                 return true;
             }
-            if ($unavailability->getStartDate() < $value->getEndDate() && $value->getEndDate() < $unavailability->getEndDate()) {
+            if ($unavailability->getStartDate() < $value->getEndDate()
+                && $value->getEndDate() < $unavailability->getEndDate()) {
                 return true;
             }
-            if ($value->getStartDate() < $unavailability->getStartDate() && $unavailability->getStartDate() < $value->getEndDate()) {
+            if ($value->getStartDate() < $unavailability->getStartDate()
+                && $unavailability->getStartDate() < $value->getEndDate()) {
                 return true;
             }
-            if ($value->getStartDate() < $unavailability->getEndDate() && $unavailability->getStartDate() < $value->getEndDate()) {
+            if ($value->getStartDate() < $unavailability->getEndDate()
+                && $unavailability->getStartDate() < $value->getEndDate()) {
                 return true;
             }
         }
@@ -90,15 +91,13 @@ class AvailabilityValidator extends ConstraintValidator
 
     public function weekEndDates($value)
     {
-        if ($this->isWeekEndDate($value->getStartDate()) || $this->isWeekEndDate($value->getEndDate())) {
-            return true;
-        }
-        // return false;
+        return $this->isWeekEndDate($value->getStartDate()) || $this->isWeekEndDate($value->getEndDate());
     }
 
     public function isWeekEndDate(\DateTime $date) : bool
     {
         $day = $date->format('w');
+        // Retourne true si le jour est un samedi ou un dimanche
         return $day == 0 || $day == 6;
     }
 }

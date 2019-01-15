@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Form\UserAdminType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,18 +57,22 @@ class UserController extends AbstractController
     /**
      * Affiche les infos sur un utilisateur.
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
+     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
      * @param User $user
      * @return Response
      */
-    public function show(User $user): Response
+    public function show(User $user = null): Response
     {
-        return $this->render('user/show.html.twig', ['user' => $user]);
+        return $this->render('user/show.html.twig', [
+            'user' => $user
+        ]);
     }
 
     /**
      * Permet à l'admin de modifier un utilisateur.
      * @Route("/admin/modifier/utilisateur-{id}.html", name="user_edit", methods={"GET","POST"})
+     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param User $user
      * @return Response
@@ -91,6 +97,7 @@ class UserController extends AbstractController
     /**
      * Permet à l'admin de supprimer un utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
+     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param User $user
      * @return Response

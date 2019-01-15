@@ -47,9 +47,16 @@ class User implements UserInterface
     private $roles = [];
 
     /**
+     * réunions dont user est organisateur
      * @ORM\OneToMany(targetEntity="App\Entity\Unavailability", mappedBy="organiser")
      */
     private $unavailabilities;
+
+    /**
+     * réunions auxquelles user est invité
+     * @ORM\ManyToMany(targetEntity="App\Entity\Unavailability", mappedBy="guests")
+     */
+    private $invitations;
 
     public function __construct()
     {
@@ -209,4 +216,21 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @return mixed
+     */
+    public function getInvitations()
+    {
+        return $this->invitations;
+    }
+
+    /**
+     * @param mixed $invitations
+     */
+    public function setInvitations($invitations): void
+    {
+        $this->invitations = $invitations;
+    }
+
 }
