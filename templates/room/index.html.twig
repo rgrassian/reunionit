@@ -33,7 +33,9 @@
         <hr>
             <div class="row text-center" id="roomList">
                 {% for room in rooms %}
-                    <div class="roomCard col-lg-3 col-md-6 mb-4" style="position:relative;">
+                    <div class="roomCard col-lg-3 col-md-6 mb-4"
+                         data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'
+                         style="position:relative;">
                         <div class="card mb-3" style="max-width: 18rem;">
                             <a href="{{ path('room_show', {'id': room.id}) }}">
                                 <img class="card-img-top" src="https://pictures.bureauxapartager.com/381cb905-5ed1-4f57-b745-e04a8d8650df/-/resize/1540x/" alt="Card image cap">
@@ -45,7 +47,7 @@
                                     </h2>
                                 </a>
                                 <p class="card-text">
-                                    <i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;">{{ room.capacity }}</sup>
+                                    <i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;" class="roomCapacity">{{ room.capacity }}</sup>
                                 </p>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;">
@@ -79,23 +81,36 @@
                 arrowDown.style.display = 'inline-block';
             }
         }
+
         function updateRooms() {
             var selectedFeatures = $('#featuresList').val();
-            console.log(selectedFeatures);
+            //console.log(selectedFeatures);
 
             $('.roomCard').show();
+            //
+            // $('#roomList .roomCard').each(function () {
+            //     var card = $(this);
+            //     var infos = JSON.parse(card.data('infos'));
+            //     console.log(infos);
+            // })
+
+
             for(var i = 1; i < $('#roomList .roomCard').length + 1; i++){
 
                 var element = $('#roomList .roomCard:nth-child(' + i + ')');
+
                 var featuresByRoom = $('#roomList .roomCard:nth-child(' + i + ') .card-title').attr('data-original-title');
                 //var featuresByRoom = element.$('.card-title').attr('data-original-title');
                 featuresByRoom = featuresByRoom.split(', ');
 
+                var capacityByRoom = $('#roomList .roomCard:nth-child(' + i + ') .roomCapacity').text();
+
                 if(findRoomWithThisFeatures(selectedFeatures, featuresByRoom)){
-                    console.log(element);
+                    //console.log(element);
                 } else {
                     element.hide();
                 };
+                console.log(capacityByRoom);
             }
         }
         function initSearch() {
