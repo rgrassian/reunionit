@@ -3,10 +3,10 @@
         <label for="roomCapacitySelect">Capacité</label>
         <select class="custom-select" id="roomCapacitySelect">
             <option selected disabled>Sélectionnez</option>
-            <option value="[1, 5]">moins de 5 personnes</option>
-            <option value="[6, 10]">entre 5 et 10 personnes</option>
-            <option value="[11, 20]">entre 10 et 20 personnes</option>
-            <option value="[21]">20 personnes et plus</option>
+            <option value='{"min":1,"max":5}'>moins de 5 personnes</option>
+            <option value='{"min":6,"max":10}'>entre 5 et 10 personnes</option>
+            <option value='{"min":11,"max":20}'>entre 10 et 20 personnes</option>
+            <option value='{"min":21}'>20 personnes et plus</option>
         </select>
     </div>
     <div class="form-group">
