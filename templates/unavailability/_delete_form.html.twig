@@ -1,5 +1,5 @@
-<form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de cette réservation ?');">
+<form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de cette réservation ?');" style="position: relative;float: right;bottom: 38px;">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
-    <button class="btn">Supprimer</button>
+    <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
 </form>

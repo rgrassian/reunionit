@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block page_title %}Nouveau{% endblock %}
+{% block page_title %}Réservation{% endblock %}
 
 {% block content %}
 
@@ -8,10 +8,7 @@
 
         <h1>Organiser une réunion</h1>
 
-        {{ form_start(form, {attr:{novalidate: 'novalidate' }}) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
-        {{ form_end(form) }}
+        {{ include('unavailability/_form.html.twig') }}
 
     </div>
 
