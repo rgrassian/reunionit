@@ -33,7 +33,7 @@
         <hr>
             <div class="row text-center" id="roomList">
                 {% for room in rooms %}
-                    <div class="roomCard card col-lg-3 col-md-6 mb-4"
+                    <div class="roomCard col-lg-3 col-md-6 mb-4"
                          data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'
                          style="position:relative;">
                         <div class="card mb-3" style="max-width: 18rem;">
@@ -114,10 +114,10 @@
             $('.roomCard').show();
             console.log('init');
         }
-        var findRoomWithThisFeatures = function (haystack, arr) {
+        function findRoomWithThisFeatures (haystack, arr) {
             return haystack.every(o => arr.includes(o));
         };
-        var findRoomWithThisCapacity = function (selectedCapacity, capacityByRoom) {
+        function findRoomWithThisCapacity (selectedCapacity, capacityByRoom) {
             var minSelectedCapacity = selectedCapacity.min;
 
             if(selectedCapacity.max === undefined) {

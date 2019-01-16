@@ -7,38 +7,37 @@
 
 {% block content %}
 
-    <div class="jumbotron col-md-9 mx-auto mt-4" style="position: relative">
-
-        <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
-            <a href="{{ path('room_index') }}" style="color: #fff;">
-                <button type="button" class="btn btn-info" style="width: 45px;">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            </a>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('room_edit', {'id': room.id}) }}" style="color: #fff;">
-                    <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </a>
-                <form method="post" action="{{ path('room_delete', {'id': room.id}) }}"
-                      onsubmit="return confirm('Confirmez-vous la suppression de la salle {{ room.name }} ?');" style="display: inline-block;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
-                    <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
-            {% endif %}
-        </div>
+    <div class="jumbotron col-md-9 mx-auto mt-4">
 
         <div class="row mb-3">
             <div class="col col-lg-3">
                 <img class="card-img-top" src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle {{ room.name }}">
             </div>
             <div class="col-lg-9 d-flex align-items-stretch flex-column">
-                <div class="mb-auto">
-                    <h1>Salle {{ room.name }}</h1>
+                <div class="mb-auto d-flex">
+                    <h1 class="mr-auto">Salle {{ room.name }}</h1>
+                    <div class="btn-group" role="group">
+                        <a href="{{ path('room_index') }}" style="color: #fff;">
+                            <button type="button" class="btn btn-info" style="width: 45px;">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('room_edit', {'id': room.id}) }}" style="color: #fff;">
+                                <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </a>
+                            <form method="post" action="{{ path('room_delete', {'id': room.id}) }}"
+                                  onsubmit="return confirm('Confirmez-vous la suppression de la salle {{ room.name }} ?');" style="display: inline-block;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
+                                <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="">
                     <table class="table table-active">
@@ -59,6 +58,26 @@
         </div>
 
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+    </div>
+
+    <div id="datesConfirm" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvelle réservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessage">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="datesConfirmation">Confirmer</button>
+                    <button type="button" class="btn btn-secondary" id="datesCancel" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
@@ -143,17 +162,24 @@
                             endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' + '{{ day_end }}');
 
                         // On demande une confirmation à l'utilisateur
-                        const confirmation = confirm('Réserver la salle {{ room.name }} pour la période du '
+                        const confirmationMessage = 'Réserver la salle {{ room.name }} pour la période du '
                             + start + ' au '
-                            + end + ' ?');
+                            + end + ' ?' ;
+                        $('#confirmationMessage').text(confirmationMessage);
+                        $('#datesConfirm').modal({});
 
-                        if (confirmation) {
+                        $("#datesConfirmation").on("click", function(){
                             window.location.href = '{{ path('unavailability_new') }}'
                                 + '?startDate=' + encodeURIComponent(start)
                                 + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
-                        }
-                        this.unselect();
+                            $("#datesConfirm").modal('hide');
+                        });
+
+                        $("#datesCancel").on("click", function(){
+                            this.unselect();
+                            $("#datesConfirm").modal('hide');
+                        });
                     }
                 },
                 eventSources: [
