@@ -33,10 +33,9 @@
         <hr>
             <div class="row text-center" id="roomList">
                 {% for room in rooms %}
-                    <div class="roomCard col-lg-3 col-md-6 mb-4"
-                         data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'
-                         style="position:relative;">
-                        <div class="card mb-3">
+                    <div class="roomCard col-11 col-sm-6 col-lg-4 col-xl-3 mb-sm-4 position-relative"
+                         data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'>
+                        <div class="card mb-3 mx-auto">
                             <a href="{{ path('room_show', {'id': room.id}) }}">
                                 <div class="card-img-top" style="background-image: url('{{ asset('images/room/' ~ room.picture) }}');">
                                 </div>
