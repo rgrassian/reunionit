@@ -10,12 +10,12 @@
             <h1 class="col-sm-9">Nos salles de réunion</h1>
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
-                 <div class="col-sm-3">
-                     <a class="text-white" href="{{ path('room_new') }}">
-                         <button class="btn btn-info float-right" data-toggle="tooltip" data-placement="top" title="Ajouter une salle">
+                <div class="col-sm-3">
+                    <a class="text-white" href="{{ path('room_new') }}">
+                        <button class="btn btn-info float-right" data-toggle="tooltip" data-placement="top" title="Ajouter une salle">
                             <i class="fas fa-plus"></i>
-                         </button>
-                     </a>
+                        </button>
+                    </a>
                 </div>
             {% endif %}
         </div>
@@ -31,36 +31,35 @@
         </div>
 
         <hr>
-            <div class="row text-center" id="roomList">
-                {% for room in rooms %}
-                    <div class="roomCard col-lg-3 col-md-6 mb-4"
-                         data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'
-                         style="position:relative;">
-                        <div class="card mb-3">
-                            <a href="{{ path('room_show', {'id': room.id}) }}">
-                                <div class="card-img-top" style="background-image: url('{{ asset('images/room/' ~ room.picture) }}');">
-                                </div>
-                                {#<img class="img-responsive ratio-1-1" style="max-width: 100%; height: auto" src="{{ asset('images/room/' ~ room.picture) }}" alt="Photo de la salle {{ room.name }}">#}
-                            </a>
-                            <div class="card-body">
-                                <a href="{{ path('room_show', {'id': room.id}) }}">
-                                    <h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">
-                                        {{ room.name }}
-                                    </h2>
-                                </a>
-                                <p class="card-text">
-                                    <i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;" class="roomCapacity">{{ room.capacity }}</sup>
-                                </p>
-                                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                {% endif %}
+        <div class="row text-center" id="roomList">
+            {% for room in rooms %}
+                <div class="roomCard col-11 col-sm-6 col-lg-4 col-xl-3 mb-sm-4 position-relative"
+                     data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'>
+                    <div class="card mb-3 mx-auto">
+                        <a href="{{ path('room_show', {'id': room.id}) }}">
+                            <div class="card-img-top" style="background-image: url('{{ asset('images/room/' ~ room.picture) }}');">
                             </div>
+                            {#<img class="img-responsive ratio-1-1" style="max-width: 100%; height: auto" src="{{ asset('images/room/' ~ room.picture) }}" alt="Photo de la salle {{ room.name }}">#}
+                        </a>
+                        <div class="card-body">
+                            <a href="{{ path('room_show', {'id': room.id}) }}">
+                                <h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">
+                                    {{ room.name }}
+                                </h2>
+                            </a>
+                            <p class="card-text">
+                                <i class="fas fa-user" style="font-size:1.3rem"></i>&nbsp<sup style="font-size: 1rem;" class="roomCapacity">{{ room.capacity }}</sup>
+                            </p>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('room_edit', {'id': room.id}) }}" class="btn btn-info" style="position:absolute;top:0;right:0;">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
+        </div>
         <hr>
     </div>
 

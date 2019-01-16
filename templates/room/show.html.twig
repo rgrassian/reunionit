@@ -10,10 +10,7 @@
     <div class="jumbotron col-md-9 mx-auto mt-5">
 
         <div class="row mb-5">
-            <div class="col col-lg-3 mb-2 mb-lg-0 ">
-                <div class="card-img-top" style="background-image: url('{{ asset('images/room/'~room.picture) }}')"></div>
-                {#<img class="card-img-top" src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle {{ room.name }}">#}
-            </div>
+            <div class="card card-img-top col col-lg-3 mb-2 mb-lg-0" style="background-image: url('{{ asset('images/room/'~room.picture) }}')"></div>
             <div class="col-lg-9 d-flex align-items-stretch flex-column">
                 <div class="mb-auto d-flex">
                     <h1 class="mr-auto">Salle {{ room.name }}</h1>
@@ -43,14 +40,14 @@
                 <div class="mb-0">
                     <table class="table table-active m-0">
                         <tbody>
-                            <tr class="lead">
-                                <th>Capacité :</th>
-                                <td>{{ room.capacity }} personnes</td>
-                            </tr>
-                            <tr class="lead">
-                                <th>Options :</th>
-                                <td>{{ room.features ? room.features|join(', ') : '' }}</td>
-                            </tr>
+                        <tr class="lead">
+                            <th>Capacité :</th>
+                            <td>{{ room.capacity }} personnes</td>
+                        </tr>
+                        <tr class="lead">
+                            <th>Options :</th>
+                            <td>{{ room.features ? room.features|join(', ') : '' }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
