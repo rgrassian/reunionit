@@ -40,13 +40,15 @@ class Unavailability
     private $endDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=80)
      * @Assert\NotBlank(message="Vous devez saisir un objet")
+     * @Assert\Length(max="80", maxMessage="L'objet de la réunion ne doit pas dépasser {{ limit }} caractères.")
      */
     private $object;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull()
      */
     private $type;
 
@@ -64,7 +66,7 @@ class Unavailability
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="invitations")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $guests;
 

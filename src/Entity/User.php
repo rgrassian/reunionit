@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -22,22 +23,30 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=80)
+     * @Assert\NotBlank(message="Vous devez entrer un prénom.")
+     * @Assert\Length(max="50", maxMessage="Le prénom ne doit pas dépasser {{ limit }} caractères.")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez entrer un nom.")
+     * @Assert\Length(max="50", maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères.")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Veuillez entrer une adresse email valide.")
+     * @Assert\NotBlank(message="Vous devez entrer une adresse email.")
+     * @Assert\Length(max="80", maxMessage="L'adresse email ne doit pas dépasser {{ limit }} caractères.")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank(message="Vous devez entrer un mot de passe.")
      */
     private $password;
 
@@ -47,13 +56,13 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * réunions dont user est organisateur
+     * Les réunions dont User est organisateur.
      * @ORM\OneToMany(targetEntity="App\Entity\Unavailability", mappedBy="organiser")
      */
     private $unavailabilities;
 
     /**
-     * réunions auxquelles user est invité
+     * Les réunions auxquelles User a été invité.
      * @ORM\ManyToMany(targetEntity="App\Entity\Unavailability", mappedBy="guests")
      */
     private $invitations;

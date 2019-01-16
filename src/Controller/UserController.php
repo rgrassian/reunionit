@@ -37,6 +37,11 @@ class UserController extends AbstractController
     public function new(Request $request): Response
     {
         $user = new User();
+
+        // On génère un mot de passe provisoire /!\ DEVRA ÊTRE ENVOYE PAR MAIL A L'UTILISATEUR
+        $temporaryPassword = uniqid();
+        $user->setPassword($temporaryPassword);
+
         $form = $this->createForm(UserAdminType::class, $user);
         $form->handleRequest($request);
 

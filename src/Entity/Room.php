@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
+ * @UniqueEntity(fields={"name"}, message="Ce nom de salle est déjà pris")
  */
 class Room
 {
@@ -21,14 +23,21 @@ class Room
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $capacity;
-
-    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un nom de salle.")
+     * @Assert\Length(
+     *     max="80",
+     *     maxMessage="Le nom de la salle ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @Assert\NotBlank(message="Vous devez indiquer une capacité.")
+     * @Assert\Range(min=2, minMessage="La salle doit pouvoir accueillir au moins {{ limit }} personnes.")
+     */
+    private $capacity;
 
     /**
      * @ORM\Column(type="array")
@@ -41,10 +50,11 @@ class Room
     private $unavailabilities;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez ajouter une image.")
      * @Assert\Image(
      *     mimeTypesMessage="Vérifiez le format de votre image",
-     *     maxSize="2M", maxSizeMessage="Attention, votre image est trop lourde."
+     *     maxSize="1M", maxSizeMessage="Attention, votre image est trop lourde."
      * )
      */
     private $picture;

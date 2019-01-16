@@ -44,6 +44,10 @@ class AvailabilityValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->weekEndDatesMessage)
                 ->addViolation();
         }
+        if ($this->tooManyGuests($value)) {
+            $this->context->buildViolation($constraint->tooManyGuestsMessage)
+                ->addViolation();
+        }
     }
 
     public function availability($value)
@@ -74,19 +78,13 @@ class AvailabilityValidator extends ConstraintValidator
 
     public function endAfterStart($value)
     {
-        if ($value->getEndDate() < $value->getStartDate()) {
-            return true;
-        }
-        // return false;
+        return ($value->getEndDate() < $value->getStartDate());
     }
 
     public function pastDates($value)
     {
         $now = new \DateTime();
-        if ($value->getStartDate() < $now) {
-            return true;
-        }
-        // return false;
+        return ($value->getStartDate() < $now);
     }
 
     public function weekEndDates($value)
@@ -99,5 +97,10 @@ class AvailabilityValidator extends ConstraintValidator
         $day = $date->format('w');
         // Retourne true si le jour est un samedi ou un dimanche
         return $day == 0 || $day == 6;
+    }
+
+    // La capacité de la salle doit être supérieure ou égale au nombre d'invités + 1 (l'organisateur).
+    public function tooManyGuests($value) {
+        return ($value->getRoom()->getCapacity() < count($value->getGuests()) + 1);
     }
 }

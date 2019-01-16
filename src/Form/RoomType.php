@@ -29,7 +29,10 @@ class RoomType extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('capacity', IntegerType::class, [
-                'label' => 'Capacité'
+                'label' => 'Capacité',
+                'attr' => [
+                    'min' => 0
+                ]
             ])
             ->add('features', ChoiceType::class, [
                 'label' => 'Options',
