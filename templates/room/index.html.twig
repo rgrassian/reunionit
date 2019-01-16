@@ -31,6 +31,7 @@
         </div>
 
         <hr>
+<<<<<<< HEAD
         <div class="row text-center" id="roomList">
             {% for room in rooms %}
                 <div class="roomCard col-11 col-sm-6 col-lg-4 col-xl-3 mb-sm-4 position-relative"
@@ -42,6 +43,13 @@
                             {#<img class="img-responsive ratio-1-1" style="max-width: 100%; height: auto" src="{{ asset('images/room/' ~ room.picture) }}" alt="Photo de la salle {{ room.name }}">#}
                         </a>
                         <div class="card-body">
+=======
+            <div class="row text-center" id="roomList">
+                {% for room in rooms %}
+                    <div class="roomCard col-11 col-sm-6 col-lg-4 col-xl-3 mb-sm-4 position-relative"
+                         data-infos='{"capacity":{{ room.capacity }},"features":["{{ room.features|join('","') }}"]}'>
+                        <div class="card mb-3 mx-auto">
+>>>>>>> fce9aad91171690f56aeca76e55783808df83d85
                             <a href="{{ path('room_show', {'id': room.id}) }}">
                                 <h2 class="card-title" style="font-size: 1.5rem;" data-toggle="tooltip" data-placement="top" title="{{ room.features ? room.features|join(', ') : '' }}">
                                     {{ room.name }}
