@@ -7,11 +7,12 @@
 
 {% block content %}
 
-    <div class="jumbotron col-md-9 mx-auto mt-4">
+    <div class="jumbotron col-md-9 mx-auto mt-5">
 
-        <div class="row mb-3">
-            <div class="col col-lg-3">
-                <img class="card-img-top" src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle {{ room.name }}">
+        <div class="row mb-5">
+            <div class="col col-lg-3 mb-2 mb-lg-0 ">
+                <div class="card-img-top" style="background-image: url('{{ asset('images/room/'~room.picture) }}')"></div>
+                {#<img class="card-img-top" src="{{ asset('images/room/'~room.picture) }}" alt="Photo de la salle {{ room.name }}">#}
             </div>
             <div class="col-lg-9 d-flex align-items-stretch flex-column">
                 <div class="mb-auto d-flex">
@@ -39,8 +40,8 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="">
-                    <table class="table table-active">
+                <div class="mb-0">
+                    <table class="table table-active m-0">
                         <tbody>
                             <tr class="lead">
                                 <th>Capacité :</th>

@@ -60,7 +60,7 @@ class RoomController extends AbstractController
             $picture = $room->getPicture();
 
             if (null !== $picture) {
-                $fileName = strtolower($room->getName())
+                $fileName = 'salle-' . $room->getId()
                     . '.' . $picture->guessExtension();
 
                 try {
@@ -170,7 +170,7 @@ class RoomController extends AbstractController
 
             if (null !== $picture) {
 
-                $fileName = strtolower($room->getName())
+                $fileName = 'salle-' . $room->getId()
                     . '.' . $picture->guessExtension();
 
                 try {
