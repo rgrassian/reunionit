@@ -29,9 +29,9 @@ class UnavailabilityController extends AbstractController
     public function index(UnavailabilityRepository $unavailabilityRepository): Response
     {
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
-            $unavailabilities = $unavailabilityRepository->findAll();
+            $unavailabilities = $unavailabilityRepository->findAllAndOrder();
         } else {
-            $unavailabilities = $unavailabilityRepository->findByOrganiser($this->getUser());
+            $unavailabilities = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser()->getId());
         }
         return $this->render('unavailability/index.html.twig', [
             'unavailabilities' => $unavailabilities

@@ -20,6 +20,8 @@
             {% endif %}
         </div>
 
+        <hr>
+
         <button type="button" onclick="displaySearch(this)" class="btn btn-outline-info btn-lg btn-block btn-group-toggle" data-toggle="buttons">
             <i class="fas fa-search"></i>
             <i class="fas fa-angle-down" id="arrowDown"></i>
@@ -31,6 +33,7 @@
         </div>
 
         <hr>
+
         <div class="row text-center" id="roomList">
             {% for room in rooms %}
                 <div class="roomCard col-11 col-sm-6 col-lg-4 col-xl-3 mb-sm-4 position-relative"
@@ -59,7 +62,7 @@
                 </div>
             {% endfor %}
         </div>
-        <hr>
+
     </div>
 
 {% endblock %}
