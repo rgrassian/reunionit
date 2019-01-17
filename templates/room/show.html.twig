@@ -10,7 +10,9 @@
     <div class="jumbotron col-md-9 mx-auto mt-5">
 
         <div class="row mt-0 mb-5">
-            <div class="card card-img-top col col-lg-3 mb-2 mb-lg-0" style="background-image: url('{{ asset('images/room/'~room.picture) }}')"></div>
+            <a href="#" id="thumbnailPicture" class="card card-img-top col col-lg-3 mb-2 mb-lg-0"
+               style="background-image: url('{{ asset('images/room/'~room.picture) }}')">
+            </a>
             <div class="col-lg-9 d-flex align-items-stretch flex-column">
                 <div class="mb-auto d-flex">
                     <h1 class="mr-auto">Salle {{ room.name }}</h1>
@@ -58,6 +60,25 @@
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
     </div>
 
+    <div id="largePicture" class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div> -->
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <button type="button" class="close alert btn-warning" data-dismiss="modal">&nbsp;&times;&nbsp;</button>
+                    <img src="{{ asset('images/room/'~room.picture) }}" class="img-fluid" alt="Photo de la salle {{ room.name }}">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div id="datesConfirm" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -68,7 +89,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id="confirmationMessage">Modal body text goes here.</p>
+                    <p id="confirmationMessage"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="datesConfirmation">Confirmer</button>
@@ -195,6 +216,11 @@
                 ],
                 timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
             });
+
+            $('#thumbnailPicture').on("click", function () {
+                $('#largePicture').modal({});
+            });
+
         });
     </script>
 {% endblock %}
