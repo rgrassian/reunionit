@@ -52,7 +52,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
     public function findAllAndOrder()
     {
         return $this->createQueryBuilder('u')
-            ->orderBy('u.startDate', 'ASC')
+            ->orderBy('u.startDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -62,7 +62,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->where('u.organiser = :organiser_id')
             ->setParameter('organiser_id', $organiserId)
-            ->orderBy('u.startDate', 'ASC')
+            ->orderBy('u.startDate', 'DESC')
             ->getQuery()
             ->getResult();
     }

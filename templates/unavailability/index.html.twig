@@ -30,7 +30,7 @@
             </thead>
             <tbody>
             {% for unavailability in unavailabilities %}
-                <tr>
+                <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
                     <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>

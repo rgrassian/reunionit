@@ -28,13 +28,11 @@ class UnavailabilityType extends AbstractType
                 'date_format' => 'dd/MM/yyyy HH:ii',
                 'widget' => 'single_text'
             ])
-            //->add('guests')
             ->add('guests', EntityType::class, [
                 'label' => 'Invités',
                 'class' => User::class,
                 'choice_label' => 'email',
                 'multiple' => true
-
             ])
             ->add('object', TextType::class, [
                 'label' => 'Objet'
