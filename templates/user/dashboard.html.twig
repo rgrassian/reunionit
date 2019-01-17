@@ -23,13 +23,10 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Objet</th>
                             <th>Salle</th>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <th>Organisateur</th>
-                            {% endif %}
                             <th>Début</th>
                             <th>Fin</th>
-                            <th>Objet</th>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <th>Type</th>
                             {% endif %}
@@ -39,13 +36,10 @@
                         <tbody>
                         {% for unavailability in unavailabilitiesAsOrganiser %}
                             <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
-                                <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
-                                {% endif %}
+                                <td>{{ unavailability.object }}</td>
+                                <td>{{ unavailability.room.name }}</td>
                                 <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
                                 <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
-                                <td>{{ unavailability.object }}</td>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                                 {% endif %}
@@ -55,7 +49,7 @@
                                     </a>
                                     {% if date() < unavailability.startDate %}
                                     <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">
-                                        &nbsp&nbsp<i class="fas fa-user-edit" data-toggle="tooltip" data-placement="top" title="Editer"></i>
+                                        <i class="fas fa-user-edit ml-2" data-toggle="tooltip" data-placement="top" title="Editer"></i>
                                     </a>
                                     {% endif %}
                                 </td>
@@ -74,13 +68,11 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Objet</th>
                             <th>Salle</th>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <th>Organisateur</th>
-                            {% endif %}
+                            <th>Organisateur</th>
                             <th>Début</th>
                             <th>Fin</th>
-                            <th>Objet</th>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <th>Type</th>
                             {% endif %}
@@ -90,13 +82,11 @@
                         <tbody>
                         {% for unavailability in unavailabilitiesAsGuest %}
                             <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
-                                <td><a href="{{ path('room_show', {'id': unavailability.room.id}) }}">{{ unavailability.room.name }}</a></td>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
-                                {% endif %}
+                                <td>{{ unavailability.object }}</td>
+                                <td>{{ unavailability.room.name }}</td>
+                                <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
                                 <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
                                 <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
-                                <td>{{ unavailability.object }}</td>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                                 {% endif %}

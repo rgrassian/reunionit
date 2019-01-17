@@ -126,7 +126,6 @@ class UserController extends AbstractController
      */
     public function dashboard(UnavailabilityRepository $unavailabilityRepository)
     {
-     //   $unavailabilitiesAsGuest = $this->getUser()->getInvitations();
         $unavailabilitiesAsOrganiser = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
         $unavailabilitiesAsGuest = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
 

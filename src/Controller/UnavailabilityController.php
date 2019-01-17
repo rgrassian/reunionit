@@ -21,18 +21,14 @@ class UnavailabilityController extends AbstractController
     /**
      * Affiche les réunions organisées par l'utilisateur ou
      * toutes les réunions si l'utilisateur est admin.
-     * @Route("/historique.html", name="unavailability_index", methods={"GET"})
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @Route("/admin/historique.html", name="unavailability_index", methods={"GET"})
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
     public function index(UnavailabilityRepository $unavailabilityRepository): Response
     {
-        if ($this->getUser()->hasRole('ROLE_ADMIN')) {
-            $unavailabilities = $unavailabilityRepository->findAllAndOrder();
-        } else {
-            $unavailabilities = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser()->getId());
-        }
+        $unavailabilities = $unavailabilityRepository->findAllAndOrder();
+
         return $this->render('unavailability/index.html.twig', [
             'unavailabilities' => $unavailabilities
         ]);
