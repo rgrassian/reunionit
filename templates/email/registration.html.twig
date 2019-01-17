@@ -1,11 +1,14 @@
-<h3>You did it! You registered!</h3>
+<h3>Bravo ! Vous êtes inscrit !</h3>
 
-Hi {{ name }}! You're successfully registered.
+Bonjour {{ firstName ~' '~ lastName }}, votre compte vient d'être créé sur RéunionIT.
 
 {# example, assuming you have a route named "login" #}
-To login, go to: <a href="">...</a>.
+Pour vous connecter, cliquez sur <a href="{{ path('index') }}">ce lien</a>.
 
-Thanks!
+Votre mot de passe provisoire est <strong>{{ temporaryPassword }}</strong>, veuillez le changer rapidement.
 
+A très vite !
+
+Rémi et Pascal.
 {# Makes an absolute URL to the /images/logo.png file #}
-<img src="{{ absolute_url(asset('images/logo.png')) }}">
+<img src="{{ absolute_url(asset('images/template-gecko.svg')) }}">

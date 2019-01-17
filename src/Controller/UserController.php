@@ -34,15 +34,16 @@ class UserController extends AbstractController
      * Permet à l'admin de créer un nouvel utilisateur.
      * @Route("/admin/nouvel-utilisateur.html", name="user_new", methods={"GET","POST"})
      * @param Request $request
+     * @param \Swift_Mailer $mailer
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, \Swift_Mailer $mailer): Response
     {
         $user = new User();
 
         // On génère un mot de passe provisoire /!\ DEVRA ÊTRE ENVOYE PAR MAIL A L'UTILISATEUR
         $temporaryPassword = uniqid();
-        $user->setPassword($temporaryPassword);
+        $user->setPassword(password_hash($temporaryPassword, PASSWORD_BCRYPT));
 
         $form = $this->createForm(UserAdminType::class, $user);
         $form->handleRequest($request);
@@ -51,6 +52,22 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $message = (new \Swift_Message('Bienvenue sur RéunionIT !'))
+            ->setFrom('margouillat.reunion.it@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'email/registration.html.twig', [
+                        'firstName' => $user->getFirstName(),
+                        'lastName' => $user->getLastName(),
+                        'temporaryPassword' => $temporaryPassword
+                    ]
+                ),
+                'text/html'
+            )
+        ;
+        $mailer->send($message);
 
             return $this->redirectToRoute('user_index');
         }
