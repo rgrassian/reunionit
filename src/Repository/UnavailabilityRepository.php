@@ -57,17 +57,30 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByOrganiserAndOrder($organiserId)
+    public function findByOrganiserAndOrder($organiser)
     {
         return $this->createQueryBuilder('u')
-            ->where('u.organiser = :organiser_id')
-            ->setParameter('organiser_id', $organiserId)
+            ->join('u.room', 'r')
+            ->addSelect('r')
+            ->where('u.organiser = :organiser')
+            ->setParameter('organiser', $organiser)
             ->orderBy('u.startDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-
+    public function findByGuestAndOrder($guest)
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.guests', 'g')
+            ->join('u.room', 'r')
+            ->addSelect('r')
+            ->where('g = :guest')
+            ->setParameter('guest', $guest)
+            ->orderBy('u.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     public function findUnavailabilitiesByRoomByDates($roomId, $startDate, $endDate)
     {
         return $this->createQueryBuilder('u')

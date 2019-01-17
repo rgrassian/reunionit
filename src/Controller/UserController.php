@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserAdminType;
 use App\Form\UserType;
+use App\Repository\UnavailabilityRepository;
 use App\Repository\UserRepository;
 use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -116,5 +117,23 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/tableau-de-bord.html", name="user_dashboard")
+     * @param UnavailabilityRepository $unavailabilityRepository
+     * @return Response
+     */
+    public function dashboard(UnavailabilityRepository $unavailabilityRepository)
+    {
+     //   $unavailabilitiesAsGuest = $this->getUser()->getInvitations();
+        $unavailabilitiesAsOrganiser = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
+        $unavailabilitiesAsGuest = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
+
+        return $this->render('user/dashboard.html.twig', [
+            'unavailabilitiesAsOrganiser' => $unavailabilitiesAsOrganiser,
+            'unavailabilitiesAsGuest' => $unavailabilitiesAsGuest
+        ]);
+
     }
 }
