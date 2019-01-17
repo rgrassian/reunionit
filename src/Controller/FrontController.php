@@ -10,6 +10,8 @@ class FrontController extends AbstractController
     /**
      * Page d'accueil de l'application.
      * @Route("/", name="index")
+     * @param \Swift_Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(\Swift_Mailer $mailer)
     {
