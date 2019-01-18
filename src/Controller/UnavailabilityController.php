@@ -11,6 +11,8 @@ use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,12 +30,25 @@ class UnavailabilityController extends AbstractController
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
-    public function index(UnavailabilityRepository $unavailabilityRepository): Response
+    public function index(): Response
     {
-        $unavailabilities = $unavailabilityRepository->findAllAndOrder();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('u')
+            ->from(Unavailability::class, 'u')
+            ->orderBy('u.startDate', 'DESC');
+
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+
+        $pagerfanta = new Pagerfanta($adapter);
+
+        if (isset($_GET["page"])) {
+            $pagerfanta->setCurrentPage($_GET["page"]);
+        }
 
         return $this->render('unavailability/index.html.twig', [
-            'unavailabilities' => $unavailabilities
+            'unavailabilities_pager' => $pagerfanta
         ]);
     }
 
@@ -157,12 +172,10 @@ class UnavailabilityController extends AbstractController
      * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
      * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
-     * @param ObjectManager $entityManager
      * @param Unavailability $unavailability
      * @return Response
      */
     public function delete(Request $request,
-                           ObjectManager $entityManager,
                            Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {

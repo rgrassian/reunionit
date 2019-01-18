@@ -1,0 +1,46 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Objet</th>
+        <th>Salle</th>
+        <th>Début</th>
+        <th>Fin</th>
+        {% if is_granted('ROLE_ADMIN') %}
+            <th>Type</th>
+        {% endif %}
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if unavailabilitiesAsOrganiser_pager %}
+        {% for unavailability in unavailabilitiesAsOrganiser_pager %}
+            <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
+                <td>{{ unavailability.object }}</td>
+                <td>{{ unavailability.room.name }}</td>
+                <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
+                <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
+                        <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" ></i>
+                    </a>
+                    {% if date() < unavailability.startDate %}
+                        <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">
+                            <i class="fas fa-user-edit ml-2" data-toggle="tooltip" data-placement="top" title="Editer"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="7">Aucune réservation enregistrée.</td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
+{#{% if unavailabilitiesAsOrganiser_pager and unavailabilitiesAsOrganiser_pager.haveToPaginate %}#}
+{#{{ pagerfanta(unavailabilitiesAsOrganiser_pager, 'twitter_bootstrap4') }}#}
+{#{% endif %}#}
