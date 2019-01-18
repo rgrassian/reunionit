@@ -6,41 +6,29 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
-        {% if is_granted('ROLE_ADMIN') %}
-            <h1>Historique de l'occupation des salles</h1>
-        {% else %}
-            <h1>Vos réunions</h1>
-        {% endif %}
-        {% if unavailabilities is not empty %}
+        <h1>Historique des réservations de salles</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th>Objet</th>
                     <th>Salle</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th>Organisateur</th>
-                    {% endif %}
+                    <th>Organisateur</th>
                     <th>Début</th>
                     <th>Fin</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th>Type</th>
-                    {% endif %}
+                    <th>Type</th>
                     <th> </th>
                 </tr>
             </thead>
             <tbody>
-            {% for unavailability in unavailabilities %}
+            {% if unavailabilities_pager %}
+            {% for unavailability in unavailabilities_pager %}
                 <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
                     <td>{{ unavailability.object }}</td>
                     <td>{{ unavailability.room.name }}</td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
-                    {% endif %}
+                    <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
                     <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
                     <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
-                    {% endif %}
+                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                     <td>
                         <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
                             <i class="fas fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i>
@@ -53,10 +41,15 @@
                     </td>
                 </tr>
             {% endfor %}
+            {% else %}
+                <tr>
+                    <td>Aucune réservation enregistrée.</td>
+                </tr>
+            {% endif %}
             </tbody>
         </table>
-        {% else %}
-            <p class="lead">Vous n'avez encore organisé aucune réunion.</p>
+        {% if unavailabilities_pager and unavailabilities_pager.haveToPaginate %}
+            {{ pagerfanta(unavailabilities_pager, 'reunion_it') }}
         {% endif %}
     </div>
 

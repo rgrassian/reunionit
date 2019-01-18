@@ -8,6 +8,8 @@ use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,12 +27,25 @@ class UnavailabilityController extends AbstractController
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
-    public function index(UnavailabilityRepository $unavailabilityRepository): Response
+    public function index(): Response
     {
-        $unavailabilities = $unavailabilityRepository->findAllAndOrder();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('u')
+            ->from(Unavailability::class, 'u')
+            ->orderBy('u.startDate', 'DESC');
+
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+
+        $pagerfanta = new Pagerfanta($adapter);
+
+        if (isset($_GET["page"])) {
+            $pagerfanta->setCurrentPage($_GET["page"]);
+        }
 
         return $this->render('unavailability/index.html.twig', [
-            'unavailabilities' => $unavailabilities
+            'unavailabilities_pager' => $pagerfanta
         ]);
     }
 

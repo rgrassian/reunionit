@@ -6,102 +6,29 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
-        <h1>Votre tableau de bord</h1>
+        <h1>Tableau de bord</h1>
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#unavailability-organiser" role="tab" aria-controls="home" aria-selected="true">Vos réunions</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#unavailability-organiser" role="tab" aria-controls="home" aria-selected="true">Mes réunions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#unavailability-guest" role="tab" aria-controls="profile" aria-selected="false">Vos invitations</a>
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#unavailability-guest" role="tab" aria-controls="profile" aria-selected="false">Mes invitations</a>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="unavailability-organiser" role="tabpanel" aria-labelledby="home-tab">
-                {% if unavailabilitiesAsOrganiser is not empty %}
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Objet</th>
-                            <th>Salle</th>
-                            <th>Début</th>
-                            <th>Fin</th>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <th>Type</th>
-                            {% endif %}
-                            <th> </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for unavailability in unavailabilitiesAsOrganiser %}
-                            <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
-                                <td>{{ unavailability.object }}</td>
-                                <td>{{ unavailability.room.name }}</td>
-                                <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
-                                <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
-                                {% endif %}
-                                <td>
-                                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
-                                        <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" ></i>
-                                    </a>
-                                    {% if date() < unavailability.startDate %}
-                                    <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">
-                                        <i class="fas fa-user-edit ml-2" data-toggle="tooltip" data-placement="top" title="Editer"></i>
-                                    </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <p class="lead">Vous n'avez encore organisé aucune réunion.</p>
-                {% endif %}
+
+                {{ include('user/_dashboard_organiser.html.twig') }}
+
             </div>
 
 
             <div class="tab-pane fade" id="unavailability-guest" role="tabpanel" aria-labelledby="profile-tab">
-                {% if unavailabilitiesAsGuest is not empty %}
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Objet</th>
-                            <th>Salle</th>
-                            <th>Organisateur</th>
-                            <th>Début</th>
-                            <th>Fin</th>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <th>Type</th>
-                            {% endif %}
-                            <th> </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for unavailability in unavailabilitiesAsGuest %}
-                            <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
-                                <td>{{ unavailability.object }}</td>
-                                <td>{{ unavailability.room.name }}</td>
-                                <td>{{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}</td>
-                                <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
-                                <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
-                                {% endif %}
-                                <td>
-                                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
-                                        <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" ></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <p class="lead">Vous n'avez pas encore d'invitation.</p>
-                {% endif %}
+
+                {{ include('user/_dashboard_guest.html.twig') }}
+
             </div>
 
         </div>

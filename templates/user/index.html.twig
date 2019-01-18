@@ -17,40 +17,46 @@
             </div>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Roles</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.roles ? user.roles|join(', ')|role_formatPicto : '' }}</td>
-                    <td>
-                        <a href="{{ path('user_show', {'id': user.id}) }}">
-                            <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" style="font-size: 1.4rem;"></i>
-                        </a>
-                        <span>&nbsp&nbsp&nbsp</span>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}">
-                            <i class="fas fa-user-edit" data-toggle="tooltip" data-placement="top" title="Editer" style="font-size: 1.4rem;"></i>
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7">Aucun utilisateur trouvé.</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="pagerfanta">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Qualité</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if user_pager %}
+                {% for user in user_pager %}
+                    <tr>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.roles ? user.roles|join(', ')|role_formatPicto : '' }}</td>
+                        <td>
+                            <a href="{{ path('user_show', {'id': user.id}) }}">
+                                <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i>
+                            </a>
+                            <a class="ml-2" href="{{ path('user_edit', {'id': user.id}) }}">
+                                <i class="fas fa-user-edit" data-toggle="tooltip" data-placement="top" title="Editer"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7">Aucun utilisateur enregistré.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if user_pager and user_pager.haveToPaginate %}
+                {{ pagerfanta(user_pager, 'reunion_it') }}
+            {% endif %}
+        </div>
 
     </div>
 {% endblock %}

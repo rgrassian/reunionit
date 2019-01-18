@@ -31,3 +31,11 @@ services:
     App\EventListener\FullCalendarListener:
         tags:
             - { name: 'kernel.event_listener', event: 'fullcalendar.set_data', method: loadEvents }
+
+    pagerfanta.view.reunion_it:
+        class: Pagerfanta\View\OptionableView
+        arguments:
+            - '@pagerfanta.view.twitter_bootstrap4'
+            - { proximity: 2, prev_message: <i class="fas fa-angle-left"></i>, next_message: <i class="fas fa-angle-right"></i> }
+        public: false
+        tags: [{ name: pagerfanta.view, alias: reunion_it }]

@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Unavailability;
 use App\Entity\User;
 use App\Form\Model\ChangePassword;
 use App\Form\UserAdminType;
 use App\Form\UserPasswordChangeType;
 use App\Repository\UnavailabilityRepository;
-use App\Repository\UserRepository;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 
 class UserController extends AbstractController
@@ -22,12 +23,28 @@ class UserController extends AbstractController
     /**
      * Liste de tous les utilisateurs.
      * @Route("/admin/utilisateurs.html", name="user_index", methods={"GET"})
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
-        return $this->render('user/index.html.twig', ['users' => $userRepository->findAll()]);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('u')
+            ->from(User::class, 'u')
+            ->orderBy('u.lastName', 'ASC');
+
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+
+        $pagerfanta = new Pagerfanta($adapter);
+
+        if (isset($_GET["page"])) {
+            $pagerfanta->setCurrentPage($_GET["page"]);
+        }
+
+        return $this->render('user/index.html.twig', [
+            'user_pager' => $pagerfanta
+        ]);
     }
 
     /**
@@ -41,7 +58,7 @@ class UserController extends AbstractController
     {
         $user = new User();
 
-        // On génère un mot de passe provisoire /!\ DEVRA ÊTRE ENVOYE PAR MAIL A L'UTILISATEUR
+        // On génère un mot de passe provisoire
         $temporaryPassword = uniqid();
         $user->setPassword(password_hash($temporaryPassword, PASSWORD_BCRYPT));
 
@@ -170,17 +187,47 @@ class UserController extends AbstractController
 
     /**
      * @Route("/tableau-de-bord.html", name="user_dashboard")
-     * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
     public function dashboard(UnavailabilityRepository $unavailabilityRepository)
     {
-        $unavailabilitiesAsOrganiser = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
-        $unavailabilitiesAsGuest = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
+//        $entityManager = $this->getDoctrine()->getManager();
+//
+//        $organiserQueryBuilder = $entityManager->createQueryBuilder()
+//            ->select('u')
+//            ->from(Unavailability::class, 'u')
+//            ->where('u.organiser = :organiser')
+//            ->setParameter('organiser', $this->getUser())
+//            ->orderBy('u.startDate', 'DESC');
+//        $organiserAdapter = new DoctrineORMAdapter($organiserQueryBuilder);
+//        $unavailabilitiesAsOrganiser_pagerfanta = new Pagerfanta($organiserAdapter);
+//
+//        $guestQueryBuilder = $entityManager->createQueryBuilder()
+//            ->select('u')
+//            ->from(Unavailability::class, 'u')
+//            ->join('u.guests', 'g')
+//            ->join('u.room', 'r')
+//            ->addSelect('r')
+//            ->where('g = :guest')
+//            ->setParameter('guest', $this->getUser())
+//            ->orderBy('u.startDate', 'DESC');
+//        $guestAdapter = new DoctrineORMAdapter($guestQueryBuilder);
+//        $unavailabilitiesAsGuest_pagerfanta = new Pagerfanta($guestAdapter);
+//
+//        $unavailabilitiesAsGuest_pagerfanta->setMaxPerPage(2);
+//        $unavailabilitiesAsOrganiser_pagerfanta->setMaxPerPage(2);
+//
+//        if (isset($_GET["page"])) {
+//            $unavailabilitiesAsOrganiser_pagerfanta->setCurrentPage($_GET["page"]);
+//            $unavailabilitiesAsGuest_pagerfanta->setCurrentPage($_GET["page"]);
+//        }
+
+        $unavailabilitiesAsOrganiser_pagerfanta = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
+        $unavailabilitiesAsGuest_pagerfanta = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
 
         return $this->render('user/dashboard.html.twig', [
-            'unavailabilitiesAsOrganiser' => $unavailabilitiesAsOrganiser,
-            'unavailabilitiesAsGuest' => $unavailabilitiesAsGuest
+            'unavailabilitiesAsOrganiser_pager' => $unavailabilitiesAsOrganiser_pagerfanta,
+            'unavailabilitiesAsGuest_pager' => $unavailabilitiesAsGuest_pagerfanta
         ]);
 
     }
