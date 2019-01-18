@@ -213,15 +213,30 @@ class RoomController extends AbstractController
      * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
      * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
+     * @param UnavailabilityController $unavailabilityController
      * @param Room $room
      * @return Response
      */
-    public function delete(Request $request, Room $room): Response
+    public function delete(Request $request,
+                           UnavailabilityController $unavailabilityController,
+                           Room $room): Response
     {
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($room);
-            $entityManager->flush();
+
+            // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
+            if ($room->hasUpcomingUnavailabilities()) {
+                $unavailabilityController->deleteUpcomingUnavailabilityByRoom($room);
+            }
+
+            if (empty($room->getUnavailabilities())) {
+                // Si aucune réunion n'est organisée dans la salle, on la supprime.
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($room);
+                $entityManager->flush();
+            } else {
+                // Si des réunions ont eu lieu dans la salle, on set sa propriété Active à false
+                $room->setActive(false);
+            }
         }
 
         return $this->redirectToRoute('room_index');

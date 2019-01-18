@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Room;
 use App\Entity\Unavailability;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -81,6 +82,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function findUnavailabilitiesByRoomByDates($roomId, $startDate, $endDate)
     {
         return $this->createQueryBuilder('u')
@@ -117,6 +119,31 @@ class UnavailabilityRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->where('u.room = :room_id')
             ->setParameter('room_id', $roomId)
+            ->andWhere('u.startDate > :now')
+            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUpcomingUnavailabilitiesByOrganiser(User $organiser)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.organiser = :organiser')
+            ->setParameter('organiser', $organiser)
+            ->andWhere('u.startDate > :now')
+            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUpcomingUnavailabilitiesByGuest(User $guest)
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.guests', 'g')
+            ->join('u.room', 'r')
+            ->addSelect('r')
+            ->where('g = :guest')
+            ->setParameter('guest', $guest)
             ->andWhere('u.startDate > :now')
             ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
             ->getQuery()

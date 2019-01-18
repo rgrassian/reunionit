@@ -77,7 +77,10 @@
             </tbody>
         </table>
 
-        <a href="{{ path('password_change') }}" class="btn btn-primary">Mettre à jour mon mot de passe</a>
+        {% if user.id == app.user.id %}
+            <a href="{{ path('password_change') }}" class="btn btn-primary">Mettre à jour mon mot de passe</a>
+        {% endif %}
+
     </div>
 
 {% endblock %}

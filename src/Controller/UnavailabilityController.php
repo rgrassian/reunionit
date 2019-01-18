@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
+use App\Entity\User;
 use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -163,16 +166,79 @@ class UnavailabilityController extends AbstractController
                            Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($unavailability);
-            $entityManager->flush();
+            $this->removeUnavailabilityFromDatabase($unavailability);
         }
 
         return $this->redirectToRoute('unavailability_index');
     }
 
+    /**
+     * Supprime toutes les réunions à venir organisées par un User.
+     * @param User $organiser
+     */
+    public function deleteUpcomingUnavailabilityByOrganiser(User $organiser)
+    {
+
+        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+    /**
+     * Retire un utilisateur de la liste des invités aux réunions à venir.
+     * @param User $user
+     */
+    public function removeUserFromUpcomingUnavailabilityGuests(User $user)
+    {
+        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByGuest($user);
+
+        foreach ($unavailabilities as $unavailability) {
+
+            $unavailability->removeGuest($user);
+
+            $entityManager->persist($unavailability);
+            $entityManager->flush();
+        }
+    }
+
+    /**
+     * Supprime toutes les réunions à venir organisées dans une salle.
+     * @param Room $room
+     */
+    public function deleteUpcomingUnavailabilityByRoom(Room $room)
+    {
+        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+    /**
+     * Supprime une Unavailability de la BDD.
+     * @param Unavailability $unavailability
+     */
+    private function removeUnavailabilityFromDatabase(Unavailability $unavailability)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($unavailability);
+        $entityManager->flush();
+    }
 
     /**
      * @Route("/calendrier.html", name="unavailability_calendar")
+     * @IsGranted("ROLE_GUEST")
      */
     public function calendar()
     {

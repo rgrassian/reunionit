@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
  * @UniqueEntity(fields={"name"}, message="Ce nom de salle est déjà pris")
+ * @Gedmo\SoftDeleteable(fieldName="active")
  */
 class Room
 {
@@ -21,6 +24,11 @@ class Room
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var bool
+     */
+    private $active;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -67,6 +75,22 @@ class Room
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 
     public function getCapacity(): ?int
@@ -134,6 +158,17 @@ class Room
         }
 
         return $this;
+    }
+
+    public function hasUpcomingUnavailabilities() : bool
+    {
+        $now = new \DateTime();
+        foreach ($this->unavailabilities as $unavailability) {
+            if ($now < $unavailability->getStartDate()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getPicture()

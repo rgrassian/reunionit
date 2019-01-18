@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 
 class UserController extends AbstractController
@@ -37,11 +36,13 @@ class UserController extends AbstractController
      * @param \Swift_Mailer $mailer
      * @return Response
      */
-    public function new(Request $request, \Swift_Mailer $mailer): Response
+    public function new(Request $request,
+                        \Swift_Mailer $mailer): Response
     {
         $user = new User();
+        $user->setActive(true);
 
-        // On génère un mot de passe provisoire /!\ DEVRA ÊTRE ENVOYE PAR MAIL A L'UTILISATEUR
+        // On génère un mot de passe provisoire
         $temporaryPassword = uniqid();
         $user->setPassword(password_hash($temporaryPassword, PASSWORD_BCRYPT));
 
@@ -67,6 +68,7 @@ class UserController extends AbstractController
                 'text/html'
             )
         ;
+
         $mailer->send($message);
 
             return $this->redirectToRoute('user_index');
@@ -150,22 +152,60 @@ class UserController extends AbstractController
     }
 
     /**
-     * Permet à l'admin de supprimer un utilisateur.
+     * Permet à l'admin de supprimer ou désactiver un utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
      * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
+     * @param UnavailabilityController $unavailabilityController
+     * @param UnavailabilityRepository $unavailabilityRepository
      * @param User $user
      * @return Response
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request,
+                           UnavailabilityController $unavailabilityController,
+                           UnavailabilityRepository $unavailabilityRepository,
+                           User $user): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
 
+            // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
+            if ($user->hasUpcomingUnavailabilities()) {
+                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+            }
+
+            if (empty($user->getUnavailabilities())) {
+                // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
+                $this->removeUserFromDatabase($user);
+            } else {
+                // Si l'utilisateur est l'organisateur de réunions passées, on set sa propriété Active à false
+                $user->setActive(false);
+            }
+
+            // Si le User est invité à des réunions, le supprimer des guests des réunions à venir.
+            if ($user->hasUpcomingInvitations()) {
+                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+            }
+
+            if (empty($unavailabilityRepository->findByGuestAndOrder($user))) {
+                // S'il n'est invité à aucune réunion, on le supprime.
+                $this->removeUserFromDatabase($user);
+            } else {
+                // Sinon, le set active = false.
+                $user->setActive(false);
+            }
+        }
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * Supprime un utilisateur de la BDD.
+     * @param User $user
+     */
+    private function removeUserFromDatabase(User $user)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
     }
 
     /**
@@ -182,6 +222,5 @@ class UserController extends AbstractController
             'unavailabilitiesAsOrganiser' => $unavailabilitiesAsOrganiser,
             'unavailabilitiesAsGuest' => $unavailabilitiesAsGuest
         ]);
-
     }
 }

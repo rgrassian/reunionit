@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"})
+ * @Gedmo\SoftDeleteable(fieldName="active")
  */
 class User implements UserInterface, \Serializable
 {
@@ -21,6 +23,27 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var bool
+     */
+    private $active;
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
 
     /**
      * @ORM\Column(type="string", length=80)
@@ -70,6 +93,7 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->unavailabilities = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +215,27 @@ class User implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    public function hasUpcomingUnavailabilities() : bool
+    {
+        $now = new \DateTime();
+        foreach ($this->unavailabilities as $unavailability) {
+            if ($now < $unavailability->getStartDate()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasUpcomingInvitations() : bool
+    {
+        $now = new \DateTime();
+        foreach ($this->getInvitations() as $invitation)
+            if ($now < $invitation->getStartDate()) {
+                return true;
+            }
+        return false;
     }
 
     /**

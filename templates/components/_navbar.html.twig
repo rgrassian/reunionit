@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container col-md-9 mx-auto">
         <a class="navbar-brand" href="{{ path('index') }}">
-            <img src="{{ asset('images/reunionITwhite.svg') }}" alt="RéunionIT" style="height:1.25rem">&nbspRéunionIT
+            <img src="{{ asset('images/reunionITwhite.svg') }}" alt="RéunionIT" style="height:1.25rem">&nbsp;&nbsp;&nbsp;<strong>RéunionIT</strong>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,11 +39,11 @@
                     {#</li>#}
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#" >Bienvenue, veuillez vous connecter</a>
+                        <a class="nav-link text-white" href="{{ path('app_login') }}" >Bienvenue, veuillez vous connecter</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >Connexion</a>
-                    </li>
+                    {#<li class="nav-item">#}
+                        {#<a class="btn btn-info nav-link text-white" href="{{ path('app_login') }}" >Connexion</a>#}
+                    {#</li>#}
                 {% endif %}
             </ul>
         </div>

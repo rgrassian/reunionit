@@ -37,7 +37,8 @@ class RoomType extends AbstractType
             ->add('features', ChoiceType::class, [
                 'label' => 'Options',
                 'attr' => [
-                    'class' => 'custom-control custom-checkbox'
+                    'class' => 'custom-control custom-checkbox',
+                    'style' => 'text-color: red;'
                 ],
                 'choices' => $features,
                 'expanded' => true,
