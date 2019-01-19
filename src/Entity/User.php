@@ -25,9 +25,9 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    private $active;
+    private $active = true;
 
     /**
      * @return bool

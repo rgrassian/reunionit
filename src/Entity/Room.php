@@ -26,7 +26,7 @@ class Room
     private $id;
 
     /**
-     * @var bool
+     * @ORM\Column(type="boolean")
      */
     private $active;
 

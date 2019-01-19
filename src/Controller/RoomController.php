@@ -32,7 +32,7 @@ class RoomController extends AbstractController
     {
         $features = $featuresProvider->getFeatures();
         return $this->render('room/index.html.twig', [
-            'rooms' => $roomRepository->findAll(),
+            'rooms' => $roomRepository->findAllActive(),
             'features' => $features
         ]);
     }
@@ -46,6 +46,7 @@ class RoomController extends AbstractController
     public function new(Request $request): Response
     {
         $room = new Room();
+        $room->setActive(true);
 
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
@@ -236,6 +237,10 @@ class RoomController extends AbstractController
             } else {
                 // Si des réunions ont eu lieu dans la salle, on set sa propriété Active à false
                 $room->setActive(false);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($room);
+                $entityManager->flush();
             }
         }
 

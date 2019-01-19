@@ -19,6 +19,16 @@ class RoomRepository extends ServiceEntityRepository
         parent::__construct($registry, Room::class);
     }
 
+    public function findAllActive()
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.active = :val')
+            ->setParameter('val', true)
+            ->orderBy('r.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Room[] Returns an array of Room objects
     //  */

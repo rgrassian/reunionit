@@ -32,6 +32,8 @@ class UserController extends AbstractController
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('u')
             ->from(User::class, 'u')
+            ->andWhere('u.active = :val')
+            ->setParameter('val', true)
             ->orderBy('u.lastName', 'ASC');
 
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -191,25 +193,22 @@ class UserController extends AbstractController
                 $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
             }
 
-            if (empty($user->getUnavailabilities())) {
+            // Si le User est invité à des réunions à venir, on le supprime des guests de ces réunions.
+            if ($user->hasUpcomingInvitations()) {
+                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+            }
+
+
+            if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
                 // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
                 $this->removeUserFromDatabase($user);
             } else {
                 // Si l'utilisateur est l'organisateur de réunions passées, on set sa propriété Active à false
                 $user->setActive(false);
-            }
 
-            // Si le User est invité à des réunions, le supprimer des guests des réunions à venir.
-            if ($user->hasUpcomingInvitations()) {
-                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
-            }
-
-            if (empty($unavailabilityRepository->findByGuestAndOrder($user))) {
-                // S'il n'est invité à aucune réunion, on le supprime.
-                $this->removeUserFromDatabase($user);
-            } else {
-                // Sinon, le set active = false.
-                $user->setActive(false);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
             }
         }
         return $this->redirectToRoute('user_index');
