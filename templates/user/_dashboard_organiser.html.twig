@@ -41,6 +41,24 @@
     {% endif %}
     </tbody>
 </table>
-{#{% if unavailabilitiesAsOrganiser_pager and unavailabilitiesAsOrganiser_pager.haveToPaginate %}#}
-{#{{ pagerfanta(unavailabilitiesAsOrganiser_pager, 'twitter_bootstrap4') }}#}
-{#{% endif %}#}
+
+{% if unavailabilitiesAsOrganiser_pager and unavailabilitiesAsOrganiser_pager.haveToPaginate %}
+
+    <ul class="pagination">
+
+        <li class="page-item{{ unavailabilitiesAsOrganiser_pager.getCurrentPage() == 1 ? ' disabled' : '' }}">
+            <a class="page-link" onclick="loadUnavailabilityAsOrganiserPage({{ unavailabilitiesAsOrganiser_pager.getCurrentPage() -1 }})"><i class="fas fa-angle-left"></i></a>
+        </li>
+
+        {% for givenPage in 1..unavailabilitiesAsOrganiser_pager.getNbPages() %}
+            <li class="page-item{{ unavailabilitiesAsOrganiser_pager.getCurrentPage() == givenPage ? ' active' : '' }}">
+                <a class="page-link" onclick="loadUnavailabilityAsOrganiserPage({{ givenPage }})">{{ givenPage }}</a>
+            </li>
+        {%  endfor %}
+
+        <li class="page-item{{ unavailabilitiesAsOrganiser_pager.getCurrentPage() == unavailabilitiesAsOrganiser_pager.getNbPages() ? ' disabled' : '' }}" >
+            <a class="page-link" onclick="loadUnavailabilityAsOrganiserPage({{ unavailabilitiesAsOrganiser_pager.getCurrentPage() +1}})"><i class="fas fa-angle-right"></i></a>
+        </li>
+    </ul>
+
+{% endif %}

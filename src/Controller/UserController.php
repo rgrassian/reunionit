@@ -230,7 +230,7 @@ class UserController extends AbstractController
      * @Route("/tableau-de-bord.html", name="user_dashboard")
      * @return Response
      */
-    public function dashboard(UnavailabilityRepository $unavailabilityRepository)
+    public function dashboard()
     {
 //        $entityManager = $this->getDoctrine()->getManager();
 //
@@ -263,12 +263,14 @@ class UserController extends AbstractController
 //            $unavailabilitiesAsGuest_pagerfanta->setCurrentPage($_GET["page"]);
 //        }
 
-        $unavailabilitiesAsOrganiser_pagerfanta = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
-        $unavailabilitiesAsGuest_pagerfanta = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
+//        $unavailabilitiesAsOrganiser_pagerfanta = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
+//        $unavailabilitiesAsGuest_pagerfanta = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
+//
+//        return $this->render('user/dashboard.html.twig', [
+//            'unavailabilitiesAsOrganiser_pager' => $unavailabilitiesAsOrganiser_pagerfanta,
+//            'unavailabilitiesAsGuest_pager' => $unavailabilitiesAsGuest_pagerfanta
+//        ]);
 
-        return $this->render('user/dashboard.html.twig', [
-            'unavailabilitiesAsOrganiser_pager' => $unavailabilitiesAsOrganiser_pagerfanta,
-            'unavailabilitiesAsGuest_pager' => $unavailabilitiesAsGuest_pagerfanta
-        ]);
+        return $this->render('user/dashboard.html.twig', ['page'=>1]);
     }
 }

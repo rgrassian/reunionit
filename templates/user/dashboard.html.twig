@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block page_title %}Historique{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
 
 {% block content %}
 
@@ -20,14 +20,21 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="unavailability-organiser" role="tabpanel" aria-labelledby="home-tab">
 
-                {{ include('user/_dashboard_organiser.html.twig') }}
+                {#{{ include('user/_dashboard_organiser.html.twig') }}#}
+                {{ render(controller('App\\Controller\\DashboardController::showUnavailabilitiesAsOrganiser',
+                    {'page': page}, { 'strategy': 'hinclude'}
+                )) }}
 
             </div>
 
 
             <div class="tab-pane fade" id="unavailability-guest" role="tabpanel" aria-labelledby="profile-tab">
 
-                {{ include('user/_dashboard_guest.html.twig') }}
+                {#{{ include('user/_dashboard_guest.html.twig') }}#}
+                {{ render(controller('App\\Controller\\DashboardController::showUnavailabilitiesAsGuest',
+                    {'page': page}, { 'strategy': 'hinclude'}
+                )) }}
+
 
             </div>
 
@@ -36,4 +43,28 @@
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function loadUnavailabilityAsOrganiserPage(page)
+        {
+            console.log('loadUnavailabilityAsOrganiserPage: ' + page);
+            $.ajax({
+                url: '/pagers/unavailabilitiesasorganiser/' + page,
+                method: 'POST',
+                success: function(content) {$('#unavailability-organiser').html(content);}
+            })
+        }
+        function loadUnavailabilityAsGuestPage(page)
+        {
+            console.log('loadUnavailabilityAsGuestPage: ' + page);
+            $.ajax({
+                url: '/pagers/unavailabilitiesasguest/' + page,
+                method: 'POST',
+                success: function(content) {$('#unavailability-guest').html(content);}
+            })
+        }
+    </script>
 {% endblock %}
