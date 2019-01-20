@@ -31,6 +31,10 @@ class FullCalendarListener
 
     public function loadEvents(CalendarEvent $calendar)
     {
+        // On désactive le filtre pour ne pas ignorer les réunions organisées dans des salles désactivées,
+        // organisées ou auxquelles ont participé des utilisateurs désactivés.
+        $this->em->getFilters()->disable('softdeleteable');
+
         $startDate = $calendar->getStart();
         $endDate = $calendar->getEnd();
 

@@ -27,7 +27,6 @@ class UnavailabilityController extends AbstractController
      * Affiche les réunions organisées par l'utilisateur ou
      * toutes les réunions si l'utilisateur est admin.
      * @Route("/admin/historique.html", name="unavailability_index", methods={"GET"})
-     * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
     public function index(): Response
@@ -128,6 +127,9 @@ class UnavailabilityController extends AbstractController
      */
     public function show(Unavailability $unavailability = null): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $em->getFilters()->disable('softdeleteable');
+
         return $this->render('unavailability/show.html.twig', [
             'unavailability' => $unavailability
         ]);
@@ -170,7 +172,9 @@ class UnavailabilityController extends AbstractController
      * Permet à l'admin ou à l'organisateur de supprimer une réservation.
      * @Route("/supprimer/reservation-{id}.html", name="unavailability_delete", methods={"DELETE"})
      * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
-     * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
+     * @Security("unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')",
+     *     message="Impossible de supprimer une réunion dont vous n'êtes pas l'organisateur.")
+     * @Security("unavailability.isNotPast()", message="Impossible de supprimer une réunion passée.")
      * @param Request $request
      * @param Unavailability $unavailability
      * @return Response

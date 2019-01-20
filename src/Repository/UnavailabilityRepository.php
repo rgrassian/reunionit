@@ -60,6 +60,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
 
     public function findByOrganiserAndOrder($organiser)
     {
+
         return $this->createQueryBuilder('u')
             ->join('u.room', 'r')
             ->addSelect('r')

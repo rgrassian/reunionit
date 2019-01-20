@@ -8,6 +8,7 @@ use App\Form\Model\ChangePassword;
 use App\Form\UserAdminType;
 use App\Form\UserPasswordChangeType;
 use App\Repository\UnavailabilityRepository;
+use Doctrine\ORM\Configuration;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -182,11 +183,18 @@ class UserController extends AbstractController
      * @return Response
      */
     public function delete(Request $request,
-                           UnavailabilityController $unavailabilityController,
                            UnavailabilityRepository $unavailabilityRepository,
                            User $user = null): Response
     {
+        $config = new Configuration();
+        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
+
+        $entityManager = $this->getDoctrine()->getManager();
+
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->getFilters()->enable('softdeleteable');
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($user->hasUpcomingUnavailabilities()) {
@@ -200,6 +208,9 @@ class UserController extends AbstractController
 //                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
             }
 
+            $entityManager->remove($user);
+            $entityManager->flush();
+
             if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
                 // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
                 $this->removeUserFromDatabase($user);
@@ -207,7 +218,6 @@ class UserController extends AbstractController
                 // Si l'utilisateur est l'organisateur de réunions passées, on ne le supprime pas.
 //                $user->setActive(false);
 
-                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
             }
