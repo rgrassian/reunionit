@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
  * @UniqueEntity(fields={"name"}, message="Ce nom de salle est déjà pris")
- * @Gedmo\SoftDeleteable(fieldName="active")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Room
 {
@@ -26,9 +26,10 @@ class Room
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @var \DateTime $deletedAt
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
-    private $active;
+    private $deletedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -75,22 +76,6 @@ class Room
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     */
-    public function setActive(bool $active): void
-    {
-        $this->active = $active;
     }
 
     public function getCapacity(): ?int
@@ -182,4 +167,21 @@ class Room
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
 }

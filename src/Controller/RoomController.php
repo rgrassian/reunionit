@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\Configuration;
 use App\Entity\Room;
 use App\Form\RoomType;
 use App\Provider\FeaturesProvider;
 use App\Repository\RoomRepository;
-use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,13 +26,14 @@ class RoomController extends AbstractController
      * @Route("/liste-des-salles.html", name="room_index", methods={"GET"})
      * @IsGranted("ROLE_EMPLOYEE")
      * @param RoomRepository $roomRepository
+     * @param FeaturesProvider $featuresProvider
      * @return Response
      */
     public function index(RoomRepository $roomRepository, FeaturesProvider $featuresProvider): Response
     {
         $features = $featuresProvider->getFeatures();
         return $this->render('room/index.html.twig', [
-            'rooms' => $roomRepository->findAllActive(),
+            'rooms' => $roomRepository->findAll(),
             'features' => $features
         ]);
     }
@@ -46,7 +47,7 @@ class RoomController extends AbstractController
     public function new(Request $request): Response
     {
         $room = new Room();
-        $room->setActive(true);
+//        $room->setActive(true);
 
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
@@ -111,13 +112,12 @@ class RoomController extends AbstractController
     /**
      * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
-     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
+     * @Security("room != null and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
-     * @param RoomRepository $roomRepository
      * @param Room $room
      * @return Response
      */
-    public function show(Room $room): Response
+    public function show(Room $room = null): Response
     {
         return $this->render('room/show.html.twig', [
             'room' => $room
@@ -130,7 +130,7 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
-     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
+     * @Security("room != null and and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
      * @param Packages $packages
@@ -212,7 +212,7 @@ class RoomController extends AbstractController
     /**
      * Permet à l'admin de supprimer une salle.
      * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
-     * @Security("room != null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
+     * @Security("room != null and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param UnavailabilityController $unavailabilityController
      * @param Room $room
@@ -222,23 +222,29 @@ class RoomController extends AbstractController
                            UnavailabilityController $unavailabilityController,
                            Room $room): Response
     {
+        $config = new Configuration();
+        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
+
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->getFilters()->enable('softdeleteable');
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($room->hasUpcomingUnavailabilities()) {
                 $unavailabilityController->deleteUpcomingUnavailabilityByRoom($room);
             }
 
+            $entityManager->remove($room);
+            $entityManager->flush();
+
             if (empty($room->getUnavailabilities())) {
                 // Si aucune réunion n'est organisée dans la salle, on la supprime.
-                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($room);
                 $entityManager->flush();
             } else {
                 // Si des réunions ont eu lieu dans la salle, on set sa propriété Active à false
-                $room->setActive(false);
-
-                $entityManager = $this->getDoctrine()->getManager();
+//                $room->setActive(false);
                 $entityManager->persist($room);
                 $entityManager->flush();
             }

@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * Liste de tous les utilisateurs.
+     * Liste de tous les utilisateurs actifs.
      * @Route("/admin/utilisateurs.html", name="user_index", methods={"GET"})
      * @return Response
      */
@@ -32,9 +32,8 @@ class UserController extends AbstractController
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('u')
             ->from(User::class, 'u')
-            ->andWhere('u.active = :val')
-            ->setParameter('val', true)
             ->orderBy('u.lastName', 'ASC');
+
 
         $adapter = new DoctrineORMAdapter($queryBuilder);
 
@@ -60,7 +59,7 @@ class UserController extends AbstractController
                         \Swift_Mailer $mailer): Response
     {
         $user = new User();
-        $user->setActive(true);
+//        $user->setActive(true);
 
         // On génère un mot de passe provisoire
         $temporaryPassword = uniqid();
@@ -103,7 +102,7 @@ class UserController extends AbstractController
     /**
      * Affiche les infos sur un utilisateur.
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
-     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
      * @param User $user
      * @return Response
@@ -118,12 +117,13 @@ class UserController extends AbstractController
     /**
      * Permet à l'admin de modifier un utilisateur.
      * @Route("/admin/modifier/utilisateur-{id}.html", name="user_edit", methods={"GET","POST"})
-     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param User $user
      * @return Response
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request,
+                         User $user = null): Response
     {
         $form = $this->createForm(UserAdminType::class, $user);
         $form->handleRequest($request);
@@ -174,7 +174,7 @@ class UserController extends AbstractController
     /**
      * Permet à l'admin de supprimer ou désactiver un utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
-     * @Security("user != null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param UnavailabilityController $unavailabilityController
      * @param UnavailabilityRepository $unavailabilityRepository
@@ -184,27 +184,28 @@ class UserController extends AbstractController
     public function delete(Request $request,
                            UnavailabilityController $unavailabilityController,
                            UnavailabilityRepository $unavailabilityRepository,
-                           User $user): Response
+                           User $user = null): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($user->hasUpcomingUnavailabilities()) {
-                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                $this->removeUserFromDatabase($user);
+//                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
             }
 
             // Si le User est invité à des réunions à venir, on le supprime des guests de ces réunions.
             if ($user->hasUpcomingInvitations()) {
-                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                $this->removeUserFromDatabase($user);
+//                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
             }
-
 
             if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
                 // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
                 $this->removeUserFromDatabase($user);
             } else {
-                // Si l'utilisateur est l'organisateur de réunions passées, on set sa propriété Active à false
-                $user->setActive(false);
+                // Si l'utilisateur est l'organisateur de réunions passées, on ne le supprime pas.
+//                $user->setActive(false);
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
