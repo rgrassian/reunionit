@@ -17,16 +17,19 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+
     }
 
-    public function findAllAndSortByName()
-    {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.lastName', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+//    public function findOneById($id)
+//    {
+//        $this->getEntityManager()->getFilters()->disable('softdeleteable');
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.id = :user_id')
+//            ->setParameter('user_id', $id)
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//    }
 
     // /**
     //  * @return User[] Returns an array of User objects

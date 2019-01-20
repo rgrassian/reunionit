@@ -112,7 +112,8 @@ class RoomController extends AbstractController
     /**
      * Affiche les caractéristiques d'une salle.
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
-     * @Security("room != null and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
+     * @Security("room != null and room.getDeletedAt() == null", statusCode=404,
+     *     message="Cette salle n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
      * @param Room $room
      * @return Response
@@ -130,7 +131,8 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
-     * @Security("room != null and and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
+     * @Security("room != null and and room.getDeletedAt() == null", statusCode=404,
+     *     message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
      * @param Packages $packages
@@ -222,8 +224,8 @@ class RoomController extends AbstractController
                            UnavailabilityController $unavailabilityController,
                            Room $room): Response
     {
-        $config = new Configuration();
-        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
+//        $config = new Configuration();
+//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
 
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
 

@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Unavailability;
 use App\Entity\User;
 use App\Form\Model\ChangePassword;
 use App\Form\UserAdminType;
 use App\Form\UserPasswordChangeType;
 use App\Repository\UnavailabilityRepository;
-use Doctrine\ORM\Configuration;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -35,7 +33,6 @@ class UserController extends AbstractController
             ->from(User::class, 'u')
             ->orderBy('u.lastName', 'ASC');
 
-
         $adapter = new DoctrineORMAdapter($queryBuilder);
 
         $pagerfanta = new Pagerfanta($adapter);
@@ -60,9 +57,8 @@ class UserController extends AbstractController
                         \Swift_Mailer $mailer): Response
     {
         $user = new User();
-//        $user->setActive(true);
 
-        // On génère un mot de passe provisoire
+        // On génère un mot de passe provisoire qui sera envoyé par mail au nouvel utilisateur.
         $temporaryPassword = uniqid();
         $user->setPassword(password_hash($temporaryPassword, PASSWORD_BCRYPT));
 
@@ -101,9 +97,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Affiche les infos sur un utilisateur.
+     * Affiche le profil d'un utilisateur.
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
-     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404,
+     *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
      * @param User $user
      * @return Response
@@ -118,7 +115,8 @@ class UserController extends AbstractController
     /**
      * Permet à l'admin de modifier un utilisateur.
      * @Route("/admin/modifier/utilisateur-{id}.html", name="user_edit", methods={"GET","POST"})
-     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404,
+     *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param User $user
      * @return Response
@@ -173,23 +171,25 @@ class UserController extends AbstractController
     }
 
     /**
-     * Permet à l'admin de supprimer ou désactiver un utilisateur.
+     * Permet à l'admin de supprimer un compte utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
-     * @Security("user != null and user.getDeletedAt() == null", statusCode=404, message="Cet utilisateur n'existe plus ou n'a jamais existé.")
+     * @Security("user != null and user.getDeletedAt() == null", statusCode=404,
+     *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
-     * @param UnavailabilityController $unavailabilityController
      * @param UnavailabilityRepository $unavailabilityRepository
+     * @param UnavailabilityController $unavailabilityController
      * @param User $user
      * @return Response
      */
     public function delete(Request $request,
                            UnavailabilityRepository $unavailabilityRepository,
+                           UnavailabilityController $unavailabilityController,
                            User $user = null): Response
     {
-        $config = new Configuration();
-        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
-
-        $entityManager = $this->getDoctrine()->getManager();
+//        $config = new Configuration();
+//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
+//
+//        $entityManager = $this->getDoctrine()->getManager();
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
 
@@ -199,13 +199,13 @@ class UserController extends AbstractController
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($user->hasUpcomingUnavailabilities()) {
                 $this->removeUserFromDatabase($user);
-//                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
             }
 
             // Si le User est invité à des réunions à venir, on le supprime des guests de ces réunions.
             if ($user->hasUpcomingInvitations()) {
                 $this->removeUserFromDatabase($user);
-//                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
             }
 
             $entityManager->remove($user);
@@ -215,9 +215,6 @@ class UserController extends AbstractController
                 // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
                 $this->removeUserFromDatabase($user);
             } else {
-                // Si l'utilisateur est l'organisateur de réunions passées, on ne le supprime pas.
-//                $user->setActive(false);
-
                 $entityManager->persist($user);
                 $entityManager->flush();
             }
@@ -226,7 +223,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Supprime un utilisateur de la BDD.
+     * Supprime un utilisateur de la BDD au second appel.
      * @param User $user
      */
     private function removeUserFromDatabase(User $user)

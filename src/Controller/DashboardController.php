@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: remigrassian
- * Date: 2019-01-19
- * Time: 00:10
- */
 
 namespace App\Controller;
 
@@ -26,13 +20,19 @@ class DashboardController extends AbstractController
     public function showUnavailabilitiesAsOrganiser($page)
     {
         $entityManager = $this->getDoctrine()->getManager();
+//         On désactive le filtre pour obtenir les réunions organisées dans des salles supprimées,
+//         ou dont l'organisateur ou un invité a été supprimé.
+        $entityManager->getFilters()->disable('softdeleteable');
 
         $organiserQueryBuilder = $entityManager->createQueryBuilder()
             ->select('u')
             ->from(Unavailability::class, 'u')
+            ->join('u.room', 'r')
+            ->addSelect('r')
             ->where('u.organiser = :organiser')
             ->setParameter('organiser', $this->getUser())
             ->orderBy('u.startDate', 'DESC');
+
         $organiserAdapter = new DoctrineORMAdapter($organiserQueryBuilder);
         $unavailabilitiesAsOrganiser_pagerfanta = new Pagerfanta($organiserAdapter);
 
@@ -54,7 +54,14 @@ class DashboardController extends AbstractController
      */
     public function showUnavailabilitiesAsGuest($page)
     {
+//        $config = new Configuration;
+//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
+
         $entityManager = $this->getDoctrine()->getManager();
+
+        // On désactive le filtre pour obtenir les réunions organisées dans des salles supprimées,
+        // ou dont l'organisateur ou un invité a été supprimé.
+        $entityManager->getFilters()->disable('softdeleteable');
 
         $guestQueryBuilder = $entityManager->createQueryBuilder()
             ->select('u')

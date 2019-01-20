@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

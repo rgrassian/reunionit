@@ -10,6 +10,7 @@ use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -32,6 +33,10 @@ class UnavailabilityController extends AbstractController
     public function index(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+
+        // On désactive le filtre pour obtenir les réunions organisées dans des salles supprimées,
+        // ou dont l'organisateur ou un invité a été supprimé.
+        $entityManager->getFilters()->disable('softdeleteable');
 
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('u')
@@ -66,14 +71,14 @@ class UnavailabilityController extends AbstractController
     {
         $unavailability = new Unavailability();
 
+        $unavailability->setOrganiser($this->getUser());
 
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
-            $unavailability->setOrganiser($this->getUser());
+            // Comme le formulaire admin a un champ Organiser, on l'indique.
             $form->get('organiser')->setData($this->getUser());
         } else {
             $form = $this->createForm(UnavailabilityType::class, $unavailability);
-            $unavailability->setOrganiser($this->getUser());
             $unavailability->setType(Unavailability::REUNION);
         }
 
@@ -86,9 +91,9 @@ class UnavailabilityController extends AbstractController
             $endDate = \DateTime::createFromFormat('d/m/Y H:i', $request->query->get('endDate'));
             $room = $roomRepository->findOneById($request->query->get('roomId'));
 
-            $unavailability->setStartDate($startDate)
-                ->setEndDate($endDate)
-                ->setRoom($room);
+            $unavailability ->setStartDate($startDate)
+                            ->setEndDate($endDate)
+                            ->setRoom($room);
 
             $form->get('startDate')->setData($startDate);
             $form->get('endDate')->setData($endDate);
