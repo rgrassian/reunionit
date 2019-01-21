@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -15,8 +16,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UnavailabilityType extends AbstractType
 {
+    protected $userRepository;
+
+    /**
+     * UnavailabilityType constructor.
+     * @param $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $users = $this->userRepository->findActiveUsers();
         $builder
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Début',
@@ -31,7 +44,8 @@ class UnavailabilityType extends AbstractType
             ->add('guests', EntityType::class, [
                 'label' => 'Invités',
                 'class' => User::class,
-                'choice_label' => 'email',
+                'choices' => $users,
+                'choice_label' => function(User $user) {return $user->getFirstName().' '.$user->getLastName();},
                 'multiple' => true
             ])
             ->add('object', TextType::class, [

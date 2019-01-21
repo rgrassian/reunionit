@@ -20,16 +20,14 @@ class UserRepository extends ServiceEntityRepository
 
     }
 
-//    public function findOneById($id)
-//    {
-//        $this->getEntityManager()->getFilters()->disable('softdeleteable');
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.id = :user_id')
-//            ->setParameter('user_id', $id)
-//            ->getQuery()
-//            ->getResult()
-//            ;
-//    }
+    public function findActiveUsers()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.deletedAt is null')
+            ->orderBy('u.lastName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
     // /**
     //  * @return User[] Returns an array of User objects
