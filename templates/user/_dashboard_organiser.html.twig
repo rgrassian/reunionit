@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-    {% if unavailabilitiesAsOrganiser_pager %}
+    {% if unavailabilitiesAsOrganiser_pager is not empty %}
         {% for unavailability in unavailabilitiesAsOrganiser_pager %}
             <tr {{ unavailability.startDate < date() ? 'class="table-active "' : '' }}>
                 <td>{{ unavailability.object }}</td>
@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-{% if unavailabilitiesAsOrganiser_pager and unavailabilitiesAsOrganiser_pager.haveToPaginate %}
+{% if unavailabilitiesAsOrganiser_pager.haveToPaginate %}
 
     <ul class="pagination">
 

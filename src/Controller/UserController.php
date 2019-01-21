@@ -82,10 +82,12 @@ class UserController extends AbstractController
                     ]
                 ),
                 'text/html'
-            )
-        ;
+            );
 
-        $mailer->send($message);
+            $mailer->send($message);
+
+            $this->addFlash('notice',
+                'L\'utilisateur a été créé, un email contenant son mot de passe provisoire lui a été envoyé.');
 
             return $this->redirectToRoute('user_index');
         }
@@ -130,7 +132,10 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_index', ['id' => $u->getId()]);
+            $this->addFlash('notice',
+                'La fiche de l\'utilisateur a été mise à jour.');
+
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -162,7 +167,12 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('index');
+            $this->addFlash('notice',
+                'Votre nouveau mot de passe a bien été enregistré.');
+
+            return $this->redirectToRoute('user_show', [
+                'id'=>$user->getId()
+            ]);
         }
 
         return $this->render('user/password.html.twig', [
@@ -219,6 +229,9 @@ class UserController extends AbstractController
                 $entityManager->flush();
             }
         }
+        $this->addFlash('notice',
+            'Le compte a été désactivé.');
+
         return $this->redirectToRoute('user_index');
     }
 
@@ -240,45 +253,6 @@ class UserController extends AbstractController
      */
     public function dashboard()
     {
-//        $entityManager = $this->getDoctrine()->getManager();
-//
-//        $organiserQueryBuilder = $entityManager->createQueryBuilder()
-//            ->select('u')
-//            ->from(Unavailability::class, 'u')
-//            ->where('u.organiser = :organiser')
-//            ->setParameter('organiser', $this->getUser())
-//            ->orderBy('u.startDate', 'DESC');
-//        $organiserAdapter = new DoctrineORMAdapter($organiserQueryBuilder);
-//        $unavailabilitiesAsOrganiser_pagerfanta = new Pagerfanta($organiserAdapter);
-//
-//        $guestQueryBuilder = $entityManager->createQueryBuilder()
-//            ->select('u')
-//            ->from(Unavailability::class, 'u')
-//            ->join('u.guests', 'g')
-//            ->join('u.room', 'r')
-//            ->addSelect('r')
-//            ->where('g = :guest')
-//            ->setParameter('guest', $this->getUser())
-//            ->orderBy('u.startDate', 'DESC');
-//        $guestAdapter = new DoctrineORMAdapter($guestQueryBuilder);
-//        $unavailabilitiesAsGuest_pagerfanta = new Pagerfanta($guestAdapter);
-//
-//        $unavailabilitiesAsGuest_pagerfanta->setMaxPerPage(2);
-//        $unavailabilitiesAsOrganiser_pagerfanta->setMaxPerPage(2);
-//
-//        if (isset($_GET["page"])) {
-//            $unavailabilitiesAsOrganiser_pagerfanta->setCurrentPage($_GET["page"]);
-//            $unavailabilitiesAsGuest_pagerfanta->setCurrentPage($_GET["page"]);
-//        }
-
-//        $unavailabilitiesAsOrganiser_pagerfanta = $unavailabilityRepository->findByOrganiserAndOrder($this->getUser());
-//        $unavailabilitiesAsGuest_pagerfanta = $unavailabilityRepository->findByGuestAndOrder($this->getUser());
-//
-//        return $this->render('user/dashboard.html.twig', [
-//            'unavailabilitiesAsOrganiser_pager' => $unavailabilitiesAsOrganiser_pagerfanta,
-//            'unavailabilitiesAsGuest_pager' => $unavailabilitiesAsGuest_pagerfanta
-//        ]);
-
         return $this->render('user/dashboard.html.twig', ['page'=>1]);
     }
 }

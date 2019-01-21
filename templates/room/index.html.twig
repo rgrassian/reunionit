@@ -6,6 +6,12 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
+        {% for message in app.flashes('notice') %}
+            <div class="mb-4 py-2 reunionit-addflash">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="row">
             <h1 class="col-sm-9">Nos salles de réunion</h1>
 

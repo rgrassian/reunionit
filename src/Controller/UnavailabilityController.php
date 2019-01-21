@@ -67,6 +67,7 @@ class UnavailabilityController extends AbstractController
      */
     public function new(Request $request,
                         RoomRepository $roomRepository,
+                        \Swift_Mailer $mailer,
                         UnavailabilityRepository $unavailabilityRepository): Response
     {
         $unavailability = new Unavailability();
@@ -110,9 +111,26 @@ class UnavailabilityController extends AbstractController
             $entityManager->persist($unavailability);
             $entityManager->flush();
 
-            return $this->redirectToRoute('room_show', [
-                'id' => $unavailability->getRoom()->getId()
-            ]);
+            $organiser = $form->getData()->getOrganiser();
+            $message = (new \Swift_Message('Enregistrement de votre réservation'))
+                ->setFrom('margouillat.reunion.it@gmail.com')
+                ->setTo($organiser->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/unavailability_new.html.twig', [
+                            'firstName' => $organiser->getFirstName(),
+                            'id' => $form->getData()->getId()
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+            $this->addFlash('notice',
+                'Votre réservation est enregistrée, vous allez recevoir un email de confirmation.');
+
+            return $this->redirectToRoute('unavailability_calendar');
         }
 
         return $this->render('unavailability/new.html.twig', [
@@ -150,8 +168,12 @@ class UnavailabilityController extends AbstractController
      * @return Response
      */
     public function edit(Request $request,
+                         \Swift_Mailer $mailer,
                          Unavailability $unavailability = null): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getFilters()->disable('softdeleteable');
+
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
         } else {
@@ -162,9 +184,26 @@ class UnavailabilityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('unavailability_show', [
-                'id' => $unavailability->getId()
-            ]);
+            $organiser = $form->getData()->getOrganiser();
+            $message = (new \Swift_Message('Mise à jour de votre réservation'))
+                ->setFrom('margouillat.reunion.it@gmail.com')
+                ->setTo($organiser->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/unavailability_edit.html.twig', [
+                            'firstName' => $organiser->getFirstName(),
+                            'id' => $form->getData()->getId()
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+            $this->addFlash('notice',
+                'La réservation a été modifiée, un email de confirmation vous a été envoyé.');
+
+            return $this->redirectToRoute('unavailability_calendar');
         }
 
         return $this->render('unavailability/edit.html.twig', [
@@ -191,7 +230,10 @@ class UnavailabilityController extends AbstractController
             $this->removeUnavailabilityFromDatabase($unavailability);
         }
 
-        return $this->redirectToRoute('unavailability_index');
+        $this->addFlash('notice',
+            'La réservation a été annulée, vous allez recevoir un email de confirmation.');
+
+        return $this->redirectToRoute('unavailability_calendar');
     }
 
     /**
@@ -202,6 +244,7 @@ class UnavailabilityController extends AbstractController
     {
 
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
+        // à checker
         $entityManager = $this->getDoctrine()->getManager();
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);

@@ -74,19 +74,15 @@ class RoomController extends AbstractController
                     // TODO: ??
                 }
 
-                # Mise à jour de l'image
                 $room->setPicture($fileName);
 
                 try {
-                    # 3. Sauvegarde en BDD
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($room);
                     $em->flush();
 
-                    # 5. Redirection vers l'article créé
-                    return $this->redirectToRoute('room_show', [
-                        'id' => $room->getId()
-                    ]);
+                    $this->addFlash('notice',"La salle a été enregistrée.");
+                    return $this->redirectToRoute('room_index');
 
                 } catch (LogicException $e) {
 
@@ -96,8 +92,6 @@ class RoomController extends AbstractController
                 }
 
             } else {
-
-                # 4. Notification
                 $this->addFlash('error',
                     "N'oubliez pas de choisir une image d'illustration");
             }
@@ -131,7 +125,7 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
-     * @Security("room != null and and room.getDeletedAt() == null", statusCode=404,
+     * @Security("room != null and room.getDeletedAt() == null", statusCode=404,
      *     message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
@@ -142,31 +136,22 @@ class RoomController extends AbstractController
                          Room $room,
                          Packages $packages): Response
     {
-        # On passe à notre formulaire l'URL de la featuredImage
         $options = [
             'image_url' => $packages->getUrl('images/room/'
                 . $room->getPicture())
         ];
 
-        # Récupération de l'image
         $pictureName = $room->getPicture();
 
-        # Notre formulaire attend une instance de File pour l'edition
-        # de la featuredImage
         $room->setPicture(
             new File($this->getParameter('rooms_assets_dir')
                 . '/' . $pictureName)
         );
 
-        # Création / Récupération du Formulaire
         $form = $this->createForm(RoomType::class, $room, $options)
             ->handleRequest($request);
 
-        # Si le formulaire est soumis et qu'il est valide
         if ($form->isSubmitted() && $form->isValid()) {
-
-            #dump($article);
-            # 1. Traitement de l'upload de l'image
 
             /** @var UploadedFile $picture */
             $picture = $room->getPicture();
@@ -185,26 +170,21 @@ class RoomController extends AbstractController
 
                 }
 
-                # Mise à jour de l'image
                 $room->setPicture($fileName);
 
             } else {
                 $room->setPicture($pictureName);
             }
 
-            # 3. Sauvegarde en BDD
             $em = $this->getDoctrine()->getManager();
             $em->persist($room);
             $em->flush();
 
-            # 5. Redirection vers l'article créé
-            return $this->redirectToRoute('room_show', [
-                'id' => $room->getId()
-            ]);
+            $this->addFlash('notice',"La salle a été mise à jour.");
+            return $this->redirectToRoute('room_index');
 
         }
 
-        # Affichage du Formulaire
         return $this->render('room/edit.html.twig', [
             'form' => $form->createView(),
             'room' => $room
@@ -251,6 +231,7 @@ class RoomController extends AbstractController
                 $entityManager->flush();
             }
         }
+        $this->addFlash('notice',"La salle a été suppirmée.");
 
         return $this->redirectToRoute('room_index');
     }

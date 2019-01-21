@@ -6,29 +6,37 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
-        <h1>{{ user.firstName ~' '~ user.lastName }}</h1>
+        {% for message in app.flashes('notice') %}
+            <div class="mb-4 py-2 reunionit-addflash">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-        {% if is_granted('ROLE_ADMIN') %}
-        <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
-            <a href="{{ path('user_index') }}" style="color: #fff;">
-                <button type="button" class="btn btn-info" style="width: 45px;">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            </a>
-            <a href="{{ path('user_edit', {'id': user.id}) }}" style="color: #fff;">
-                <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </a>
-            <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression du membre ?');" style="display: inline-block;">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </form>
+        <div class="row">
+            <h1 class="mr-auto">{{ user.firstName ~' '~ user.lastName }}</h1>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="btn-group" role="group">
+                <a href="{{ path('user_index') }}" style="color: #fff;">
+                    <button type="button" class="btn btn-info" style="width: 45px;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </a>
+                <a href="{{ path('user_edit', {'id': user.id}) }}" style="color: #fff;">
+                    <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </a>
+                <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression du membre ?');" style="display: inline-block;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                    <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
 
         <table class="table">
             <tbody>
