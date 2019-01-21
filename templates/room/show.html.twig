@@ -28,8 +28,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </a>
-                            <form method="post" action="{{ path('room_delete', {'id': room.id}) }}"
-                                  onsubmit="return confirm('Confirmez-vous la suppression de la salle {{ room.name }} ?');" style="display: inline-block;">
+                            <form id="form" method="post" action="{{ path('room_delete', {'id': room.id}) }}" style="display: inline-block;">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
                                 <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
@@ -99,6 +98,26 @@
         </div>
     </div>
 
+    <div id="deleteConfirm" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvelle réservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteConfirmationMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="deleteConfirmation">Confirmer</button>
+                    <button type="button" class="btn btn-secondary" id="deleteCancel" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block stylesheets %}
@@ -116,6 +135,15 @@
         }
     </style>
 {% endblock %}
+
+{% set message = 'Voulez-vous vraiment supprimer la salle ' ~ room.name ~ ' ?' %}
+
+{% for unavailability in room.unavailabilities %}
+    {% if date() < unavailability.startDate %}
+        {% set message = 'Des réunions à venir sont organisées dans la salle ' ~ room.name ~
+            '. Si vous la supprimez, ces réunions seront également supprimées.' %}
+    {% endif %}
+{% endfor %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -220,7 +248,22 @@
             $('#thumbnailPicture').on("click", function () {
                 $('#largePicture').modal({});
             });
-
         });
+
+        $('#deleteConfirmationMessage').text('{{ message }}');
+        $('#form').on("submit", function() {
+            $('#deleteConfirm').modal({});
+            this.event.preventDefault();
+        });
+
+        $('#deleteConfirmation').on("click", function () {
+            return true;
+        });
+
+        $("#deleteCancel").on("click", function(){
+            $("#deleteConfirm").modal('hide');
+            return false;
+        });
+
     </script>
 {% endblock %}

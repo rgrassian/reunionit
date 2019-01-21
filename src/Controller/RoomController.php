@@ -131,7 +131,7 @@ class RoomController extends AbstractController
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
-     * @Security("room != null and and room.getDeletedAt() == null", statusCode=404,
+     * @Security("room != null and room.getDeletedAt() == null", statusCode=404,
      *     message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param Room $room
@@ -234,6 +234,7 @@ class RoomController extends AbstractController
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($room->hasUpcomingUnavailabilities()) {
+                //                                          /!\ Modal de confirmation
                 $unavailabilityController->deleteUpcomingUnavailabilityByRoom($room);
             }
 

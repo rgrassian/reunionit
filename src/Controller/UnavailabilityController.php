@@ -143,7 +143,8 @@ class UnavailabilityController extends AbstractController
     /**
      * Permet à l'admin ou à l'organisateur de modifier une réservation.
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
-     * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
+     * @Security("unavailability != null", statusCode=404,
+     *     message="Cette réservation n'existe plus ou n'a jamais existé.")
      * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
      * @param Unavailability $unavailability
@@ -152,6 +153,9 @@ class UnavailabilityController extends AbstractController
     public function edit(Request $request,
                          Unavailability $unavailability = null): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getFilters()->disable('softdeleteable');
+
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
         } else {
@@ -200,7 +204,6 @@ class UnavailabilityController extends AbstractController
      */
     public function deleteUpcomingUnavailabilityByOrganiser(User $organiser)
     {
-
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
 
