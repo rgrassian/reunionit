@@ -20,8 +20,6 @@ class DashboardController extends AbstractController
     public function showUnavailabilitiesAsOrganiser($page)
     {
         $entityManager = $this->getDoctrine()->getManager();
-//         On désactive le filtre pour obtenir les réunions organisées dans des salles supprimées,
-//         ou dont l'organisateur ou un invité a été supprimé.
         $entityManager->getFilters()->disable('softdeleteable');
 
         $organiserQueryBuilder = $entityManager->createQueryBuilder()
@@ -54,14 +52,7 @@ class DashboardController extends AbstractController
      */
     public function showUnavailabilitiesAsGuest($page)
     {
-//        $config = new Configuration;
-//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
-
         $entityManager = $this->getDoctrine()->getManager();
-
-        // On désactive le filtre pour obtenir les réunions organisées dans des salles supprimées,
-        // ou dont l'organisateur ou un invité a été supprimé.
-        $entityManager->getFilters()->disable('softdeleteable');
 
         $guestQueryBuilder = $entityManager->createQueryBuilder()
             ->select('u')

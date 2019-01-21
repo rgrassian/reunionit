@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Unavailability;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -59,7 +60,6 @@ class UnavailabilityRepository extends ServiceEntityRepository
 
     public function findByOrganiserAndOrder($organiser)
     {
-
         return $this->createQueryBuilder('u')
             ->join('u.room', 'r')
             ->addSelect('r')

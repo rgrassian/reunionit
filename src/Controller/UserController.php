@@ -99,42 +99,42 @@ class UserController extends AbstractController
     /**
      * Affiche le profil d'un utilisateur.
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
-     * @Security("user != null and user.getDeletedAt() == null", statusCode=404,
+     * @Security("u != null and u.getDeletedAt() == null", statusCode=404,
      *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @IsGranted("ROLE_EMPLOYEE")
-     * @param User $user
+     * @param User $u
      * @return Response
      */
-    public function show(User $user = null): Response
+    public function show(User $u = null): Response
     {
         return $this->render('user/show.html.twig', [
-            'user' => $user
+            'user' => $u
         ]);
     }
 
     /**
      * Permet à l'admin de modifier un utilisateur.
      * @Route("/admin/modifier/utilisateur-{id}.html", name="user_edit", methods={"GET","POST"})
-     * @Security("user != null and user.getDeletedAt() == null", statusCode=404,
+     * @Security("u != null and u.getDeletedAt() == null", statusCode=404,
      *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
-     * @param User $user
+     * @param User $u
      * @return Response
      */
     public function edit(Request $request,
-                         User $user = null): Response
+                         User $u = null): Response
     {
-        $form = $this->createForm(UserAdminType::class, $user);
+        $form = $this->createForm(UserAdminType::class, $u);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_index', ['id' => $user->getId()]);
+            return $this->redirectToRoute('user_index', ['id' => $u->getId()]);
         }
 
         return $this->render('user/edit.html.twig', [
-            'user' => $user,
+            'user' => $u,
             'form' => $form->createView()
         ]);
     }
@@ -198,21 +198,21 @@ class UserController extends AbstractController
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($user->hasUpcomingUnavailabilities()) {
-                $this->removeUserFromDatabase($user);
                 $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                $this->removeUserFromDatabase($user);
             }
 
             // Si le User est invité à des réunions à venir, on le supprime des guests de ces réunions.
             if ($user->hasUpcomingInvitations()) {
-                $this->removeUserFromDatabase($user);
                 $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                $this->removeUserFromDatabase($user);
             }
 
             $entityManager->remove($user);
             $entityManager->flush();
 
             if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
-                // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime.
+                // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime définitivement.
                 $this->removeUserFromDatabase($user);
             } else {
                 $entityManager->persist($user);
@@ -223,6 +223,7 @@ class UserController extends AbstractController
     }
 
     /**
+     * Soft delete un utilisateur au premier appel.
      * Supprime un utilisateur de la BDD au second appel.
      * @param User $user
      */
