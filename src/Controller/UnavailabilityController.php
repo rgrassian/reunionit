@@ -112,7 +112,7 @@ class UnavailabilityController extends AbstractController
             $entityManager->flush();
 
             $organiser = $form->getData()->getOrganiser();
-            $message = (new \Swift_Message('Enregistrement de votre réservation'))
+            $message = (new \Swift_Message('ReunionIT | Enregistrement de votre réservation'))
                 ->setFrom('margouillat.reunion.it@gmail.com')
                 ->setTo($organiser->getEmail())
                 ->setBody(
@@ -185,7 +185,7 @@ class UnavailabilityController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             $organiser = $form->getData()->getOrganiser();
-            $message = (new \Swift_Message('Mise à jour de votre réservation'))
+            $message = (new \Swift_Message('ReunionIT | Mise à jour de votre réservation'))
                 ->setFrom('margouillat.reunion.it@gmail.com')
                 ->setTo($organiser->getEmail())
                 ->setBody(
@@ -224,9 +224,26 @@ class UnavailabilityController extends AbstractController
      * @return Response
      */
     public function delete(Request $request,
+                           \Swift_Mailer $mailer,
                            Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
+            $organiser = $unavailability->getOrganiser();
+            $message = (new \Swift_Message('ReunionIT | Annulation de votre réservation'))
+                ->setFrom('margouillat.reunion.it@gmail.com')
+                ->setTo($organiser->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/unavailability_delete.html.twig', [
+                            'firstName' => $organiser->getFirstName(),
+                            'room' => $unavailability->getRoom(),
+                            'startDate' => $unavailability->getStartDate()
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
             $this->removeUnavailabilityFromDatabase($unavailability);
         }
 
