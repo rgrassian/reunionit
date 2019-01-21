@@ -196,33 +196,31 @@ class UserController extends AbstractController
                            UnavailabilityController $unavailabilityController,
                            User $user = null): Response
     {
-//        $config = new Configuration();
-//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
-//
-//        $entityManager = $this->getDoctrine()->getManager();
-
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->getFilters()->enable('softdeleteable');
 
-            // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
-            if ($user->hasUpcomingUnavailabilities()) {
-                $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
-                $this->removeUserFromDatabase($user);
+            if ($user->hasUpcomingUnavailabilities() || $user->hasUpcomingInvitations()) {
+
+                // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
+                if ($user->hasUpcomingUnavailabilities()) {
+                    //                                              modal de confirmation /!\
+                    $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                }
+
+                // Si l'utilisateur est invité à des réunions à venir, on le supprime des guests de ces réunions.
+                if ($user->hasUpcomingInvitations()) {
+                    $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                }
             }
 
-            // Si le User est invité à des réunions à venir, on le supprime des guests de ces réunions.
-            if ($user->hasUpcomingInvitations()) {
-                $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
-                $this->removeUserFromDatabase($user);
-            }
-
-            $entityManager->remove($user);
-            $entityManager->flush();
+            // Dans tous les cas, on le désactive (1ère requête "remove")
+            $this->removeUserFromDatabase($user);
 
             if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
-                // Si l'utilisateur n'est l'organisateur d'aucune réunion, on le supprime définitivement.
+                // Si l'utilisateur n'est l'organisateur ou l'invité d'aucune réunion,
+                // on le supprime définitivement (2e requête "remove").
                 $this->removeUserFromDatabase($user);
             } else {
                 $entityManager->persist($user);
@@ -236,7 +234,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Soft delete un utilisateur au premier appel.
+     * Désactive un utilisateur au premier appel.
      * Supprime un utilisateur de la BDD au second appel.
      * @param User $user
      */

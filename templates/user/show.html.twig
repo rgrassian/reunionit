@@ -16,7 +16,7 @@
             <h1 class="mr-auto">{{ user.firstName ~' '~ user.lastName }}</h1>
 
             {% if is_granted('ROLE_ADMIN') %}
-                <div class="btn-group" role="group">
+            <div class="btn-group" role="group">
                 <a href="{{ path('user_index') }}" style="color: #fff;">
                     <button type="button" class="btn btn-info" style="width: 45px;">
                         <i class="fas fa-chevron-left"></i>
@@ -27,7 +27,7 @@
                         <i class="fas fa-edit"></i>
                     </button>
                 </a>
-                <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression du membre ?');" style="display: inline-block;">
+                <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}" style="display: inline-block;">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                     <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
@@ -37,7 +37,6 @@
             </div>
             {% endif %}
         </div>
-
         <table class="table">
             <tbody>
                 <tr>
@@ -91,4 +90,42 @@
 
     </div>
 
+    <div id="deleteConfirm" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supprimer le compte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessage">{{ message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirm">Confirmer</button>
+                    <button type="button" class="btn btn-secondary" id="cancel" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% set message = 'Voulez-vous vraiment supprimer le compte de ' ~ user.firstName ~ ' ' ~ user.lastName ~ ' ?' %}
+
+{% for unavailability in user.unavailabilities %}
+    {% if date() < unavailability.startDate %}
+        {% set message = 'Des réunions à venir sont organisées par ' ~ user.firstName ~ ' ' ~ user.lastName ~
+            '. Si vous supprimez son compte, ces réunions seront également supprimées.' %}
+    {% endif %}
+{% endfor %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#form').submit(function() {
+            return confirm('{{ message }}');
+        });
+    </script>
 {% endblock %}

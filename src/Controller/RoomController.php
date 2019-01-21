@@ -214,6 +214,7 @@ class RoomController extends AbstractController
 
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($room->hasUpcomingUnavailabilities()) {
+                //                                          /!\ Modal de confirmation
                 $unavailabilityController->deleteUpcomingUnavailabilityByRoom($room);
             }
 
