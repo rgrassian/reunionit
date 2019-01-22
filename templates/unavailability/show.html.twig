@@ -23,13 +23,16 @@
                         </button>
                     </a>
                 {% endif %}
-                <form id="form" method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" style="display: inline-block;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
-                    <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                {# On n'affiche le bouton Supprimer que si la réunion n'est pas passée #}
+                {% if unavailability.notPast %}
+                    <form id="form" method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" style="display: inline-block;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
+                        <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                {% endif %}
             {% endif %}
 
         </div>
@@ -43,17 +46,27 @@
                 <tr>
                     <th>Organisateur</th>
                     <td>
-                        <a href="{{ path('user_show', {'id': unavailability.organiser.id}) }}">
+                        {# On désactive le lien vers l'organisateur s'il n'existe plus #}
+                        {% if null == unavailability.organiser.deletedAt %}
+                            <a href="{{ path('user_show', {'id': unavailability.organiser.id}) }}">
+                                {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
+                            </a>
+                        {% else %}
                             {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
-                        </a>
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th>Salle</th>
                     <td>
-                        <a href="{{ path('room_show', {'id': unavailability.room.id}) }}">
+                        {# On désactive le lien vers la salle si elle n'existe plus #}
+                        {% if null == unavailability.room.deletedAt %}
+                            <a href="{{ path('room_show', {'id': unavailability.room.id}) }}">
+                                {{ unavailability.room.name }}
+                            </a>
+                        {% else %}
                             {{ unavailability.room.name }}
-                        </a>
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -68,12 +81,16 @@
                     <th>Invités</th>
                     <td>
                         {% for guest in unavailability.guests %}
+                            {# On désactive le lien vers l'utilisateur s'il n'existe plus #}
+                            {% if null == guest.deletedAt %}
                             <a href="{{ path('user_show', {'id': guest.id}) }}">
                                 {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
                             </a>
+                            {% else %}
+                                {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
+                            {% endif %}
                         {% endfor %}
                     </td>
-                    {#<td>{{ unavailability.guests ? guests|join(', ') : '' }}</td>#}
                 </tr>
                 {% if is_granted('ROLE_ADMIN') %}
                     <tr>
