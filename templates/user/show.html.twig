@@ -90,25 +90,7 @@
 
     </div>
 
-    <div id="deleteConfirm" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Supprimer le compte</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmationMessage">{{ message }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="confirm">Confirmer</button>
-                    <button type="button" class="btn btn-secondary" id="cancel" data-dismiss="modal">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'components/_confirm_modal.html.twig' %}
 
 {% endblock %}
 
@@ -124,8 +106,41 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $('#form').submit(function() {
-            return confirm('{{ message }}');
+
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer le compte');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
+
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
+
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
         });
+
+        {#$('#form').click(function(e) {#}
+            {#e.preventDefault();#}
+            {#$.ajax({#}
+                {#method: 'POST',#}
+                {#url: '{{ path('user_delete_confirm', { 'id': user.id }) }}',#}
+                {#data: $('#form').serialize(),#}
+                {#success: function (data) {#}
+                    {#console.log(data);#}
+                    {#if (data.ask) {#}
+                        {#if (confirm('{{ message }}')) {#}
+                            {#$('#form').submit();#}
+                        {#}#}
+                    {#}#}
+                {#},#}
+                {#fail: function() {#}
+                    {#alert('error');#}
+                {#}#}
+            {#});#}
+        {#});#}
     </script>
 {% endblock %}

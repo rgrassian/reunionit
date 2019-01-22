@@ -78,45 +78,7 @@
         </div>
     </div>
 
-    <div id="datesConfirm" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nouvelle réservation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmationMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="datesConfirmation">Confirmer</button>
-                    <button type="button" class="btn btn-secondary" id="datesCancel" data-dismiss="modal">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="deleteConfirm" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nouvelle réservation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="deleteConfirmationMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="deleteConfirmation">Confirmer</button>
-                    <button type="button" class="btn btn-secondary" id="deleteCancel" data-dismiss="modal">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'components/_confirm_modal.html.twig' %}
 
 {% endblock %}
 
@@ -136,11 +98,11 @@
     </style>
 {% endblock %}
 
-{% set message = 'Voulez-vous vraiment supprimer la salle ' ~ room.name ~ ' ?' %}
+{% set modal_message = 'Voulez-vous vraiment supprimer la salle ' ~ room.name ~ ' ?' %}
 
 {% for unavailability in room.unavailabilities %}
     {% if date() < unavailability.startDate %}
-        {% set message = 'Des réunions à venir sont organisées dans la salle ' ~ room.name ~
+        {% set modal_message = 'Des réunions à venir sont organisées dans la salle ' ~ room.name ~
             '. Si vous la supprimez, ces réunions seront également supprimées.' %}
     {% endif %}
 {% endfor %}
@@ -212,20 +174,23 @@
                             + start + ' au '
                             + end + ' ?' ;
                         $('#confirmationMessage').text(confirmationMessage);
-                        $('#datesConfirm').modal({});
+                        $('.modal-title').text('Vérifiez les dates');
 
-                        $("#datesConfirmation").on("click", function(){
+                        $('#confirmationModal').modal({});
+
+                        $("#confirm").on("click", function(){
                             window.location.href = '{{ path('unavailability_new') }}'
                                 + '?startDate=' + encodeURIComponent(start)
                                 + '&endDate=' + encodeURIComponent(end)
                                 + '&roomId={{ room.id }}';
-                            $("#datesConfirm").modal('hide');
+                            $("#confirmationModal").modal('hide');
                         });
 
-                        $("#datesCancel").on("click", function(){
+                        $("#cancel").on("click", function(){
                             this.unselect();
-                            $("#datesConfirm").modal('hide');
+                            $("#confirmationModal").modal('hide');
                         });
+
                     }
                 },
                 eventSources: [
@@ -250,19 +215,20 @@
             });
         });
 
-        $('#deleteConfirmationMessage').text('{{ message }}');
-        $('#form').on("submit", function() {
-            $('#deleteConfirm').modal({});
-            this.event.preventDefault();
-        });
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer la salle');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
 
-        $('#deleteConfirmation').on("click", function () {
-            return true;
-        });
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
 
-        $("#deleteCancel").on("click", function(){
-            $("#deleteConfirm").modal('hide');
-            return false;
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
         });
 
     </script>

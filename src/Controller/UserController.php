@@ -12,6 +12,7 @@ use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -179,6 +180,16 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+//    /**
+//     * @Route("/admin/user-delete-confirmation/{id}", name="user_delete_confirm")
+//     * @param User $user
+//     * @return JsonResponse
+//     */
+//    public function deleteConfirm(User $user)
+//    {
+//        return new JsonResponse(['ask' => $user->hasUpcomingUnavailabilities()]);
+//    }
 
     /**
      * Permet à l'admin de supprimer un compte utilisateur.
