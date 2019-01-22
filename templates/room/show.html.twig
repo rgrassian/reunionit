@@ -57,26 +57,10 @@
         </div>
 
         {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+
     </div>
 
-    <div id="largePicture" class="modal fade" id="myModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-
-                <!-- Modal Header
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div> -->
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <button type="button" class="close alert btn-warning" data-dismiss="modal">&nbsp;&times;&nbsp;</button>
-                    <img src="{{ asset('images/room/'~room.picture) }}" class="img-fluid" alt="Photo de la salle {{ room.name }}">
-                </div>
-
-            </div>
-        </div>
-    </div>
+    {% include 'room/_dates_confirm_modal.html.twig' %}
 
     {% include 'components/_confirm_modal.html.twig' %}
 
@@ -101,6 +85,7 @@
 {% set modal_message = 'Voulez-vous vraiment supprimer la salle ' ~ room.name ~ ' ?' %}
 
 {% for unavailability in room.unavailabilities %}
+
     {% if date() < unavailability.startDate %}
         {% set modal_message = 'Des réunions à venir sont organisées dans la salle ' ~ room.name ~
             '. Si vous la supprimez, ces réunions seront également supprimées.' %}
@@ -138,60 +123,61 @@
                 minTime: "{{ day_start }}",
                 maxTime: "{{ day_end }}",
                 nowIndicator: true,
-                validRange: function(nowDate) {
-                    return {
-                        // On n'autorise la réservation qu'à partir du jour courant
-                        start: nowDate.clone().add(-1, 'days'),
-                    };
-                },
+                // validRange: function(nowDate) {
+                //     return {
+                //         // On n'autorise la réservation qu'à partir du jour courant
+                //         start: nowDate.clone().add(-1, 'days'),
+                //         // start: new Date()
+                //     };
+                // },
                 selectable: true,
+                selectAllow: function(select) {
+                    return moment().diff(select.start) <= 0
+                },
                 selectOverlap: false,
                 select: function(startDate, endDate) {
-                    if (startDate < $('#calendar-holder').fullCalendar('getDate')) {
-                        alert('L\'heure de début que vous avez sélectionnée est passée');
-                    } else {
-                        // S'il s'agit de journée(s) complète(s), on fixe les heures de début et de fin.
-                        if (!startDate.hasTime() || !endDate.hasTime()) {
-                            startDate.time('{{ day_start }}');
-                            endDate.time('{{ day_end }}');
-                            if (endDate >= startDate.clone().add(1, 'days')) {
-                                endDate.add(-1, 'days')
-                            }
+                    // S'il s'agit de journée(s) complète(s), on fixe les heures de début et de fin.
+                    if (!startDate.hasTime() || !endDate.hasTime()) {
+                        startDate.time('{{ day_start }}');
+                        endDate.time('{{ day_end }}');
+                        if (endDate >= startDate.clone().add(1, 'days')) {
+                            endDate.add(-1, 'days')
                         }
-
-                        // On fixe l'heure de début mini et l'heure de fin maxi.
-                        const start = parseInt(startDate.format("{{ day_start }}"))
-                        <= parseInt(startDate.format('HH')) ?
-                            startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' + '{{ day_start }}');
-
-                        const end = parseInt(startDate.format("{{ day_start }}"))
-                        <= parseInt(endDate.format('HH')) && parseInt(endDate.format('HH'))
-                        <= parseInt(endDate.format("{{ day_end }}")) ?
-                            endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' + '{{ day_end }}');
-
-                        // On demande une confirmation à l'utilisateur
-                        const confirmationMessage = 'Réserver la salle {{ room.name }} pour la période du '
-                            + start + ' au '
-                            + end + ' ?' ;
-                        $('#confirmationMessage').text(confirmationMessage);
-                        $('.modal-title').text('Vérifiez les dates');
-
-                        $('#confirmationModal').modal({});
-
-                        $("#confirm").on("click", function(){
-                            window.location.href = '{{ path('unavailability_new') }}'
-                                + '?startDate=' + encodeURIComponent(start)
-                                + '&endDate=' + encodeURIComponent(end)
-                                + '&roomId={{ room.id }}';
-                            $("#confirmationModal").modal('hide');
-                        });
-
-                        $("#cancel").on("click", function(){
-                            this.unselect();
-                            $("#confirmationModal").modal('hide');
-                        });
-
                     }
+
+                    // On fixe l'heure de début mini et l'heure de fin maxi.
+                    const start = parseInt(startDate.format("{{ day_start }}"))
+                    <= parseInt(startDate.format('HH')) ?
+                        startDate.format('DD/MM/YYYY HH:mm') : startDate.format('DD/MM/YYYY ' + '{{ day_start }}');
+
+                    const end = parseInt(startDate.format("{{ day_start }}"))
+                    <= parseInt(endDate.format('HH')) && parseInt(endDate.format('HH'))
+                    <= parseInt(endDate.format("{{ day_end }}")) ?
+                        endDate.format('DD/MM/YYYY HH:mm') : endDate.format('DD/MM/YYYY ' + '{{ day_end }}');
+
+                    // On demande une confirmation à l'utilisateur
+                    const confirmationMessage = 'Réserver la salle {{ room.name }} pour la période du '
+                        + start + ' au '
+                        + end + ' ?' ;
+                    $('#confirmationMessage').text(confirmationMessage);
+                    $('.modal-title').text('Vérifiez les dates');
+
+                    $('#confirmationModal').modal({});
+
+                    $("#confirm").on("click", function(){
+                        window.location.href = '{{ path('unavailability_new') }}'
+                            + '?startDate=' + encodeURIComponent(start)
+                            + '&endDate=' + encodeURIComponent(end)
+                            + '&roomId={{ room.id }}';
+                        $("#confirmationModal").modal('hide');
+                    });
+
+                    $("#cancel").on("click", function(){
+                        this.unselect();
+                        $("#confirmationModal").modal('hide');
+                    });
+
+                // }
                 },
                 eventSources: [
                     {
