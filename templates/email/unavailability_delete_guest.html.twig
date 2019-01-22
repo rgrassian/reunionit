@@ -1,0 +1,9 @@
+<p>Bonjour {{ guest.firstName }}, la réunion organisée par {{ data.organiser.firstName ~ ' ' ~ data.organiser.lastName }} le {{ data.startDate|date('d/m/Y', "Europe/Paris") }} en salle {{ data.room.name }} a été annulée.</p>
+
+<p>A très vite !</p>
+
+<p>Rémi et Pascal.</p>
+
+<p>
+    <img src="{{ absolute_url(asset('images/template-gecko.svg')) }}">
+</p>

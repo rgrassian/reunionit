@@ -104,28 +104,31 @@ class UnavailabilityController extends AbstractController
 
         $form->handleRequest($request);
 
-        $unavailabilities = $unavailabilityRepository->findUnavailabilitiesByRoom($room->getId());
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($unavailability);
             $entityManager->flush();
 
-            $organiser = $form->getData()->getOrganiser();
-            $message = (new \Swift_Message('ReunionIT | Enregistrement de votre réservation'))
-                ->setFrom('margouillat.reunion.it@gmail.com')
-                ->setTo($organiser->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'email/unavailability_new.html.twig', [
-                            'firstName' => $organiser->getFirstName(),
-                            'id' => $form->getData()->getId()
-                        ]
-                    ),
-                    'text/html'
-                );
+            $formData = $form->getData();
 
-            $mailer->send($message);
+            // Envoi de mail à l'organisateur
+            $this->sendEmail($mailer,
+                'ReunionIT | Enregistrement de votre réservation',
+                $formData->getOrganiser()->getEmail(),
+                'email/unavailability_new.html.twig',
+                ['data' => $formData]
+            );
+
+            // Envoi de mails aux invités
+            $guests = $formData->getGuests();
+            foreach ($guests as $guest) {
+                $this->sendEmail($mailer,
+                    'ReunionIT | Nouvelle invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_new_guest.html.twig',
+                    ['guest'=>$guest,'data' => $formData]
+                );
+            }
 
             $this->addFlash('notice',
                 'Votre réservation est enregistrée, vous allez recevoir un email de confirmation.');
@@ -133,10 +136,12 @@ class UnavailabilityController extends AbstractController
             return $this->redirectToRoute('unavailability_calendar');
         }
 
+//        $unavailabilities = $unavailabilityRepository->findUnavailabilitiesByRoom($room->getId());
+
         return $this->render('unavailability/new.html.twig', [
             'unavailability' => $unavailability,
             'form' => $form->createView(),
-            'unavailabilities' => $unavailabilities,
+//            'unavailabilities' => $unavailabilities,
         ]);
     }
 
@@ -185,21 +190,26 @@ class UnavailabilityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            $organiser = $form->getData()->getOrganiser();
-            $message = (new \Swift_Message('ReunionIT | Mise à jour de votre réservation'))
-                ->setFrom('margouillat.reunion.it@gmail.com')
-                ->setTo($organiser->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'email/unavailability_edit.html.twig', [
-                            'firstName' => $organiser->getFirstName(),
-                            'id' => $form->getData()->getId()
-                        ]
-                    ),
-                    'text/html'
-                );
+            $formData = $form->getData();
 
-            $mailer->send($message);
+            // Envoi de mail à l'organisateur
+            $this->sendEmail($mailer,
+                'ReunionIT | Modification de votre réservation',
+                $formData->getOrganiser()->getEmail(),
+                'email/unavailability_edit.html.twig',
+                ['data' => $formData]
+            );
+
+            // Envoi de mails aux invités
+            $guests = $formData->getGuests();
+            foreach ($guests as $guest) {
+                $this->sendEmail($mailer,
+                    'ReunionIT | Modification d\'une invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_edit_guest.html.twig',
+                    ['guest'=>$guest,'data' => $formData]
+                );
+            }
 
             $this->addFlash('notice',
                 'La réservation a été modifiée, un email de confirmation vous a été envoyé.');
@@ -229,22 +239,27 @@ class UnavailabilityController extends AbstractController
                            Unavailability $unavailability): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
-            $organiser = $unavailability->getOrganiser();
-            $message = (new \Swift_Message('ReunionIT | Annulation de votre réservation'))
-                ->setFrom('margouillat.reunion.it@gmail.com')
-                ->setTo($organiser->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'email/unavailability_delete.html.twig', [
-                            'firstName' => $organiser->getFirstName(),
-                            'room' => $unavailability->getRoom(),
-                            'startDate' => $unavailability->getStartDate()
-                        ]
-                    ),
-                    'text/html'
-                );
 
-            $mailer->send($message);
+            // Envoi de mail à l'organisateur
+            $this->sendEmail($mailer,
+                'ReunionIT | Suppression de votre réservation',
+                $unavailability->getOrganiser()->getEmail(),
+                'email/unavailability_delete.html.twig',
+                ['data' => $unavailability]
+            );
+
+            // Envoi de mails aux invités
+            $guests = $unavailability->getGuests();
+            foreach ($guests as $guest) {
+                $this->sendEmail($mailer,
+                    'ReunionIT | Annulation d\'une invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_delete_guest.html.twig',
+                    ['guest'=>$guest,'data' => $unavailability]
+                );
+            }
+
+
             $this->removeUnavailabilityFromDatabase($unavailability);
         }
 
@@ -325,5 +340,15 @@ class UnavailabilityController extends AbstractController
     public function calendar()
     {
         return $this->render('unavailability/calendar.html.twig');
+    }
+
+    public function sendEmail(\Swift_Mailer $mailer, $object, $to, $view, $options)
+    {
+        $message = (new \Swift_Message($object))
+            ->setFrom('margouillat.reunion.it@gmail.com')
+            ->setTo($to)
+            ->setBody(
+                $this->renderView($view, $options), 'text/html');
+        $mailer->send($message);
     }
 }
