@@ -1,13 +1,21 @@
-<div id="largePicture" class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div id="datesConfirmationModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <!-- Modal body -->
-            <div class="modal-body">
-                <button type="button" class="close alert btn-warning" data-dismiss="modal">&nbsp;&times;&nbsp;</button>
-                <img src="{{ asset('images/room/'~room.picture) }}" class="img-fluid" alt="Photo de la salle {{ room.name }}">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-
+            <div class="modal-body">
+                <p id="datesConfirmationMessage">{{ modal_message }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="datesConfirm">Confirmer</button>
+                <button type="button" class="btn btn-secondary" id="datesCancel" data-dismiss="modal">Annuler</button>
+            </div>
         </div>
     </div>
 </div>
+
 

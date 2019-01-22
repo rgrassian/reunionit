@@ -221,8 +221,6 @@ class RoomController extends AbstractController
                 $entityManager->remove($room);
                 $entityManager->flush();
             } else {
-                // Si des réunions ont eu lieu dans la salle, on set sa propriété Active à false
-//                $room->setActive(false);
                 $entityManager->persist($room);
                 $entityManager->flush();
             }

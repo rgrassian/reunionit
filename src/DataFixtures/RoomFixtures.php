@@ -26,7 +26,6 @@ class RoomFixtures extends Fixture
         $faker = Factory::create('en_EN');
         for($i = 0; $i < 15; $i ++){
             $room = new Room();
-            $room->setActive(true);
 
             $room->setName($faker->city);
             $room->setCapacity(10);

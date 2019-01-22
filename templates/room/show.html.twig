@@ -60,6 +60,8 @@
 
     </div>
 
+    {% include 'room/_large_picture_modal.html.twig' %}
+
     {% include 'room/_dates_confirm_modal.html.twig' %}
 
     {% include 'components/_confirm_modal.html.twig' %}
@@ -160,22 +162,22 @@
                     const confirmationMessage = 'Réserver la salle {{ room.name }} pour la période du '
                         + start + ' au '
                         + end + ' ?' ;
-                    $('#confirmationMessage').text(confirmationMessage);
+                    $('#datesConfirmationMessage').text(confirmationMessage);
                     $('.modal-title').text('Vérifiez les dates');
 
-                    $('#confirmationModal').modal({});
+                    $('#datesConfirmationModal').modal({});
 
-                    $("#confirm").on("click", function(){
+                    $("#datesConfirm").on("click", function(){
                         window.location.href = '{{ path('unavailability_new') }}'
                             + '?startDate=' + encodeURIComponent(start)
                             + '&endDate=' + encodeURIComponent(end)
                             + '&roomId={{ room.id }}';
-                        $("#confirmationModal").modal('hide');
+                        $("#datesConfirmationModal").modal('hide');
                     });
 
-                    $("#cancel").on("click", function(){
+                    $("#datesCancel").on("click", function(){
                         this.unselect();
-                        $("#confirmationModal").modal('hide');
+                        $("#datesConfirmationModal").modal('hide');
                     });
 
                 // }
