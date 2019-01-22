@@ -1,6 +1,6 @@
-<p>Bonjour {{ firstName }}, votre réservation de salle a bien été enregistrée.</p>
+<p>Bonjour {{ data.organiser.firstName }}, votre réservation de salle a bien été enregistrée.</p>
 
-<p>Vous pouvez la visualiser à tout moment sur <a href="{{ absolute_url(path('unavailability_show', {'id':id})) }}">ce lien</a>.</p>
+<p>Vous pouvez la visualiser à tout moment sur <a href="{{ absolute_url(path('unavailability_show', {'id':data.id})) }}">ce lien</a>.</p>
 
 <p>A très vite !</p>
 
