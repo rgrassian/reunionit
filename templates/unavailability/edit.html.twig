@@ -10,8 +10,40 @@
 
         {{ include('unavailability/_form.html.twig') }}
 
-        {{ include('unavailability/_delete_form.html.twig') }}
+        <form id="form" method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" style="position: relative;float: right;bottom: 38px;">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
+            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
 
     </div>
 
+    {% include 'components/_confirm_modal.html.twig' %}
+
 {% endblock %}
+
+{% set modal_message = 'Voulez-vous vraiment supprimer cette réservation ?' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer la réservation');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
+
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
+
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
+        });
+    </script>
+{% endblock %}
+

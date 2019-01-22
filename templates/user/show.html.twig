@@ -94,7 +94,7 @@
 
 {% endblock %}
 
-{% set message = 'Voulez-vous vraiment supprimer le compte de ' ~ user.firstName ~ ' ' ~ user.lastName ~ ' ?' %}
+{% set modal_message = 'Voulez-vous vraiment supprimer le compte de ' ~ user.firstName ~ ' ' ~ user.lastName ~ ' ?' %}
 
 {% for unavailability in user.unavailabilities %}
     {% if date() < unavailability.startDate %}
@@ -106,7 +106,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-
         $('#confirmationMessage').text('{{ modal_message }}');
         $('.modal-title').text('Supprimer le compte');
         $('#form').click(function(e) {

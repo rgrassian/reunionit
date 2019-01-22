@@ -60,7 +60,6 @@ class Room
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez ajouter une image.")
      * @Assert\Image(
      *     mimeTypesMessage="Vérifiez le format de votre image",
      *     maxSize="1M", maxSizeMessage="Attention, votre image est trop lourde."
@@ -161,11 +160,9 @@ class Room
         return $this->picture;
     }
 
-    public function setPicture($picture): self
+    public function setPicture($picture): void
     {
         $this->picture = $picture;
-
-        return $this;
     }
 
     /**

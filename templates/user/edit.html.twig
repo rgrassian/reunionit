@@ -18,7 +18,7 @@
         </button>
         {{ form_end(form) }}
 
-        <form method="post" action="{{ path('user_delete', {'id': user.id}) }}"
+        <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}"
               onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="position: relative;float: right;bottom: 38px;">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
@@ -29,13 +29,36 @@
 
     </div>
 
+    {% include 'components/_confirm_modal.html.twig' %}
+
 {% endblock %}
+
+{% set modal_message = 'Voulez-vous vraiment supprimer le compte de ' ~ user.firstName ~ ' ' ~ user.lastName ~ ' ?' %}
+
+{% for unavailability in user.unavailabilities %}
+    {% if date() < unavailability.startDate %}
+        {% set message = 'Des réunions à venir sont organisées par ' ~ user.firstName ~ ' ' ~ user.lastName ~
+            '. Si vous supprimez son compte, ces réunions seront également supprimées.' %}
+    {% endif %}
+{% endfor %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer le compte');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
+
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
+
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
+        });
     </script>
 {% endblock %}

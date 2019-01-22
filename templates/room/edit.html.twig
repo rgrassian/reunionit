@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block page_title %}{{ room.name }}{% endblock %}
+{% block page_title %}Salle {{ room.name }}{% endblock %}
 
 {% block content %}
 
@@ -26,21 +26,30 @@
 
         {{ form_row(form.picture) }}
 
-        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
-        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('room_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
+        <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer">
+            <i class="fas fa-check"></i>
+        </button>
+        <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour">
+            <a href="{{ path('room_index') }}" style="color: #fff;">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </button>
 
         {{ form_end(form) }}
 
-        <form method="post"
+        <form id="form" method="post"
               action="{{ path('room_delete', {'id': room.id}) }}"
-              onsubmit="return confirm('Confirmez-vous la suppression de la salle ?');"
               style="position: relative;float: right;bottom: 38px;">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
-            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         </form>
 
     </div>
+
+    {% include 'components/_confirm_modal.html.twig' %}
 
 {% endblock %}
 
@@ -49,6 +58,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css" integrity="sha256-Kq686ftxGamHGd8MpwJXmYgk1s7m00maEfHX1VpKYP8=" crossorigin="anonymous" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 {% endblock %}
+
+{% set modal_message = 'Voulez-vous vraiment supprimer la salle ' ~ room.name ~ ' ?' %}
+
+{% for unavailability in room.unavailabilities %}
+
+    {% if date() < unavailability.startDate %}
+        {% set modal_message = 'Des réunions à venir sont organisées dans la salle ' ~ room.name ~
+            '. Si vous la supprimez, ces réunions seront également supprimées.' %}
+    {% endif %}
+
+{% endfor %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -63,6 +83,27 @@
                 error:   'D&eacute;sol&eacute;, le fichier est trop volumineux'
             }
         });
+
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer la salle');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
+
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
+
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
+        });
+
+        // Customisation des checkboxes
+        $('.form-check').addClass('custom-control custom-checkbox');
+        $('.form-check-input').addClass('custom-control-input');
+        $('.form-check-label').addClass('custom-control-label');
     </script>
 {% endblock %}
 

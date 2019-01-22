@@ -47,7 +47,6 @@ class RoomController extends AbstractController
     public function new(Request $request): Response
     {
         $room = new Room();
-//        $room->setActive(true);
 
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
@@ -55,8 +54,7 @@ class RoomController extends AbstractController
         # Si le formulaire est soumis et qu'il est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            #dump($article);
-            # 1. Traitement de l'upload de l'image
+            // Traitement de l'upload de l'image
 
             /** @var UploadedFile $picture */
             $picture = $room->getPicture();
@@ -204,9 +202,6 @@ class RoomController extends AbstractController
                            UnavailabilityController $unavailabilityController,
                            Room $room): Response
     {
-//        $config = new Configuration();
-//        $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
-
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
 
             $entityManager = $this->getDoctrine()->getManager();

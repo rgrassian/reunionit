@@ -23,7 +23,7 @@
                         </button>
                     </a>
                 {% endif %}
-                <form method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de la réservation ?');" style="display: inline-block;">
+                <form id="form" method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" style="display: inline-block;">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
                     <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
@@ -86,4 +86,30 @@
 
     </div>
 
+    {% include 'components/_confirm_modal.html.twig' %}
+
 {% endblock %}
+
+{% set modal_message = 'Voulez-vous vraiment supprimer cette réservation ?' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#confirmationMessage').text('{{ modal_message }}');
+        $('.modal-title').text('Supprimer la réservation');
+        $('#form').click(function(e) {
+            e.preventDefault();
+            $('#confirmationModal').modal({});
+
+            $('#confirm').on("click", function () {
+                $('#form').submit();
+                $("#confirmationModal").modal('hide');
+            });
+
+            $("#cancel").on("click", function(){
+                $("#confirmationModal").modal('hide');
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -131,6 +131,7 @@
                 //     };
                 // },
                 selectable: true,
+                // On n'autorise la réservation qu'à partir de l'heure courante.
                 selectAllow: function(select) {
                     return moment().diff(select.start) <= 0
                 },
