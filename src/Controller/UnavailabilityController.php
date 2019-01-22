@@ -9,6 +9,7 @@ use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -62,6 +63,7 @@ class UnavailabilityController extends AbstractController
      * @IsGranted("ROLE_EMPLOYEE")
      * @param Request $request
      * @param RoomRepository $roomRepository
+     * @param \Swift_Mailer $mailer
      * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
@@ -131,7 +133,7 @@ class UnavailabilityController extends AbstractController
             }
 
             $this->addFlash('notice',
-                'Votre réservation est enregistrée, vous allez recevoir un email de confirmation.');
+                'La réservation est enregistrée.');
 
             return $this->redirectToRoute('unavailability_calendar');
         }
@@ -170,6 +172,7 @@ class UnavailabilityController extends AbstractController
      *     message="Cette réservation n'existe plus ou n'a jamais existé.")
      * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
      * @param Request $request
+     * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
      * @return Response
      */
@@ -185,6 +188,9 @@ class UnavailabilityController extends AbstractController
         } else {
             $form = $this->createForm(UnavailabilityType::class, $unavailability);
         }
+
+        $oldGuests = $unavailability->getGuests()->toArray();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -200,9 +206,32 @@ class UnavailabilityController extends AbstractController
                 ['data' => $formData]
             );
 
-            // Envoi de mails aux invités
-            $guests = $formData->getGuests();
-            foreach ($guests as $guest) {
+            $newGuests = $unavailability->getGuests()->toArray();
+
+//            $persistGuests = array_intersect_key($oldGuests, $newGuests);
+//            $removedGuests = array_diff_key($oldGuests, $newGuests);
+//            $additionalGuests = array_diff_key($newGuests, $oldGuests);
+
+            $persistGuests = [];
+            $removedGuests = [];
+            $additionalGuests = [];
+            foreach ($oldGuests as $guest) {
+                if (in_array($guest, $newGuests)) {
+                    $persistGuests[] = $guest;
+                } else {
+                    $removedGuests[] = $guest;
+                }
+            }
+            foreach ($newGuests as $guest) {
+                if (!in_array($guest, $oldGuests)) {
+                    $additionalGuests[] = $guest;
+                }
+            }
+
+            //dd($removedGuests);
+
+            // Envoi de mails aux guests déjà invités
+            foreach ($persistGuests as $guest) {
                 $this->sendEmail($mailer,
                     'ReunionIT | Modification d\'une invitation',
                     $guest->getEmail(),
@@ -211,8 +240,28 @@ class UnavailabilityController extends AbstractController
                 );
             }
 
+            // Envoi de mails aux guests nouvellement invités
+            foreach ($additionalGuests as $guest) {
+                $this->sendEmail($mailer,
+                    'ReunionIT | Nouvelle invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_new_guest.html.twig',
+                    ['guest'=>$guest,'data' => $formData]
+                );
+            }
+
+            // Envoi de mails aux guests nouvellement invités
+            foreach ($removedGuests as $guest) {
+                $this->sendEmail($mailer,
+                    'ReunionIT | Invitation annulée',
+                    $guest->getEmail(),
+                    'email/unavailability_delete_guest.html.twig',
+                    ['guest'=>$guest,'data' => $formData]
+                );
+            }
+
             $this->addFlash('notice',
-                'La réservation a été modifiée, un email de confirmation vous a été envoyé.');
+                'La réservation a été modifiée.');
 
             return $this->redirectToRoute('unavailability_calendar');
         }
@@ -231,6 +280,7 @@ class UnavailabilityController extends AbstractController
      *     message="Impossible de supprimer une réunion dont vous n'êtes pas l'organisateur.")
      * @Security("unavailability.isNotPast()", message="Impossible de supprimer une réunion passée.")
      * @param Request $request
+     * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
      * @return Response
      */
@@ -264,7 +314,7 @@ class UnavailabilityController extends AbstractController
         }
 
         $this->addFlash('notice',
-            'La réservation a été annulée, vous allez recevoir un email de confirmation.');
+            'La réservation a été annulée.');
 
         return $this->redirectToRoute('unavailability_calendar');
     }
@@ -342,6 +392,13 @@ class UnavailabilityController extends AbstractController
         return $this->render('unavailability/calendar.html.twig');
     }
 
+    /**
+     * @param \Swift_Mailer $mailer
+     * @param $object
+     * @param $to
+     * @param $view
+     * @param $options
+     */
     public function sendEmail(\Swift_Mailer $mailer, $object, $to, $view, $options)
     {
         $message = (new \Swift_Message($object))
