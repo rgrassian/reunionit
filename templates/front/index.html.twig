@@ -21,45 +21,67 @@
             </p>
         {% endif %}
 
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="row">
             <div class="col-12">Actuellement :</div>
-            <div class="card text-white bg-success col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
+            <div class="card text-white bg-info col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">13</h4>
-                    <p class="card-text">salles disponibles</p>
+                    <h4 class="card-title">{{ upcomingUnavailabilities }}</h4>
+                    <p class="card-text">{{ 1 < upcomingUnavailabilities ? 'réunions programmées' : 'réunion programmée' }}</p>
                 </div>
             </div>
             <div class="card text-white bg-success col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">2</h4>
-                    <p class="card-text">salles occupées</p>
+                    <h4 class="card-title">{{ currentAvailableRoomCount }}</h4>
+                    <p class="card-text">{{ 1 < currentAvailableRoomCount ? 'salles disponibles' : 'salle disponible' }}</p>
                 </div>
             </div>
-            <div class="card text-white bg-success col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
+            <div class="card text-white bg-warning col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">25</h4>
+                    <h4 class="card-title">{{ currentUnavailability }}</h4>
+                    <p class="card-text">{{ 1 < currentUnavailability ? 'salles occupées' : 'salle occupée' }}</p>
+                </div>
+            </div>
+            <div class="col-12">Nos locaux :</div>
+            <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
+                <div class="card-body">
+                    <h4 class="card-title">{{ totalRoomCount }}</h4>
+                    <p class="card-text">salles de réunion</p>
+                </div>
+            </div>
+            <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
+                <div class="card-body">
+                    <h4 class="card-title">{{ roomMacCapacity }}</h4>
                     <p class="card-text">capacité maximum</p>
                 </div>
             </div>
-            <div class="col-12">Chez ReunionIT :</div>
             <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">15</h4>
-                    <p class="card-text">salles disponibles</p>
+                    <h4 class="card-title">{{ random(10) }}*</h4>
+                    <p class="card-text">entier aléatoire entre 0 et 10</p>
+                </div>
+            </div>
+            <div class="col-12">Nos salariés :</div>
+            <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
+                <div class="card-body">
+                    <h4 class="card-title">{{ lastOrganiser.firstName ~ ' ' ~ lastOrganiser.lastName }}</h4>
+                    <p class="card-text">vient de réserver une salle</p>
                 </div>
             </div>
             <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">7</h4>
-                    <p class="card-text">réunions programmées</p>
+                    <h4 class="card-title">{{ lastMonthOrganiser.firstName ~ ' ' ~ lastMonthOrganiser.lastName }}</h4>
+                    <p class="card-text">est l'organisateur du mois dernier</p>
                 </div>
             </div>
             <div class="card text-white bg-secondary col-11 col-sm-4 col-lg-4 mb-1 mb-sm-3 mx-auto text-center">
                 <div class="card-body">
-                    <h4 class="card-title">47</h4>
-                    <p class="card-text">capacité maximum</p>
+                    <h4 class="card-title">{{ lastMonthGuest.firstName ~ ' ' ~ lastMonthGuest.lastName }}</h4>
+                    <p class="card-text">est l'invité du mois dernier</p>
                 </div>
             </div>
+            <p>* statistiques pimpables selon le besoin du client</p>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -17,7 +17,6 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
-
     }
 
     public function findActiveUsers()
@@ -27,6 +26,42 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.lastName', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+//    public function findLastOrganiser()
+//    {
+//        return $this->createQueryBuilder('u')
+//            ->join('u.unavailabilities', 'un')
+//            ->addSelect('COUNT(un) AS unavailabilities_count')
+//            ->groupBy('u')
+//            ->orderBy('unavailabilities_count', 'DESC')
+//            ->setMaxResults(1)
+//            ->getQuery()
+//            ->getOneOrNullResult();
+//    }
+
+    public function findLastMonthOrganiser()
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.unavailabilities', 'un')
+            ->addSelect('COUNT(un) AS unavailabilities_count')
+            ->groupBy('u')
+            ->orderBy('unavailabilities_count', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findLastMonthGuest()
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.invitations', 'i')
+            ->addSelect('COUNT(i) AS invitations_count')
+            ->groupBy('u')
+            ->orderBy('invitations_count', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     // /**

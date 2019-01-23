@@ -19,6 +19,14 @@ class RoomRepository extends ServiceEntityRepository
         parent::__construct($registry, Room::class);
     }
 
+    public function findMaxCapacityRoom()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('MAX(r.capacity)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Room[] Returns an array of Room objects
     //  */

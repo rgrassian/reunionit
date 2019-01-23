@@ -114,12 +114,32 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findCurrentUnavailabilities()
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.startDate < :now')
+            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->andWhere(':now < u.endDate')
+            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUpcomingUnavailabilities()
+    {
+        return $this->createQueryBuilder('u')
+            ->where(':now < u.startDate')
+            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findUpcomingUnavailabilitiesByRoom($roomId)
     {
         return $this->createQueryBuilder('u')
             ->where('u.room = :room_id')
             ->setParameter('room_id', $roomId)
-            ->andWhere('u.startDate > :now')
+            ->andWhere(':now < u.startDate')
             ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
             ->getQuery()
             ->getResult();
@@ -130,7 +150,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->where('u.organiser = :organiser')
             ->setParameter('organiser', $organiser)
-            ->andWhere('u.startDate > :now')
+            ->andWhere(':now < u.startDate')
             ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
             ->getQuery()
             ->getResult();
@@ -144,9 +164,34 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->addSelect('r')
             ->where('g = :guest')
             ->setParameter('guest', $guest)
-            ->andWhere('u.startDate > :now')
+            ->andWhere(':now < u.startDate')
             ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
             ->getQuery()
             ->getResult();
     }
+
+    public function findLastUnavailability()
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.id','DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findLastMonthUnavailabilities()
+    {
+        $monthStartDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/m/01 00:00:00'));
+        $m = ($monthStartDate->format('n') + 1) % 12;
+        $monthEndDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/'.$m.'/01 00:00:00'));
+
+        return $this->createQueryBuilder('u')
+            ->andWhere(':monthStartDate < u.startDate')
+            ->setParameter('monthStartDate', $monthStartDate)
+            ->andWhere('u.endDate < :monthEndDate')
+            ->setParameter('monthEndDate', $monthEndDate)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
