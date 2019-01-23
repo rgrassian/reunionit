@@ -27,13 +27,15 @@
                         <i class="fas fa-edit"></i>
                     </button>
                 </a>
-                <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}" style="display: inline-block;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                    <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                {% if user != app.user %}
+                    <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}" style="display: inline-block;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                {% endif %}
             </div>
             {% endif %}
         </div>

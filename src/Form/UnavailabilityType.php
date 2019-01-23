@@ -29,7 +29,7 @@ class UnavailabilityType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $users = $this->userRepository->findActiveUsers();
+        $users = $this->userRepository->findActiveUsersExceptCurrent();
         $builder
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Début',

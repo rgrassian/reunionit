@@ -221,7 +221,7 @@ class UserController extends AbstractController
                     $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
                 }
 
-                // Si l'utilisateur est invité à des réunions à venir, on le supprime des guests de ces réunions.
+                // Si l'utilisateur est invité à des réunions à venir, on le supprime des invités à ces réunions.
                 if ($user->hasUpcomingInvitations()) {
                     $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
                 }

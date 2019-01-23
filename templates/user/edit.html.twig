@@ -18,14 +18,16 @@
         </button>
         {{ form_end(form) }}
 
-        <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}"
-              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="position: relative;float: right;bottom: 38px;">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </form>
+        {% if user != app.user %}
+            <form id="form" method="post" action="{{ path('user_delete', {'id': user.id}) }}"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="position: relative;float: right;bottom: 38px;">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Supprimer">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        {% endif %}
 
     </div>
 
@@ -60,5 +62,10 @@
                 $("#confirmationModal").modal('hide');
             });
         });
+
+        // Customisation des boutons radio
+        $('.form-check').addClass('custom-control custom-radio');
+        $('.form-check-input').addClass('custom-control-input');
+        $('.form-check-label').addClass('custom-control-label');
     </script>
 {% endblock %}

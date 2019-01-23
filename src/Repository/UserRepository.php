@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,15 +15,30 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $security;
+
+    public function __construct(RegistryInterface $registry,
+                                Security $security)
     {
         parent::__construct($registry, User::class);
+        $this->security = $security;
     }
 
-    public function findActiveUsers()
+//    public function findActiveUsers()
+//    {
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.deletedAt is null')
+//            ->orderBy('u.lastName', 'ASC')
+//            ->getQuery()
+//            ->getResult();
+//    }
+
+    public function findActiveUsersExceptCurrent()
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.deletedAt is null')
+            ->andWhere('u.id != :user_id')
+            ->setParameter('user_id', $this->security->getUser()->getId())
             ->orderBy('u.lastName', 'ASC')
             ->getQuery()
             ->getResult();
