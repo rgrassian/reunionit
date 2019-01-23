@@ -12,9 +12,11 @@
         <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>
         <hr class="my-4">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="{{ path('room_index') }}" role="button">Réserver une salle</a>
-            </p>
+            {% if is_granted('ROLE_EMPLOYEE') %}
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="{{ path('room_index') }}" role="button">Réserver une salle</a>
+                </p>
+            {% endif %}
         {% else %}
             <p class="lead">
                 <a class="btn btn-primary btn-lg" href="{{ path('app_login') }}" role="button">Se connecter</a>
@@ -29,7 +31,7 @@
             </blockquote>
         </div>
 
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_EMPLOYEE') %}
         
         <div class="row">
             <div class="col-12">Actuellement :</div>
@@ -91,6 +93,14 @@
             </div>
             <p>* statistiques pimpables selon le besoin du client</p>
         </div>
+        {% else %}
+            <hr>
+            <div class="mt-3">
+                Pour en savoir plus sur ce service, écrivez à
+                <a href="mailto:margouillat.reunion.it@gmail.com">
+                    margouillat.reunion.it@gmail.com
+                </a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
