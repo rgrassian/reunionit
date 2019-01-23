@@ -7,7 +7,7 @@
 
     <h1>Nouvel utilisateur</h1>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': { novalidate: 'novalidate' }}) }}
     {{ form_widget(form) }}
     <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer"><i class="fas fa-check"></i></button>
     <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour"><a href="{{ path('user_index') }}" style="color: #fff;"><i class="fas fa-chevron-left"></i></a></button>
@@ -19,8 +19,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+        // Customisation des boutons radio
+        $('.form-check').addClass('custom-control custom-radio');
+        $('.form-check-input').addClass('custom-control-input');
+        $('.form-check-label').addClass('custom-control-label');
     </script>
 {% endblock %}

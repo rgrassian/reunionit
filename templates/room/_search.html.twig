@@ -3,10 +3,10 @@
         <label for="roomCapacitySelect">Capacité</label>
         <select class="custom-select" id="roomCapacitySelect">
             <option selected disabled>Sélectionnez</option>
-            <option value='{"min":1,"max":5}'>moins de 5 personnes</option>
-            <option value='{"min":6,"max":10}'>entre 5 et 10 personnes</option>
-            <option value='{"min":11,"max":20}'>entre 10 et 20 personnes</option>
-            <option value='{"min":21}'>20 personnes et plus</option>
+            <option value='{"min":1,"max":5}'>Moins de 5 personnes</option>
+            <option value='{"min":6,"max":10}'>Entre 6 et 10 personnes</option>
+            <option value='{"min":11,"max":20}'>Entre 11 et 20 personnes</option>
+            <option value='{"min":21}'>Plus de 20 personnes</option>
         </select>
     </div>
     <div class="form-group">
@@ -21,19 +21,4 @@
         <button type="button" onclick="initSearch()" class="btn btn-info col-5 mt-0"><i class="fas fa-redo"></i></button>
         <button type="button" onclick="updateRooms()" class="btn btn-info col-5 offset-2 mt-0"><i class="fas fa-search"></i></button>
     </div>
-    {#<div class="form-group">#}
-        {#<legend class="col-form-label required">Options</legend>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_0" name="room[features][]" class="form-check-input" value="Wifi"">#}
-            {#<label class="form-check-label" for="room_features_0">Wifi</label></div>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_1" name="room[features][]" class="form-check-input" value="Vidéoprojecteur">#}
-            {#<label class="form-check-label" for="room_features_1">Vidéoprojecteur</label></div>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_2" name="room[features][]" class="form-check-input" value="Paperboard">#}
-            {#<label class="form-check-label" for="room_features_2">Paperboard</label></div>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_3" name="room[features][]" class="form-check-input" value="Chauffage au sol">#}
-            {#<label class="form-check-label" for="room_features_3">Chauffage au sol</label></div>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_4" name="room[features][]" class="form-check-input" value="Balcon ou terrasse">#}
-            {#<label class="form-check-label" for="room_features_4">Balcon ou terrasse</label></div>#}
-        {#<div class="form-check">        <input type="checkbox" id="room_features_5" name="room[features][]" class="form-check-input" value="Estrade">#}
-            {#<label class="form-check-label" for="room_features_5">Estrade</label></div>#}
-    {#</div>#}
 </form>
