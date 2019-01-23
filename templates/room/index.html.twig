@@ -105,11 +105,10 @@
                 var featuresByRoom = infos.features;
                 var capacityByRoom = infos.capacity;
 
-                if(findRoomWithThisFeatures(selectedFeatures, featuresByRoom) && findRoomWithThisCapacity(selectedCapacity, capacityByRoom)){
-                    //console.log(card);
-                } else {
+                if (!(findRoomWithThisFeatures(selectedFeatures, featuresByRoom)
+                    && findRoomWithThisCapacity(selectedCapacity, capacityByRoom))){
                     card.hide();
-                };
+                }
             })
         }
         function initSearch() {
@@ -124,18 +123,20 @@
             console.log('init');
         }
         function findRoomWithThisFeatures (haystack, arr) {
+            // alert(haystack.every(o => arr.includes(o)));
             return haystack.every(o => arr.includes(o));
-        };
+        }
         function findRoomWithThisCapacity (selectedCapacity, capacityByRoom) {
-            var minSelectedCapacity = selectedCapacity.min;
+            // var minSelectedCapacity = selectedCapacity.min;
+            var minSelectedCapacity = selectedCapacity === null ? 0 : selectedCapacity.min;
 
-            if(selectedCapacity.max === undefined) {
-                return minSelectedCapacity < capacityByRoom;
+            if(selectedCapacity === null || selectedCapacity.max === undefined) {
+                return minSelectedCapacity <= capacityByRoom;
             }
 
             var maxSelectedCapacity = selectedCapacity.max;
 
-            return ( minSelectedCapacity < capacityByRoom && capacityByRoom < maxSelectedCapacity );
+            return ( minSelectedCapacity <= capacityByRoom && capacityByRoom <= maxSelectedCapacity );
         }
     </script>
 {% endblock %}

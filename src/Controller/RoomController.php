@@ -29,7 +29,8 @@ class RoomController extends AbstractController
      * @param FeaturesProvider $featuresProvider
      * @return Response
      */
-    public function index(RoomRepository $roomRepository, FeaturesProvider $featuresProvider): Response
+    public function index(RoomRepository $roomRepository,
+                          FeaturesProvider $featuresProvider): Response
     {
         $features = $featuresProvider->getFeatures();
         return $this->render('room/index.html.twig', [
