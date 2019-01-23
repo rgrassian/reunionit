@@ -71,6 +71,8 @@ class UserRepository extends ServiceEntityRepository
     public function findLastMonthGuest()
     {
         return $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"'.'ROLE_EMPLOYEE'.'"%')
             ->join('u.invitations', 'i')
             ->addSelect('COUNT(i) AS invitations_count')
             ->groupBy('u')
