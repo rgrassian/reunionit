@@ -45,6 +45,15 @@
     {{ parent() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css" integrity="sha256-Kq686ftxGamHGd8MpwJXmYgk1s7m00maEfHX1VpKYP8=" crossorigin="anonymous" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <style>
+        /* On empêche Bootstrap d'afficher le bouton File Input dans le bloc Dropify */
+        .custom-file-label {
+            display: none;
+        }
+        label[for="room-capacity"] {
+            font-weight: bold;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}

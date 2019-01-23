@@ -31,7 +31,7 @@
                     <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                     <td>
                         <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
-                            <i class="fas fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i>
+                            <i class="fas fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" style="text-decoration: none;"></i>
                         </a>
                         {% if date() < unavailability.startDate %}
                         <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">
