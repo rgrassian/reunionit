@@ -44,18 +44,6 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    public function findLastOrganiser()
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->join('u.unavailabilities', 'un')
-//            ->addSelect('COUNT(un) AS unavailabilities_count')
-//            ->groupBy('u')
-//            ->orderBy('unavailabilities_count', 'DESC')
-//            ->setMaxResults(1)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
-
     public function findLastMonthOrganiser()
     {
         return $this->createQueryBuilder('u')
@@ -65,7 +53,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('unavailabilities_count', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()[0];
     }
 
     public function findLastMonthGuest()
@@ -79,7 +67,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('invitations_count', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()[0 ];
     }
 
     // /**

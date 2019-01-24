@@ -179,17 +179,16 @@ class UnavailabilityRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findLastMonthUnavailabilities()
+     public function findLastMonthUnavailabilities()
     {
-        $monthStartDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/m/01 00:00:00'));
-        $m = ($monthStartDate->format('n') + 1) % 12;
-        $monthEndDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/'.$m.'/01 00:00:00'));
+        $lastMonthEndDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/m/01 00:00:00'));
+        $m = ($lastMonthEndDate->format('n') - 1) % 12;
+        $lastMonthStartDate = \DateTime::createFromFormat('Y/m/d H:i:s', (new \Datetime())->format('Y/'.$m.'/01 00:00:00'));
 
         return $this->createQueryBuilder('u')
-            ->andWhere(':monthStartDate < u.startDate')
-            ->setParameter('monthStartDate', $monthStartDate)
-            ->andWhere('u.endDate < :monthEndDate')
-            ->setParameter('monthEndDate', $monthEndDate)
+            ->andWhere('u.startDate BETWEEN :lastMonthStartDate and :lastMonthEndDate')
+            ->setParameter('lastMonthStartDate', $lastMonthStartDate)
+            ->setParameter('lastMonthEndDate', $lastMonthEndDate)
             ->getQuery()
             ->getResult();
     }
