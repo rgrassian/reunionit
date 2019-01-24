@@ -218,12 +218,12 @@ class UserController extends AbstractController
                 // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
                 if ($user->hasUpcomingUnavailabilities()) {
                     //                                              modal de confirmation /!\
-                    $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                    $unavailabilityController->deleteUpcomingUnavailabilitiesByOrganiser($user);
                 }
 
                 // Si l'utilisateur est invité à des réunions à venir, on le supprime des invités à ces réunions.
                 if ($user->hasUpcomingInvitations()) {
-                    $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                    $unavailabilityController->removeUserFromUpcomingUnavailabilitiesGuests($user);
                 }
             }
 

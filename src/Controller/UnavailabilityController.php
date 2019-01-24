@@ -321,11 +321,11 @@ class UnavailabilityController extends AbstractController
      * Supprime toutes les réunions à venir organisées par un User.
      * @param User $organiser
      */
-    public function deleteUpcomingUnavailabilityByOrganiser(User $organiser)
+    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         // à checker
-        $entityManager = $this->getDoctrine()->getManager();
+        // $entityManager = $this->getDoctrine()->getManager();
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
 
@@ -338,7 +338,7 @@ class UnavailabilityController extends AbstractController
      * Retire un utilisateur de la liste des invités aux réunions à venir.
      * @param User $user
      */
-    public function removeUserFromUpcomingUnavailabilityGuests(User $user)
+    public function removeUserFromUpcomingUnavailabilitiesGuests(User $user)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
@@ -348,7 +348,6 @@ class UnavailabilityController extends AbstractController
         foreach ($unavailabilities as $unavailability) {
 
             $unavailability->removeGuest($user);
-
             $entityManager->persist($unavailability);
             $entityManager->flush();
         }
