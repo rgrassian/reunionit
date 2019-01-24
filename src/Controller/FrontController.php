@@ -26,7 +26,7 @@ class FrontController extends AbstractController
                           UserRepository $userRepository)
     {
         // Si l'application n'a jamais été utilisée, on initialise les stats avec des valeurs par défaut.
-        $totalRoomCount = $roomRepository->count([]);
+        $totalRoomCount = count($roomRepository->findAll());
         $upcomingUnavailabilitiesCount = count($unavailabilityRepository->findUpcomingUnavailabilities())   ?? 0;
         $roomMaxCapacity = $roomRepository->findMaxCapacityRoom()                                           ?? 0;
         $currentUnavailability = count($unavailabilityRepository->findCurrentUnavailabilities())            ?? 0;
@@ -34,8 +34,8 @@ class FrontController extends AbstractController
         $lastOrganiser = $unavailabilityRepository->findLastUnavailability()
             ? $unavailabilityRepository->findLastUnavailability()->getOrganiser()
             : $this->getUser();
-        $lastMonthOrganiser = $userRepository->findLastMonthOrganiser()[0]  ?? $this->getUser();
-        $lastMonthGuest = $userRepository->findLastMonthGuest()[0]          ?? $this->getUser();
+        $lastMonthOrganiser = $userRepository->findLastMonthOrganiser()  ?? $this->getUser();
+        $lastMonthGuest = $userRepository->findLastMonthMostInvited()    ?? $this->getUser();
 
         return $this->render('front/index.html.twig', [
             'totalRoomCount' => $totalRoomCount,

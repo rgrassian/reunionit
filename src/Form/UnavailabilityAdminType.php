@@ -20,7 +20,7 @@ class UnavailabilityAdminType extends UnavailabilityType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $users = $this->userRepository->findActiveUsersExceptCurrent();
+        $users = $this->userRepository->findActiveUsers();
 
         parent::buildForm($builder, $options);
         
@@ -42,7 +42,6 @@ class UnavailabilityAdminType extends UnavailabilityType
                 'expanded' => false,
                 'multiple' => false,
             ]);
-
     }
 
 }
