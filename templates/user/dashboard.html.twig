@@ -6,6 +6,8 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
+        {% if is_granted('ROLE_EMPLOYEE') %}
+
         <h1>Tableau de bord</h1>
 
         <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
@@ -20,26 +22,30 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="unavailability-organiser" role="tabpanel" aria-labelledby="home-tab">
 
-                {#{{ include('user/_dashboard_organiser.html.twig') }}#}
                 {{ render(controller('App\\Controller\\DashboardController::showUnavailabilitiesAsOrganiser',
                     {'page': page}, { 'strategy': 'hinclude'}
                 )) }}
 
             </div>
 
-
             <div class="tab-pane fade" id="unavailability-guest" role="tabpanel" aria-labelledby="profile-tab">
 
-                {#{{ include('user/_dashboard_guest.html.twig') }}#}
                 {{ render(controller('App\\Controller\\DashboardController::showUnavailabilitiesAsGuest',
                     {'page': page}, { 'strategy': 'hinclude'}
                 )) }}
 
-
             </div>
-
         </div>
 
+        {% elseif is_granted('ROLE_GUEST') %}
+
+        <h1>Mes invitations</h1>
+
+            {{ render(controller('App\\Controller\\DashboardController::showUnavailabilitiesAsGuest',
+                {'page': page}, { 'strategy': 'hinclude'}
+            )) }}
+
+        {% endif %}
 
     </div>
 

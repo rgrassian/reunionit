@@ -105,7 +105,7 @@ class UserController extends AbstractController
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
      * @Security("u != null and u.getDeletedAt() == null", statusCode=404,
      *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_GUEST")
      * @param User $u
      * @return Response
      */
