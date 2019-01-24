@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Security;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    // Permet d'injecter l'utilisateur courant.
     private $security;
 
     public function __construct(RegistryInterface $registry,
@@ -36,7 +37,6 @@ class UserRepository extends ServiceEntityRepository
     public function findActiveUsersExceptCurrent()
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.deletedAt is null')
             ->andWhere('u.id != :user_id')
             ->setParameter('user_id', $this->security->getUser()->getId())
             ->orderBy('u.lastName', 'ASC')
@@ -71,8 +71,8 @@ class UserRepository extends ServiceEntityRepository
     public function findLastMonthGuest()
     {
         return $this->createQueryBuilder('u')
-            ->where('u.roles LIKE :roles')
-            ->setParameter('roles', '%"'.'ROLE_EMPLOYEE'.'"%')
+            ->where('u.roles NOT LIKE :roles')
+            ->setParameter('roles', '%ROLE_GUEST%')
             ->join('u.invitations', 'i')
             ->addSelect('COUNT(i) AS invitations_count')
             ->groupBy('u')
