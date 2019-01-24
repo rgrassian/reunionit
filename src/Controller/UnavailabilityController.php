@@ -64,13 +64,11 @@ class UnavailabilityController extends AbstractController
      * @param Request $request
      * @param RoomRepository $roomRepository
      * @param \Swift_Mailer $mailer
-     * @param UnavailabilityRepository $unavailabilityRepository
      * @return Response
      */
     public function new(Request $request,
                         RoomRepository $roomRepository,
-                        \Swift_Mailer $mailer,
-                        UnavailabilityRepository $unavailabilityRepository): Response
+                        \Swift_Mailer $mailer): Response
     {
         $unavailability = new Unavailability();
 

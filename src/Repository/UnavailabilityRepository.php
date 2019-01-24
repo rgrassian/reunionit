@@ -117,9 +117,7 @@ class UnavailabilityRepository extends ServiceEntityRepository
     public function findCurrentUnavailabilities()
     {
         return $this->createQueryBuilder('u')
-            ->where('u.startDate < :now')
-            ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
-            ->andWhere(':now < u.endDate')
+            ->where(':now BETWEEN u.startDate and u.endDate')
             ->setParameter('now', (new \DateTime())->format('Y-m-d H:i:s'))
             ->getQuery()
             ->getResult();
