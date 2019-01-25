@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Code Coverage for C:\Users\Etudiant\Documents\sfwf3-nov18\symfony\ReunionIT\src/Controller/UserController.php</title>
+  <title>Code Coverage for C:\Users\Etudiant0\Documents\ReunionIT\src/Controller/UserController.php</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../.css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../.css/style.css" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
     <div class="row">
      <div class="col-md-12">
       <ol class="breadcrumb">
-        <li><a href="../index.html">C:\Users\Etudiant\Documents\sfwf3-nov18\symfony\ReunionIT\src</a></li>
+        <li><a href="../index.html">C:\Users\Etudiant0\Documents\ReunionIT\src</a></li>
         <li><a href="index.html">Controller</a></li>
         <li class="active">UserController.php</li>
 
@@ -497,12 +497,12 @@
      <tr><td><div align="right"><a name="218"></a><a href="#218">218</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;Si&nbsp;l'utilisateur&nbsp;est&nbsp;l'organisateur&nbsp;de&nbsp;réunions&nbsp;à&nbsp;venir,&nbsp;on&nbsp;supprime&nbsp;ces&nbsp;réunions.</span></td></tr>
      <tr class="danger"><td><div align="right"><a name="219"></a><a href="#219">219</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$user</span><span class="default">-&gt;</span><span class="default">hasUpcomingUnavailabilities</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
      <tr><td><div align="right"><a name="220"></a><a href="#220">220</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modal&nbsp;de&nbsp;confirmation&nbsp;/!\</span></td></tr>
-     <tr class="danger"><td><div align="right"><a name="221"></a><a href="#221">221</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$unavailabilityController</span><span class="default">-&gt;</span><span class="default">deleteUpcomingUnavailabilityByOrganiser</span><span class="keyword">(</span><span class="default">$user</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger"><td><div align="right"><a name="221"></a><a href="#221">221</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$unavailabilityController</span><span class="default">-&gt;</span><span class="default">deleteUpcomingUnavailabilitiesByOrganiser</span><span class="keyword">(</span><span class="default">$user</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
      <tr class="danger"><td><div align="right"><a name="222"></a><a href="#222">222</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
      <tr><td><div align="right"><a name="223"></a><a href="#223">223</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="224"></a><a href="#224">224</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;Si&nbsp;l'utilisateur&nbsp;est&nbsp;invité&nbsp;à&nbsp;des&nbsp;réunions&nbsp;à&nbsp;venir,&nbsp;on&nbsp;le&nbsp;supprime&nbsp;des&nbsp;invités&nbsp;à&nbsp;ces&nbsp;réunions.</span></td></tr>
      <tr class="danger"><td><div align="right"><a name="225"></a><a href="#225">225</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$user</span><span class="default">-&gt;</span><span class="default">hasUpcomingInvitations</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
-     <tr class="danger"><td><div align="right"><a name="226"></a><a href="#226">226</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$unavailabilityController</span><span class="default">-&gt;</span><span class="default">removeUserFromUpcomingUnavailabilityGuests</span><span class="keyword">(</span><span class="default">$user</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger"><td><div align="right"><a name="226"></a><a href="#226">226</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$unavailabilityController</span><span class="default">-&gt;</span><span class="default">removeUserFromUpcomingUnavailabilitiesGuests</span><span class="keyword">(</span><span class="default">$user</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
      <tr class="danger"><td><div align="right"><a name="227"></a><a href="#227">227</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
      <tr class="danger"><td><div align="right"><a name="228"></a><a href="#228">228</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
      <tr><td><div align="right"><a name="229"></a><a href="#229">229</a></div></td><td class="codeLine"></td></tr>
@@ -557,7 +557,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.14</a> with <a href="https://xdebug.org/">Xdebug 2.6.1</a> and <a href="https://phpunit.de/">PHPUnit 6.5.13</a> at Fri Jan 25 11:31:48 CET 2019.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.11</a> with <a href="https://xdebug.org/">Xdebug 2.6.1</a> and <a href="https://phpunit.de/">PHPUnit 6.5.13</a> at Thu Jan 24 18:48:34 CET 2019.</small>
     </p>
     <a title="Back to the top" id="toplink" href="#"><span class="glyphicon glyphicon-arrow-up"></span></a>
    </footer>
