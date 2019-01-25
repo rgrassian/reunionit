@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for C:\Users\Etudiant\Documents\sfwf3-nov18\symfony\ReunionIT\src</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href=".css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href=".css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href=".css/style.css" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]>
+  <script src=".js/html5shiv.min.js"></script>
+  <script src=".js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="index.html">C:\Users\Etudiant\Documents\sfwf3-nov18\symfony\ReunionIT\src</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Controller/DashboardController.php.html#13">App\Controller\DashboardController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/FrontController.php.html#15">App\Controller\FrontController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/Availability.php.html#10">App\Validator\Availability</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#7">App\Service\Twig\AppExtension</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#22">App\Security\LoginFormAuthenticator</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Provider/FeaturesProvider.php.html#16">App\Provider\FeaturesProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190123193741.php.html#13">DoctrineMigrations\Version20190123193741</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190121094650.php.html#13">DoctrineMigrations\Version20190121094650</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119232841.php.html#13">DoctrineMigrations\Version20190119232841</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119220022.php.html#13">DoctrineMigrations\Version20190119220022</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119180707.php.html#13">DoctrineMigrations\Version20190119180707</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190118202627.php.html#13">DoctrineMigrations\Version20190118202627</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190115113811.php.html#11">DoctrineMigrations\Version20190115113811</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190111160704.php.html#11">DoctrineMigrations\Version20190111160704</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190102111030.php.html#11">DoctrineMigrations\Version20190102111030</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20181221114459.php.html#11">DoctrineMigrations\Version20181221114459</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserType.php.html#12">App\Form\UserType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserPasswordChangeType.php.html#15">App\Form\UserPasswordChangeType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserAdminType.php.html#9">App\Form\UserAdminType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#22">App\Controller\RoomController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/SecurityController.php.html#10">App\Controller\SecurityController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#26">App\Controller\UnavailabilityController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#21">App\Controller\UserController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DataFixtures/RoomFixtures.php.html#17">App\DataFixtures\RoomFixtures</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DataFixtures/UserFixtures.php.html#12">App\DataFixtures\UserFixtures</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#9">App\Validator\AvailabilityValidator</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="EventListener/FullCalendarListener.php.html#12">App\EventListener\FullCalendarListener</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/Model/ChangePassword.php.html#10">App\Form\Model\ChangePassword</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/RoomType.php.html#15">App\Form\RoomType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityAdminType.php.html#19">App\Form\UnavailabilityAdminType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityType.php.html#17">App\Form\UnavailabilityType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#17">App\Repository\UnavailabilityRepository</a></td><td class="text-right">10%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#16">App\Entity\Unavailability</a></td><td class="text-right">26%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#19">App\Entity\Room</a></td><td class="text-right">27%</td></tr>
+       <tr><td><a href="Kernel.php.html#12">App\Kernel</a></td><td class="text-right">30%</td></tr>
+       <tr><td><a href="Repository/UserRepository.php.html#16">App\Repository\UserRepository</a></td><td class="text-right">41%</td></tr>
+       <tr><td><a href="Entity/User.php.html#18">App\Entity\User</a></td><td class="text-right">47%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#26">App\Controller\UnavailabilityController</a></td><td class="text-right">1190</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#9">App\Validator\AvailabilityValidator</a></td><td class="text-right">650</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#21">App\Controller\UserController</a></td><td class="text-right">506</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#16">App\Entity\Unavailability</a></td><td class="text-right">435</td></tr>
+       <tr><td><a href="Entity/User.php.html#18">App\Entity\User</a></td><td class="text-right">307</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#22">App\Controller\RoomController</a></td><td class="text-right">306</td></tr>
+       <tr><td><a href="Entity/Room.php.html#19">App\Entity\Room</a></td><td class="text-right">265</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#7">App\Service\Twig\AppExtension</a></td><td class="text-right">240</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#22">App\Security\LoginFormAuthenticator</a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="EventListener/FullCalendarListener.php.html#12">App\EventListener\FullCalendarListener</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Kernel.php.html#12">App\Kernel</a></td><td class="text-right">23</td></tr>
+       <tr><td><a href="Controller/FrontController.php.html#15">App\Controller\FrontController</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="DataFixtures/RoomFixtures.php.html#17">App\DataFixtures\RoomFixtures</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="DataFixtures/UserFixtures.php.html#12">App\DataFixtures\UserFixtures</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Provider/FeaturesProvider.php.html#16">App\Provider\FeaturesProvider</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Controller/DashboardController.php.html#20"><abbr title="App\Controller\DashboardController::showUnavailabilitiesAsOrganiser">showUnavailabilitiesAsOrganiser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119220022.php.html#15"><abbr title="DoctrineMigrations\Version20190119220022::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190118202627.php.html#15"><abbr title="DoctrineMigrations\Version20190118202627::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190118202627.php.html#20"><abbr title="DoctrineMigrations\Version20190118202627::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190118202627.php.html#30"><abbr title="DoctrineMigrations\Version20190118202627::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119180707.php.html#15"><abbr title="DoctrineMigrations\Version20190119180707::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119180707.php.html#20"><abbr title="DoctrineMigrations\Version20190119180707::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119180707.php.html#29"><abbr title="DoctrineMigrations\Version20190119180707::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119220022.php.html#20"><abbr title="DoctrineMigrations\Version20190119220022::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190115113811.php.html#13"><abbr title="DoctrineMigrations\Version20190115113811::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119220022.php.html#29"><abbr title="DoctrineMigrations\Version20190119220022::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119232841.php.html#15"><abbr title="DoctrineMigrations\Version20190119232841::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119232841.php.html#20"><abbr title="DoctrineMigrations\Version20190119232841::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190119232841.php.html#29"><abbr title="DoctrineMigrations\Version20190119232841::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190121094650.php.html#15"><abbr title="DoctrineMigrations\Version20190121094650::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190121094650.php.html#20"><abbr title="DoctrineMigrations\Version20190121094650::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190121094650.php.html#31"><abbr title="DoctrineMigrations\Version20190121094650::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190115113811.php.html#24"><abbr title="DoctrineMigrations\Version20190115113811::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190111160704.php.html#21"><abbr title="DoctrineMigrations\Version20190111160704::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190123193741.php.html#20"><abbr title="DoctrineMigrations\Version20190123193741::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserType.php.html#14"><abbr title="App\Form\UserType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityType.php.html#62"><abbr title="App\Form\UnavailabilityType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserAdminType.php.html#11"><abbr title="App\Form\UserAdminType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserAdminType.php.html#32"><abbr title="App\Form\UserAdminType::anonymousFunction:32#172">anonymousFunction:32#172</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserAdminType.php.html#37"><abbr title="App\Form\UserAdminType::anonymousFunction:37#198">anonymousFunction:37#198</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserPasswordChangeType.php.html#17"><abbr title="App\Form\UserPasswordChangeType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserPasswordChangeType.php.html#39"><abbr title="App\Form\UserPasswordChangeType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UserType.php.html#29"><abbr title="App\Form\UserType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190111160704.php.html#13"><abbr title="DoctrineMigrations\Version20190111160704::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Kernel.php.html#23"><abbr title="App\Kernel::getLogDir">getLogDir</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Kernel.php.html#38"><abbr title="App\Kernel::configureContainer">configureContainer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Kernel.php.html#50"><abbr title="App\Kernel::configureRoutes">configureRoutes</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20181221114459.php.html#13"><abbr title="DoctrineMigrations\Version20181221114459::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20181221114459.php.html#25"><abbr title="DoctrineMigrations\Version20181221114459::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190102111030.php.html#13"><abbr title="DoctrineMigrations\Version20190102111030::up">up</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190102111030.php.html#24"><abbr title="DoctrineMigrations\Version20190102111030::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190123193741.php.html#15"><abbr title="DoctrineMigrations\Version20190123193741::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Migrations/Version20190123193741.php.html#28"><abbr title="DoctrineMigrations\Version20190123193741::down">down</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityType.php.html#25"><abbr title="App\Form\UnavailabilityType::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/Availability.php.html#22"><abbr title="App\Validator\Availability::validatedBy">validatedBy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#60"><abbr title="App\Security\LoginFormAuthenticator::getUser">getUser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#77"><abbr title="App\Security\LoginFormAuthenticator::checkCredentials">checkCredentials</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#82"><abbr title="App\Security\LoginFormAuthenticator::onAuthenticationSuccess">onAuthenticationSuccess</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#92"><abbr title="App\Security\LoginFormAuthenticator::getLoginUrl">getLoginUrl</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#12"><abbr title="App\Service\Twig\AppExtension::anonymousFunction:12#52">anonymousFunction:12#52</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#25"><abbr title="App\Service\Twig\AppExtension::anonymousFunction:25#121">anonymousFunction:25#121</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/Availability.php.html#27"><abbr title="App\Validator\Availability::getTargets">getTargets</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#39"><abbr title="App\Security\LoginFormAuthenticator::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#17"><abbr title="App\Validator\AvailabilityValidator::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#26"><abbr title="App\Validator\AvailabilityValidator::validate">validate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#53"><abbr title="App\Validator\AvailabilityValidator::availability">availability</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#79"><abbr title="App\Validator\AvailabilityValidator::endAfterStart">endAfterStart</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#84"><abbr title="App\Validator\AvailabilityValidator::pastDates">pastDates</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#90"><abbr title="App\Validator\AvailabilityValidator::weekEndDates">weekEndDates</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#95"><abbr title="App\Validator\AvailabilityValidator::isWeekEndDate">isWeekEndDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#45"><abbr title="App\Security\LoginFormAuthenticator::getCredentials">getCredentials</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#31"><abbr title="App\Security\LoginFormAuthenticator::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Provider/FeaturesProvider.php.html#18"><abbr title="App\Provider\FeaturesProvider::getFeatures">getFeatures</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#108"><abbr title="App\Repository\UnavailabilityRepository::findUnavailabilitiesByRoom">findUnavailabilitiesByRoom</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#19"><abbr title="App\Repository\UnavailabilityRepository::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#53"><abbr title="App\Repository\UnavailabilityRepository::findAllAndOrder">findAllAndOrder</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#61"><abbr title="App\Repository\UnavailabilityRepository::findByOrganiserAndOrder">findByOrganiserAndOrder</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#73"><abbr title="App\Repository\UnavailabilityRepository::findByGuestAndOrder">findByGuestAndOrder</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#86"><abbr title="App\Repository\UnavailabilityRepository::findUnavailabilitiesByRoomByDates">findUnavailabilitiesByRoomByDates</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#98"><abbr title="App\Repository\UnavailabilityRepository::findUnavailabilitiesByDates">findUnavailabilitiesByDates</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#117"><abbr title="App\Repository\UnavailabilityRepository::findCurrentUnavailabilities">findCurrentUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UserRepository.php.html#65"><abbr title="App\Repository\UserRepository::findLastMonthMostInvited">findLastMonthMostInvited</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#126"><abbr title="App\Repository\UnavailabilityRepository::findUpcomingUnavailabilities">findUpcomingUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#135"><abbr title="App\Repository\UnavailabilityRepository::findUpcomingUnavailabilitiesByRoom">findUpcomingUnavailabilitiesByRoom</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#146"><abbr title="App\Repository\UnavailabilityRepository::findUpcomingUnavailabilitiesByOrganiser">findUpcomingUnavailabilitiesByOrganiser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#157"><abbr title="App\Repository\UnavailabilityRepository::findUpcomingUnavailabilitiesByGuest">findUpcomingUnavailabilitiesByGuest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UnavailabilityRepository.php.html#171"><abbr title="App\Repository\UnavailabilityRepository::findLastUnavailability">findLastUnavailability</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UserRepository.php.html#21"><abbr title="App\Repository\UserRepository::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repository/UserRepository.php.html#36"><abbr title="App\Repository\UserRepository::findActiveUsersExceptCurrent">findActiveUsersExceptCurrent</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityType.php.html#30"><abbr title="App\Form\UnavailabilityType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/UnavailabilityAdminType.php.html#21"><abbr title="App\Form\UnavailabilityAdminType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/DashboardController.php.html#53"><abbr title="App\Controller\DashboardController::showUnavailabilitiesAsGuest">showUnavailabilitiesAsGuest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#253"><abbr title="App\Controller\UserController::removeUserFromDatabase">removeUserFromDatabase</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#28"><abbr title="App\Controller\UserController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#57"><abbr title="App\Controller\UserController::new">new</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#112"><abbr title="App\Controller\UserController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#128"><abbr title="App\Controller\UserController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#156"><abbr title="App\Controller\UserController::changePassword">changePassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#206"><abbr title="App\Controller\UserController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#264"><abbr title="App\Controller\UserController::dashboard">dashboard</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#388"><abbr title="App\Controller\UnavailabilityController::calendar">calendar</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DataFixtures/RoomFixtures.php.html#24"><abbr title="App\DataFixtures\RoomFixtures::load">load</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DataFixtures/UserFixtures.php.html#19"><abbr title="App\DataFixtures\UserFixtures::load">load</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#104"><abbr title="App\Entity\Room::getFeatures">getFeatures</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#109"><abbr title="App\Entity\Room::setFeatures">setFeatures</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#119"><abbr title="App\Entity\Room::getUnavailabilities">getUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#124"><abbr title="App\Entity\Room::addUnavailabilities">addUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#134"><abbr title="App\Entity\Room::removeUnavailabilities">removeUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#400"><abbr title="App\Controller\UnavailabilityController::sendEmail">sendEmail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#377"><abbr title="App\Controller\UnavailabilityController::removeUnavailabilityFromDatabase">removeUnavailabilityFromDatabase</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#158"><abbr title="App\Entity\Room::getPicture">getPicture</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/SecurityController.php.html#18"><abbr title="App\Controller\SecurityController::login">login</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/FrontController.php.html#25"><abbr title="App\Controller\FrontController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#32"><abbr title="App\Controller\RoomController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#48"><abbr title="App\Controller\RoomController::new">new</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#114"><abbr title="App\Controller\RoomController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#134"><abbr title="App\Controller\RoomController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#202"><abbr title="App\Controller\RoomController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/SecurityController.php.html#32"><abbr title="App\Controller\SecurityController::logout">logout</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#361"><abbr title="App\Controller\UnavailabilityController::deleteUpcomingUnavailabilityByRoom">deleteUpcomingUnavailabilityByRoom</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#34"><abbr title="App\Controller\UnavailabilityController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#69"><abbr title="App\Controller\UnavailabilityController::new">new</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#156"><abbr title="App\Controller\UnavailabilityController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#177"><abbr title="App\Controller\UnavailabilityController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#285"><abbr title="App\Controller\UnavailabilityController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#324"><abbr title="App\Controller\UnavailabilityController::deleteUpcomingUnavailabilityByOrganiser">deleteUpcomingUnavailabilityByOrganiser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#341"><abbr title="App\Controller\UnavailabilityController::removeUserFromUpcomingUnavailabilityGuests">removeUserFromUpcomingUnavailabilityGuests</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#147"><abbr title="App\Entity\Room::hasUpcomingUnavailabilities">hasUpcomingUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#163"><abbr title="App\Entity\Room::setPicture">setPicture</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/RoomType.php.html#58"><abbr title="App\Form\RoomType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#318"><abbr title="App\Entity\User::unserialize">unserialize</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#251"><abbr title="App\Entity\User::getSalt">getSalt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#261"><abbr title="App\Entity\User::getUsername">getUsername</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#272"><abbr title="App\Entity\User::eraseCredentials">eraseCredentials</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#280"><abbr title="App\Entity\User::getInvitations">getInvitations</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#288"><abbr title="App\Entity\User::setInvitations">setInvitations</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#299"><abbr title="App\Entity\User::serialize">serialize</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="EventListener/FullCalendarListener.php.html#25"><abbr title="App\EventListener\FullCalendarListener::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#231"><abbr title="App\Entity\User::getDeletedAt">getDeletedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="EventListener/FullCalendarListener.php.html#32"><abbr title="App\EventListener\FullCalendarListener::loadEvents">loadEvents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/Model/ChangePassword.php.html#27"><abbr title="App\Form\Model\ChangePassword::getOldPassword">getOldPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/Model/ChangePassword.php.html#35"><abbr title="App\Form\Model\ChangePassword::getNewPassword">getNewPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/Model/ChangePassword.php.html#43"><abbr title="App\Form\Model\ChangePassword::setOldPassword">setOldPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/Model/ChangePassword.php.html#51"><abbr title="App\Form\Model\ChangePassword::setNewPassword">setNewPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/RoomType.php.html#19"><abbr title="App\Form\RoomType::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Form/RoomType.php.html#24"><abbr title="App\Form\RoomType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#239"><abbr title="App\Entity\User::setDeletedAt">setDeletedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#218"><abbr title="App\Entity\User::hasUpcomingInvitations">hasUpcomingInvitations</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#171"><abbr title="App\Entity\Room::getDeletedAt">getDeletedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#131"><abbr title="App\Entity\Unavailability::getOrganiser">getOrganiser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Room.php.html#179"><abbr title="App\Entity\Room::setDeletedAt">setDeletedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#83"><abbr title="App\Entity\Unavailability::getStartDate">getStartDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#88"><abbr title="App\Entity\Unavailability::setStartDate">setStartDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#95"><abbr title="App\Entity\Unavailability::getEndDate">getEndDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#100"><abbr title="App\Entity\Unavailability::setEndDate">setEndDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#119"><abbr title="App\Entity\Unavailability::getType">getType</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#124"><abbr title="App\Entity\Unavailability::setType">setType</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#143"><abbr title="App\Entity\Unavailability::getRoom">getRoom</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#207"><abbr title="App\Entity\User::hasUpcomingUnavailabilities">hasUpcomingUnavailabilities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#148"><abbr title="App\Entity\Unavailability::setRoom">setRoom</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#161"><abbr title="App\Entity\Unavailability::isOrganiser">isOrganiser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#166"><abbr title="App\Entity\Unavailability::isNotPast">isNotPast</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#174"><abbr title="App\Entity\Unavailability::getGuests">getGuests</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#179"><abbr title="App\Entity\Unavailability::addGuest">addGuest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#188"><abbr title="App\Entity\Unavailability::removeGuest">removeGuest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Entity/User.php.html#194"><abbr title="App\Entity\User::removeUnavailability">removeUnavailability</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#103"><abbr title="App\Validator\AvailabilityValidator::tooManyGuests">tooManyGuests</abbr></a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#53"><abbr title="App\Validator\AvailabilityValidator::availability">availability</abbr></a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#177"><abbr title="App\Controller\UnavailabilityController::edit">edit</abbr></a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#206"><abbr title="App\Controller\UserController::delete">delete</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#69"><abbr title="App\Controller\UnavailabilityController::new">new</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="EventListener/FullCalendarListener.php.html#32"><abbr title="App\EventListener\FullCalendarListener::loadEvents">loadEvents</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#26"><abbr title="App\Validator\AvailabilityValidator::validate">validate</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#48"><abbr title="App\Controller\RoomController::new">new</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#134"><abbr title="App\Controller\RoomController::edit">edit</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#12"><abbr title="App\Service\Twig\AppExtension::anonymousFunction:12#52">anonymousFunction:12#52</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Controller/RoomController.php.html#202"><abbr title="App\Controller\RoomController::delete">delete</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Service/Twig/AppExtension.php.html#25"><abbr title="App\Service\Twig\AppExtension::anonymousFunction:25#121">anonymousFunction:25#121</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Entity/Room.php.html#134"><abbr title="App\Entity\Room::removeUnavailabilities">removeUnavailabilities</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Entity/User.php.html#218"><abbr title="App\Entity\User::hasUpcomingInvitations">hasUpcomingInvitations</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#60"><abbr title="App\Security\LoginFormAuthenticator::getUser">getUser</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Entity/User.php.html#207"><abbr title="App\Entity\User::hasUpcomingUnavailabilities">hasUpcomingUnavailabilities</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#156"><abbr title="App\Controller\UserController::changePassword">changePassword</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#161"><abbr title="App\Entity\Unavailability::isOrganiser">isOrganiser</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#128"><abbr title="App\Controller\UserController::edit">edit</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#57"><abbr title="App\Controller\UserController::new">new</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#285"><abbr title="App\Controller\UnavailabilityController::delete">delete</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Entity/User.php.html#194"><abbr title="App\Entity\User::removeUnavailability">removeUnavailability</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Entity/Room.php.html#147"><abbr title="App\Entity\Room::hasUpcomingUnavailabilities">hasUpcomingUnavailabilities</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Controller/FrontController.php.html#25"><abbr title="App\Controller\FrontController::index">index</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Provider/FeaturesProvider.php.html#18"><abbr title="App\Provider\FeaturesProvider::getFeatures">getFeatures</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#39"><abbr title="App\Security\LoginFormAuthenticator::supports">supports</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Security/LoginFormAuthenticator.php.html#82"><abbr title="App\Security\LoginFormAuthenticator::onAuthenticationSuccess">onAuthenticationSuccess</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#90"><abbr title="App\Validator\AvailabilityValidator::weekEndDates">weekEndDates</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#188"><abbr title="App\Entity\Unavailability::removeGuest">removeGuest</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#83"><abbr title="App\Entity\Unavailability::getStartDate">getStartDate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#179"><abbr title="App\Entity\Unavailability::addGuest">addGuest</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#148"><abbr title="App\Entity\Unavailability::setRoom">setRoom</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#143"><abbr title="App\Entity\Unavailability::getRoom">getRoom</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#131"><abbr title="App\Entity\Unavailability::getOrganiser">getOrganiser</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#119"><abbr title="App\Entity\Unavailability::getType">getType</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Unavailability.php.html#95"><abbr title="App\Entity\Unavailability::getEndDate">getEndDate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Room.php.html#124"><abbr title="App\Entity\Room::addUnavailabilities">addUnavailabilities</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Entity/Room.php.html#104"><abbr title="App\Entity\Room::getFeatures">getFeatures</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="DataFixtures/UserFixtures.php.html#19"><abbr title="App\DataFixtures\UserFixtures::load">load</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="DataFixtures/RoomFixtures.php.html#24"><abbr title="App\DataFixtures\RoomFixtures::load">load</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Controller/UserController.php.html#28"><abbr title="App\Controller\UserController::index">index</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#361"><abbr title="App\Controller\UnavailabilityController::deleteUpcomingUnavailabilityByRoom">deleteUpcomingUnavailabilityByRoom</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#341"><abbr title="App\Controller\UnavailabilityController::removeUserFromUpcomingUnavailabilityGuests">removeUserFromUpcomingUnavailabilityGuests</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#324"><abbr title="App\Controller\UnavailabilityController::deleteUpcomingUnavailabilityByOrganiser">deleteUpcomingUnavailabilityByOrganiser</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Controller/UnavailabilityController.php.html#34"><abbr title="App\Controller\UnavailabilityController::index">index</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Validator/AvailabilityValidator.php.html#95"><abbr title="App\Validator\AvailabilityValidator::isWeekEndDate">isWeekEndDate</abbr></a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.14</a> with <a href="https://xdebug.org/">Xdebug 2.6.1</a> and <a href="https://phpunit.de/">PHPUnit 6.5.13</a> at Fri Jan 25 11:31:48 CET 2019.</small>
+    </p>
+   </footer>
+  </div>
+  <script src=".js/jquery.min.js" type="text/javascript"></script>
+  <script src=".js/bootstrap.min.js" type="text/javascript"></script>
+  <script src=".js/holder.min.js" type="text/javascript"></script>
+  <script src=".js/d3.min.js" type="text/javascript"></script>
+  <script src=".js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([31,0,1,2,1,2,0,0,0,0,0,1], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([152,0,0,0,0,0,0,0,0,0,0,37], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,2,"<a href=\"Controller\/DashboardController.php.html#13\">App\\Controller\\DashboardController<\/a>"],[0,2,"<a href=\"Controller\/FrontController.php.html#15\">App\\Controller\\FrontController<\/a>"],[0,17,"<a href=\"Controller\/RoomController.php.html#22\">App\\Controller\\RoomController<\/a>"],[0,2,"<a href=\"Controller\/SecurityController.php.html#10\">App\\Controller\\SecurityController<\/a>"],[0,34,"<a href=\"Controller\/UnavailabilityController.php.html#26\">App\\Controller\\UnavailabilityController<\/a>"],[0,22,"<a href=\"Controller\/UserController.php.html#21\">App\\Controller\\UserController<\/a>"],[0,2,"<a href=\"DataFixtures\/RoomFixtures.php.html#17\">App\\DataFixtures\\RoomFixtures<\/a>"],[0,2,"<a href=\"DataFixtures\/UserFixtures.php.html#12\">App\\DataFixtures\\UserFixtures<\/a>"],[27.27272727272727,25,"<a href=\"Entity\/Room.php.html#19\">App\\Entity\\Room<\/a>"],[26.666666666666668,32,"<a href=\"Entity\/Unavailability.php.html#16\">App\\Entity\\Unavailability<\/a>"],[47.69230769230769,43,"<a href=\"Entity\/User.php.html#18\">App\\Entity\\User<\/a>"],[0,8,"<a href=\"EventListener\/FullCalendarListener.php.html#12\">App\\EventListener\\FullCalendarListener<\/a>"],[0,4,"<a href=\"Form\/Model\/ChangePassword.php.html#10\">App\\Form\\Model\\ChangePassword<\/a>"],[0,3,"<a href=\"Form\/RoomType.php.html#15\">App\\Form\\RoomType<\/a>"],[0,2,"<a href=\"Form\/UnavailabilityAdminType.php.html#19\">App\\Form\\UnavailabilityAdminType<\/a>"],[0,4,"<a href=\"Form\/UnavailabilityType.php.html#17\">App\\Form\\UnavailabilityType<\/a>"],[0,3,"<a href=\"Form\/UserAdminType.php.html#9\">App\\Form\\UserAdminType<\/a>"],[0,2,"<a href=\"Form\/UserPasswordChangeType.php.html#15\">App\\Form\\UserPasswordChangeType<\/a>"],[0,2,"<a href=\"Form\/UserType.php.html#12\">App\\Form\\UserType<\/a>"],[30,7,"<a href=\"Kernel.php.html#12\">App\\Kernel<\/a>"],[0,2,"<a href=\"Migrations\/Version20181221114459.php.html#11\">DoctrineMigrations\\Version20181221114459<\/a>"],[0,2,"<a href=\"Migrations\/Version20190102111030.php.html#11\">DoctrineMigrations\\Version20190102111030<\/a>"],[0,2,"<a href=\"Migrations\/Version20190111160704.php.html#11\">DoctrineMigrations\\Version20190111160704<\/a>"],[0,2,"<a href=\"Migrations\/Version20190115113811.php.html#11\">DoctrineMigrations\\Version20190115113811<\/a>"],[0,3,"<a href=\"Migrations\/Version20190118202627.php.html#13\">DoctrineMigrations\\Version20190118202627<\/a>"],[0,3,"<a href=\"Migrations\/Version20190119180707.php.html#13\">DoctrineMigrations\\Version20190119180707<\/a>"],[0,3,"<a href=\"Migrations\/Version20190119220022.php.html#13\">DoctrineMigrations\\Version20190119220022<\/a>"],[0,3,"<a href=\"Migrations\/Version20190119232841.php.html#13\">DoctrineMigrations\\Version20190119232841<\/a>"],[0,3,"<a href=\"Migrations\/Version20190121094650.php.html#13\">DoctrineMigrations\\Version20190121094650<\/a>"],[0,3,"<a href=\"Migrations\/Version20190123193741.php.html#13\">DoctrineMigrations\\Version20190123193741<\/a>"],[0,2,"<a href=\"Provider\/FeaturesProvider.php.html#16\">App\\Provider\\FeaturesProvider<\/a>"],[100,2,"<a href=\"Repository\/RoomRepository.php.html#15\">App\\Repository\\RoomRepository<\/a>"],[10,14,"<a href=\"Repository\/UnavailabilityRepository.php.html#17\">App\\Repository\\UnavailabilityRepository<\/a>"],[41.86046511627907,5,"<a href=\"Repository\/UserRepository.php.html#16\">App\\Repository\\UserRepository<\/a>"],[0,11,"<a href=\"Security\/LoginFormAuthenticator.php.html#22\">App\\Security\\LoginFormAuthenticator<\/a>"],[0,15,"<a href=\"Service\/Twig\/AppExtension.php.html#7\">App\\Service\\Twig\\AppExtension<\/a>"],[0,2,"<a href=\"Validator\/Availability.php.html#10\">App\\Validator\\Availability<\/a>"],[0,25,"<a href=\"Validator\/AvailabilityValidator.php.html#9\">App\\Validator\\AvailabilityValidator<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"Controller\/DashboardController.php.html#20\">App\\Controller\\DashboardController::showUnavailabilitiesAsOrganiser<\/a>"],[0,1,"<a href=\"Controller\/DashboardController.php.html#53\">App\\Controller\\DashboardController::showUnavailabilitiesAsGuest<\/a>"],[0,2,"<a href=\"Controller\/FrontController.php.html#25\">App\\Controller\\FrontController::index<\/a>"],[0,1,"<a href=\"Controller\/RoomController.php.html#32\">App\\Controller\\RoomController::index<\/a>"],[0,6,"<a href=\"Controller\/RoomController.php.html#48\">App\\Controller\\RoomController::new<\/a>"],[0,1,"<a href=\"Controller\/RoomController.php.html#114\">App\\Controller\\RoomController::show<\/a>"],[0,5,"<a href=\"Controller\/RoomController.php.html#134\">App\\Controller\\RoomController::edit<\/a>"],[0,4,"<a href=\"Controller\/RoomController.php.html#202\">App\\Controller\\RoomController::delete<\/a>"],[0,1,"<a href=\"Controller\/SecurityController.php.html#18\">App\\Controller\\SecurityController::login<\/a>"],[0,1,"<a href=\"Controller\/SecurityController.php.html#32\">App\\Controller\\SecurityController::logout<\/a>"],[0,2,"<a href=\"Controller\/UnavailabilityController.php.html#34\">App\\Controller\\UnavailabilityController::index<\/a>"],[0,8,"<a href=\"Controller\/UnavailabilityController.php.html#69\">App\\Controller\\UnavailabilityController::new<\/a>"],[0,1,"<a href=\"Controller\/UnavailabilityController.php.html#156\">App\\Controller\\UnavailabilityController::show<\/a>"],[0,11,"<a href=\"Controller\/UnavailabilityController.php.html#177\">App\\Controller\\UnavailabilityController::edit<\/a>"],[0,3,"<a href=\"Controller\/UnavailabilityController.php.html#285\">App\\Controller\\UnavailabilityController::delete<\/a>"],[0,2,"<a href=\"Controller\/UnavailabilityController.php.html#324\">App\\Controller\\UnavailabilityController::deleteUpcomingUnavailabilityByOrganiser<\/a>"],[0,2,"<a href=\"Controller\/UnavailabilityController.php.html#341\">App\\Controller\\UnavailabilityController::removeUserFromUpcomingUnavailabilityGuests<\/a>"],[0,2,"<a href=\"Controller\/UnavailabilityController.php.html#361\">App\\Controller\\UnavailabilityController::deleteUpcomingUnavailabilityByRoom<\/a>"],[0,1,"<a href=\"Controller\/UnavailabilityController.php.html#377\">App\\Controller\\UnavailabilityController::removeUnavailabilityFromDatabase<\/a>"],[0,1,"<a href=\"Controller\/UnavailabilityController.php.html#388\">App\\Controller\\UnavailabilityController::calendar<\/a>"],[0,1,"<a href=\"Controller\/UnavailabilityController.php.html#400\">App\\Controller\\UnavailabilityController::sendEmail<\/a>"],[0,2,"<a href=\"Controller\/UserController.php.html#28\">App\\Controller\\UserController::index<\/a>"],[0,3,"<a href=\"Controller\/UserController.php.html#57\">App\\Controller\\UserController::new<\/a>"],[0,1,"<a href=\"Controller\/UserController.php.html#112\">App\\Controller\\UserController::show<\/a>"],[0,3,"<a href=\"Controller\/UserController.php.html#128\">App\\Controller\\UserController::edit<\/a>"],[0,3,"<a href=\"Controller\/UserController.php.html#156\">App\\Controller\\UserController::changePassword<\/a>"],[0,8,"<a href=\"Controller\/UserController.php.html#206\">App\\Controller\\UserController::delete<\/a>"],[0,1,"<a href=\"Controller\/UserController.php.html#253\">App\\Controller\\UserController::removeUserFromDatabase<\/a>"],[0,1,"<a href=\"Controller\/UserController.php.html#264\">App\\Controller\\UserController::dashboard<\/a>"],[0,2,"<a href=\"DataFixtures\/RoomFixtures.php.html#24\">App\\DataFixtures\\RoomFixtures::load<\/a>"],[0,2,"<a href=\"DataFixtures\/UserFixtures.php.html#19\">App\\DataFixtures\\UserFixtures::load<\/a>"],[100,1,"<a href=\"Entity\/Room.php.html#70\">App\\Entity\\Room::__construct<\/a>"],[100,2,"<a href=\"Entity\/Room.php.html#75\">App\\Entity\\Room::getId<\/a>"],[100,2,"<a href=\"Entity\/Room.php.html#80\">App\\Entity\\Room::getCapacity<\/a>"],[100,1,"<a href=\"Entity\/Room.php.html#85\">App\\Entity\\Room::setCapacity<\/a>"],[100,2,"<a href=\"Entity\/Room.php.html#92\">App\\Entity\\Room::getName<\/a>"],[100,1,"<a href=\"Entity\/Room.php.html#97\">App\\Entity\\Room::setName<\/a>"],[0,2,"<a href=\"Entity\/Room.php.html#104\">App\\Entity\\Room::getFeatures<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#109\">App\\Entity\\Room::setFeatures<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#119\">App\\Entity\\Room::getUnavailabilities<\/a>"],[0,2,"<a href=\"Entity\/Room.php.html#124\">App\\Entity\\Room::addUnavailabilities<\/a>"],[0,3,"<a href=\"Entity\/Room.php.html#134\">App\\Entity\\Room::removeUnavailabilities<\/a>"],[0,3,"<a href=\"Entity\/Room.php.html#147\">App\\Entity\\Room::hasUpcomingUnavailabilities<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#158\">App\\Entity\\Room::getPicture<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#163\">App\\Entity\\Room::setPicture<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#171\">App\\Entity\\Room::getDeletedAt<\/a>"],[0,1,"<a href=\"Entity\/Room.php.html#179\">App\\Entity\\Room::setDeletedAt<\/a>"],[100,1,"<a href=\"Entity\/Unavailability.php.html#73\">App\\Entity\\Unavailability::__construct<\/a>"],[100,2,"<a href=\"Entity\/Unavailability.php.html#78\">App\\Entity\\Unavailability::getId<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#83\">App\\Entity\\Unavailability::getStartDate<\/a>"],[0,1,"<a href=\"Entity\/Unavailability.php.html#88\">App\\Entity\\Unavailability::setStartDate<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#95\">App\\Entity\\Unavailability::getEndDate<\/a>"],[0,1,"<a href=\"Entity\/Unavailability.php.html#100\">App\\Entity\\Unavailability::setEndDate<\/a>"],[100,2,"<a href=\"Entity\/Unavailability.php.html#107\">App\\Entity\\Unavailability::getObject<\/a>"],[100,1,"<a href=\"Entity\/Unavailability.php.html#112\">App\\Entity\\Unavailability::setObject<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#119\">App\\Entity\\Unavailability::getType<\/a>"],[0,1,"<a href=\"Entity\/Unavailability.php.html#124\">App\\Entity\\Unavailability::setType<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#131\">App\\Entity\\Unavailability::getOrganiser<\/a>"],[100,2,"<a href=\"Entity\/Unavailability.php.html#136\">App\\Entity\\Unavailability::setOrganiser<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#143\">App\\Entity\\Unavailability::getRoom<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#148\">App\\Entity\\Unavailability::setRoom<\/a>"],[0,3,"<a href=\"Entity\/Unavailability.php.html#161\">App\\Entity\\Unavailability::isOrganiser<\/a>"],[0,1,"<a href=\"Entity\/Unavailability.php.html#166\">App\\Entity\\Unavailability::isNotPast<\/a>"],[0,1,"<a href=\"Entity\/Unavailability.php.html#174\">App\\Entity\\Unavailability::getGuests<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#179\">App\\Entity\\Unavailability::addGuest<\/a>"],[0,2,"<a href=\"Entity\/Unavailability.php.html#188\">App\\Entity\\Unavailability::removeGuest<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#80\">App\\Entity\\User::__construct<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#86\">App\\Entity\\User::getId<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#91\">App\\Entity\\User::getFirstName<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#96\">App\\Entity\\User::setFirstName<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#103\">App\\Entity\\User::getLastName<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#108\">App\\Entity\\User::setLastName<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#115\">App\\Entity\\User::getEmail<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#120\">App\\Entity\\User::setEmail<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#127\">App\\Entity\\User::getPassword<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#132\">App\\Entity\\User::setPassword<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#139\">App\\Entity\\User::getRoles<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#144\">App\\Entity\\User::setRoles<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#151\">App\\Entity\\User::addRole<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#160\">App\\Entity\\User::hasRole<\/a>"],[100,1,"<a href=\"Entity\/User.php.html#171\">App\\Entity\\User::getUnavailabilities<\/a>"],[100,2,"<a href=\"Entity\/User.php.html#180\">App\\Entity\\User::addUnavailability<\/a>"],[0,3,"<a href=\"Entity\/User.php.html#194\">App\\Entity\\User::removeUnavailability<\/a>"],[0,3,"<a href=\"Entity\/User.php.html#207\">App\\Entity\\User::hasUpcomingUnavailabilities<\/a>"],[0,3,"<a href=\"Entity\/User.php.html#218\">App\\Entity\\User::hasUpcomingInvitations<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#231\">App\\Entity\\User::getDeletedAt<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#239\">App\\Entity\\User::setDeletedAt<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#251\">App\\Entity\\User::getSalt<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#261\">App\\Entity\\User::getUsername<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#272\">App\\Entity\\User::eraseCredentials<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#280\">App\\Entity\\User::getInvitations<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#288\">App\\Entity\\User::setInvitations<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#299\">App\\Entity\\User::serialize<\/a>"],[0,1,"<a href=\"Entity\/User.php.html#318\">App\\Entity\\User::unserialize<\/a>"],[0,1,"<a href=\"EventListener\/FullCalendarListener.php.html#25\">App\\EventListener\\FullCalendarListener::__construct<\/a>"],[0,7,"<a href=\"EventListener\/FullCalendarListener.php.html#32\">App\\EventListener\\FullCalendarListener::loadEvents<\/a>"],[0,1,"<a href=\"Form\/Model\/ChangePassword.php.html#27\">App\\Form\\Model\\ChangePassword::getOldPassword<\/a>"],[0,1,"<a href=\"Form\/Model\/ChangePassword.php.html#35\">App\\Form\\Model\\ChangePassword::getNewPassword<\/a>"],[0,1,"<a href=\"Form\/Model\/ChangePassword.php.html#43\">App\\Form\\Model\\ChangePassword::setOldPassword<\/a>"],[0,1,"<a href=\"Form\/Model\/ChangePassword.php.html#51\">App\\Form\\Model\\ChangePassword::setNewPassword<\/a>"],[0,1,"<a href=\"Form\/RoomType.php.html#19\">App\\Form\\RoomType::__construct<\/a>"],[0,1,"<a href=\"Form\/RoomType.php.html#24\">App\\Form\\RoomType::buildForm<\/a>"],[0,1,"<a href=\"Form\/RoomType.php.html#58\">App\\Form\\RoomType::configureOptions<\/a>"],[0,1,"<a href=\"Form\/UnavailabilityAdminType.php.html#21\">App\\Form\\UnavailabilityAdminType::buildForm<\/a>"],[100,1,"<a href=\"Form\/UnavailabilityAdminType.php.html#41\">App\\Form\\UnavailabilityAdminType::anonymousFunction:41#236<\/a>"],[0,1,"<a href=\"Form\/UnavailabilityType.php.html#25\">App\\Form\\UnavailabilityType::__construct<\/a>"],[0,1,"<a href=\"Form\/UnavailabilityType.php.html#30\">App\\Form\\UnavailabilityType::buildForm<\/a>"],[100,1,"<a href=\"Form\/UnavailabilityType.php.html#48\">App\\Form\\UnavailabilityType::anonymousFunction:48#331<\/a>"],[0,1,"<a href=\"Form\/UnavailabilityType.php.html#62\">App\\Form\\UnavailabilityType::configureOptions<\/a>"],[0,1,"<a href=\"Form\/UserAdminType.php.html#11\">App\\Form\\UserAdminType::buildForm<\/a>"],[0,1,"<a href=\"Form\/UserAdminType.php.html#32\">App\\Form\\UserAdminType::anonymousFunction:32#172<\/a>"],[0,1,"<a href=\"Form\/UserAdminType.php.html#37\">App\\Form\\UserAdminType::anonymousFunction:37#198<\/a>"],[0,1,"<a href=\"Form\/UserPasswordChangeType.php.html#17\">App\\Form\\UserPasswordChangeType::buildForm<\/a>"],[0,1,"<a href=\"Form\/UserPasswordChangeType.php.html#39\">App\\Form\\UserPasswordChangeType::configureOptions<\/a>"],[0,1,"<a href=\"Form\/UserType.php.html#14\">App\\Form\\UserType::buildForm<\/a>"],[0,1,"<a href=\"Form\/UserType.php.html#29\">App\\Form\\UserType::configureOptions<\/a>"],[100,1,"<a href=\"Kernel.php.html#18\">App\\Kernel::getCacheDir<\/a>"],[0,1,"<a href=\"Kernel.php.html#23\">App\\Kernel::getLogDir<\/a>"],[100,3,"<a href=\"Kernel.php.html#28\">App\\Kernel::registerBundles<\/a>"],[0,1,"<a href=\"Kernel.php.html#38\">App\\Kernel::configureContainer<\/a>"],[0,1,"<a href=\"Kernel.php.html#50\">App\\Kernel::configureRoutes<\/a>"],[0,1,"<a href=\"Migrations\/Version20181221114459.php.html#13\">DoctrineMigrations\\Version20181221114459::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20181221114459.php.html#25\">DoctrineMigrations\\Version20181221114459::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190102111030.php.html#13\">DoctrineMigrations\\Version20190102111030::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190102111030.php.html#24\">DoctrineMigrations\\Version20190102111030::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190111160704.php.html#13\">DoctrineMigrations\\Version20190111160704::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190111160704.php.html#21\">DoctrineMigrations\\Version20190111160704::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190115113811.php.html#13\">DoctrineMigrations\\Version20190115113811::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190115113811.php.html#24\">DoctrineMigrations\\Version20190115113811::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190118202627.php.html#15\">DoctrineMigrations\\Version20190118202627::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190118202627.php.html#20\">DoctrineMigrations\\Version20190118202627::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190118202627.php.html#30\">DoctrineMigrations\\Version20190118202627::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119180707.php.html#15\">DoctrineMigrations\\Version20190119180707::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119180707.php.html#20\">DoctrineMigrations\\Version20190119180707::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119180707.php.html#29\">DoctrineMigrations\\Version20190119180707::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119220022.php.html#15\">DoctrineMigrations\\Version20190119220022::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119220022.php.html#20\">DoctrineMigrations\\Version20190119220022::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119220022.php.html#29\">DoctrineMigrations\\Version20190119220022::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119232841.php.html#15\">DoctrineMigrations\\Version20190119232841::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119232841.php.html#20\">DoctrineMigrations\\Version20190119232841::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190119232841.php.html#29\">DoctrineMigrations\\Version20190119232841::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190121094650.php.html#15\">DoctrineMigrations\\Version20190121094650::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190121094650.php.html#20\">DoctrineMigrations\\Version20190121094650::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190121094650.php.html#31\">DoctrineMigrations\\Version20190121094650::down<\/a>"],[0,1,"<a href=\"Migrations\/Version20190123193741.php.html#15\">DoctrineMigrations\\Version20190123193741::getDescription<\/a>"],[0,1,"<a href=\"Migrations\/Version20190123193741.php.html#20\">DoctrineMigrations\\Version20190123193741::up<\/a>"],[0,1,"<a href=\"Migrations\/Version20190123193741.php.html#28\">DoctrineMigrations\\Version20190123193741::down<\/a>"],[0,2,"<a href=\"Provider\/FeaturesProvider.php.html#18\">App\\Provider\\FeaturesProvider::getFeatures<\/a>"],[100,1,"<a href=\"Repository\/RoomRepository.php.html#17\">App\\Repository\\RoomRepository::__construct<\/a>"],[100,1,"<a href=\"Repository\/RoomRepository.php.html#22\">App\\Repository\\RoomRepository::findMaxCapacityRoom<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#19\">App\\Repository\\UnavailabilityRepository::__construct<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#53\">App\\Repository\\UnavailabilityRepository::findAllAndOrder<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#61\">App\\Repository\\UnavailabilityRepository::findByOrganiserAndOrder<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#73\">App\\Repository\\UnavailabilityRepository::findByGuestAndOrder<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#86\">App\\Repository\\UnavailabilityRepository::findUnavailabilitiesByRoomByDates<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#98\">App\\Repository\\UnavailabilityRepository::findUnavailabilitiesByDates<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#108\">App\\Repository\\UnavailabilityRepository::findUnavailabilitiesByRoom<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#117\">App\\Repository\\UnavailabilityRepository::findCurrentUnavailabilities<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#126\">App\\Repository\\UnavailabilityRepository::findUpcomingUnavailabilities<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#135\">App\\Repository\\UnavailabilityRepository::findUpcomingUnavailabilitiesByRoom<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#146\">App\\Repository\\UnavailabilityRepository::findUpcomingUnavailabilitiesByOrganiser<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#157\">App\\Repository\\UnavailabilityRepository::findUpcomingUnavailabilitiesByGuest<\/a>"],[0,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#171\">App\\Repository\\UnavailabilityRepository::findLastUnavailability<\/a>"],[100,1,"<a href=\"Repository\/UnavailabilityRepository.php.html#180\">App\\Repository\\UnavailabilityRepository::findLastMonthUnavailabilities<\/a>"],[0,1,"<a href=\"Repository\/UserRepository.php.html#21\">App\\Repository\\UserRepository::__construct<\/a>"],[100,1,"<a href=\"Repository\/UserRepository.php.html#28\">App\\Repository\\UserRepository::findActiveUsers<\/a>"],[0,1,"<a href=\"Repository\/UserRepository.php.html#36\">App\\Repository\\UserRepository::findActiveUsersExceptCurrent<\/a>"],[100,1,"<a href=\"Repository\/UserRepository.php.html#46\">App\\Repository\\UserRepository::findLastMonthOrganiser<\/a>"],[0,1,"<a href=\"Repository\/UserRepository.php.html#65\">App\\Repository\\UserRepository::findLastMonthMostInvited<\/a>"],[0,1,"<a href=\"Security\/LoginFormAuthenticator.php.html#31\">App\\Security\\LoginFormAuthenticator::__construct<\/a>"],[0,2,"<a href=\"Security\/LoginFormAuthenticator.php.html#39\">App\\Security\\LoginFormAuthenticator::supports<\/a>"],[0,1,"<a href=\"Security\/LoginFormAuthenticator.php.html#45\">App\\Security\\LoginFormAuthenticator::getCredentials<\/a>"],[0,3,"<a href=\"Security\/LoginFormAuthenticator.php.html#60\">App\\Security\\LoginFormAuthenticator::getUser<\/a>"],[0,1,"<a href=\"Security\/LoginFormAuthenticator.php.html#77\">App\\Security\\LoginFormAuthenticator::checkCredentials<\/a>"],[0,2,"<a href=\"Security\/LoginFormAuthenticator.php.html#82\">App\\Security\\LoginFormAuthenticator::onAuthenticationSuccess<\/a>"],[0,1,"<a href=\"Security\/LoginFormAuthenticator.php.html#92\">App\\Security\\LoginFormAuthenticator::getLoginUrl<\/a>"],[100,7,"<a href=\"Service\/Twig\/AppExtension.php.html#9\">App\\Service\\Twig\\AppExtension::getFilters<\/a>"],[0,4,"<a href=\"Service\/Twig\/AppExtension.php.html#12\">App\\Service\\Twig\\AppExtension::anonymousFunction:12#52<\/a>"],[0,4,"<a href=\"Service\/Twig\/AppExtension.php.html#25\">App\\Service\\Twig\\AppExtension::anonymousFunction:25#121<\/a>"],[0,1,"<a href=\"Validator\/Availability.php.html#22\">App\\Validator\\Availability::validatedBy<\/a>"],[0,1,"<a href=\"Validator\/Availability.php.html#27\">App\\Validator\\Availability::getTargets<\/a>"],[0,1,"<a href=\"Validator\/AvailabilityValidator.php.html#17\">App\\Validator\\AvailabilityValidator::__construct<\/a>"],[0,6,"<a href=\"Validator\/AvailabilityValidator.php.html#26\">App\\Validator\\AvailabilityValidator::validate<\/a>"],[0,11,"<a href=\"Validator\/AvailabilityValidator.php.html#53\">App\\Validator\\AvailabilityValidator::availability<\/a>"],[0,1,"<a href=\"Validator\/AvailabilityValidator.php.html#79\">App\\Validator\\AvailabilityValidator::endAfterStart<\/a>"],[0,1,"<a href=\"Validator\/AvailabilityValidator.php.html#84\">App\\Validator\\AvailabilityValidator::pastDates<\/a>"],[0,2,"<a href=\"Validator\/AvailabilityValidator.php.html#90\">App\\Validator\\AvailabilityValidator::weekEndDates<\/a>"],[0,2,"<a href=\"Validator\/AvailabilityValidator.php.html#95\">App\\Validator\\AvailabilityValidator::isWeekEndDate<\/a>"],[0,1,"<a href=\"Validator\/AvailabilityValidator.php.html#103\">App\\Validator\\AvailabilityValidator::tooManyGuests<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Unavailability;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
@@ -36,6 +37,20 @@ class UserTest extends TestCase
         $this->object->addRole('ROLE_GUEST');
         $this->assertEquals(['ROLE_ADMIN', 'ROLE_GUEST'], $this->object->getRoles());
 
+        $this->object->addRole('ROLE_GUEST');
+        $this->assertEquals(['ROLE_ADMIN', 'ROLE_GUEST'], $this->object->getRoles());
+
+        $this->assertTrue($this->object->hasRole('ROLE_ADMIN'));
+
+        $this->assertFalse($this->object->hasRole('ROLE_EMPLOYEE'));
+
+        $unavailability = new Unavailability();
+        $unavailability->setObject('objet');
+        $this->object->addUnavailability($unavailability);
+        foreach ($this->object->getUnavailabilities() as $unavailability) {
+            $objects[] = $unavailability->getObject();
+        }
+        $this->assertEquals(['objet'], $objects);
 
     }
 }

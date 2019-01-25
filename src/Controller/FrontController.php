@@ -39,8 +39,8 @@ class FrontController extends AbstractController
         $lastOrganiser = $unavailabilityRepository->findLastUnavailability()
             ? $unavailabilityRepository->findLastUnavailability()->getOrganiser()
             : $fakeUser;
-        $lastMonthOrganiser = $userRepository->findLastMonthOrganiser()  ?? $fakeUser;
-        $lastMonthGuest = $userRepository->findLastMonthGuest()          ?? $fakeUser;
+        $lastMonthOrganiser = $userRepository->findLastMonthOrganiser()        ?? $fakeUser;
+        $lastMonthGuest = $userRepository->findLastMonthMostInvited()          ?? $fakeUser;
 
         return $this->render('front/index.html.twig', [
             'totalRoomCount' => $totalRoomCount,
