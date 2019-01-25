@@ -107,7 +107,7 @@ class RoomController extends AbstractController
      * @Route("/salle-{id}.html", name="room_show", methods={"GET"})
      * @Security("room != null and room.getDeletedAt() == null", statusCode=404,
      *     message="Cette salle n'existe plus ou n'a jamais existé.")
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_GUEST")
      * @param Room $room
      * @return Response
      */

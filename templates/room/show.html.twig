@@ -17,11 +17,13 @@
                 <div class="mb-auto d-flex">
                     <h1 class="mr-auto">Salle {{ room.name }}</h1>
                     <div class="btn-group" role="group">
-                        <a href="{{ path('room_index') }}" style="color: #fff;">
-                            <button type="button" class="btn btn-info" style="width: 45px;">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                        </a>
+                        {% if is_granted('ROLE_EMPLOYEE') %}
+                            <a href="{{ path('room_index') }}" style="color: #fff;">
+                                <button type="button" class="btn btn-info" style="width: 45px;">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                            </a>
+                        {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('room_edit', {'id': room.id}) }}" style="color: #fff;">
                                 <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
@@ -56,7 +58,9 @@
 
         </div>
 
-        {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+        {% if is_granted('ROLE_EMPLOYEE') %}
+            {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+        {% endif %}
 
     </div>
 
@@ -77,9 +81,6 @@
             /*border: none !important;*/
             /*border-top: 1px solid #ddd !important;*/
             /*font-weight: bold;*/
-        }
-        .fc-event {
-            height:60px !important;
         }
     </style>
 {% endblock %}
