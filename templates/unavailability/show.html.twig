@@ -6,6 +6,7 @@
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
 
+<<<<<<< HEAD
         <div class="d-flex">
 
             <h1 class="mr-auto">Réservation</h1>
@@ -37,6 +38,36 @@
                             </button>
                         </form>
                     {% endif %}
+=======
+    <h1>Réservation</h1>
+
+        <div class="btn-group" role="group" style="position: absolute;right: 2rem;top: 4.5rem;">
+            {% if is_granted('ROLE_EMPLOYEE') %}
+                <a href="{{ path('unavailability_calendar') }}" style="color: #fff;" data-toggle="tooltip" data-placement="top" title="Calendrier">
+                    <button type="button" class="btn btn-info" style="width: 45px;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') or unavailability.organiser == app.user %}
+                {# On n'affiche le bouton Modifier que si la réunion n'a pas encore commencé #}
+                {% if date(unavailability.startDate) > date() %}
+                    <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}" style="color: #fff;">
+                        <button type="button" class="btn btn-info" style="width: 45px;margin-left: 5px;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
+                {% endif %}
+                {# On n'affiche le bouton Supprimer que si la réunion n'est pas passée #}
+                {% if unavailability.notPast %}
+                    <form id="form" method="post" action="{{ path('unavailability_delete', {'id': unavailability.id}) }}" style="display: inline-block;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ unavailability.id) }}">
+                        <button class="btn btn-warning" style="width: 45px;margin-left: 5px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+>>>>>>> aff659abb2c6fa41b7ab392c215bf8e76e98d077
                 {% endif %}
 
             </div>
@@ -60,7 +91,9 @@
                                 {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
                             </a>
                         {% else %}
-                            {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
+                            <span data-toggle="tooltip" data-placement="top" title="Compte supprimé">
+                                {{ unavailability.organiser.firstName ~ ' ' ~ unavailability.organiser.lastName }}
+                            </span>
                         {% endif %}
                     </td>
                 </tr>
@@ -95,7 +128,9 @@
                                 {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
                             </a>
                             {% else %}
-                                {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
+                                <span data-toggle="tooltip" data-placement="top" title="Compte supprimé">
+                                    {{ guest.firstName ~ ' ' ~ guest.lastName }}{% if not loop.last %}, {% endif %}
+                                </span>
                             {% endif %}
                         {% endfor %}
                     </td>

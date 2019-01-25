@@ -12,7 +12,6 @@ class RoomRepositoryTest extends KernelTestCase
         self::bootKernel();
         $roomRepository = self::$container->get(RoomRepository::class);
 
-
-        $this->assertEquals(10, $roomRepository->findMaxCapacityRoom());
+        $this->assertEquals(25, $roomRepository->findMaxCapacityRoom());
     }
 }
