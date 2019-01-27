@@ -99,6 +99,7 @@
     <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/fullcalendar.min.js') }}"></script>
     <script src='{{ asset('bundles/fullcalendar/js/fullcalendar/locale/fr.js') }}'></script>
+    {#<script src="{{ asset('js/reunionit_room_calendar.js') }}"></script>#}
     <script>
         $(function () {
             $('#calendar-holder').fullCalendar({
@@ -119,23 +120,18 @@
                 },
                 lazyFetching: true,
                 navLinks: true,
-                defaultView: 'agendaWeek',
-                slotDuration: '00:15:00',
+                // Si la largeur de la fenêtre (ou de l'écran) est inférieure à 765px de large,
+                // on n'affiche que la journée courante, sinon on affiche la semaine courante.
+                defaultView: $(window).width() < 765 ? 'agendaDay':'agendaWeek',
+                slotDuration: '00:30:00',
                 weekends: false,
                 minTime: "{{ day_start }}",
                 maxTime: "{{ day_end }}",
                 nowIndicator: true,
-                // validRange: function(nowDate) {
-                //     return {
-                //         // On n'autorise la réservation qu'à partir du jour courant
-                //         start: nowDate.clone().add(-1, 'days'),
-                //         // start: new Date()
-                //     };
-                // },
                 selectable: true,
                 // On n'autorise la réservation qu'à partir de l'heure courante.
                 selectAllow: function(select) {
-                    return moment().diff(select.start) <= 0
+                    return moment().diff(select.start) <= 0;
                 },
                 selectOverlap: false,
                 select: function(startDate, endDate) {
@@ -179,8 +175,6 @@
                         this.unselect();
                         $("#datesConfirmationModal").modal('hide');
                     });
-
-                // }
                 },
                 eventSources: [
                     {
@@ -219,6 +213,5 @@
                 $("#confirmationModal").modal('hide');
             });
         });
-
     </script>
 {% endblock %}

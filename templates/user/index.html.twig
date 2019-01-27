@@ -36,7 +36,7 @@
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.roles ? user.roles|join(', ')|role_formatPicto : '' }}</td>
-                        <td>
+                        <td class="last-column">
                             <a href="{{ path('user_show', {'id': user.id}) }}" style="text-decoration: none;">
                                 <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i>
                             </a>

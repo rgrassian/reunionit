@@ -60,7 +60,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="array")
-     * @Assert\Choice({"ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_GUEST"},
+     * @Assert\Choice(choices={{"ROLE_ADMIN"}, {"ROLE_EMPLOYEE"}, {"ROLE_GUEST"}},
      *     message="Vous devez attribuer un rôle à l'utilisateur.")
      */
     private $roles = [];

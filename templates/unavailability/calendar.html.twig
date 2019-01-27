@@ -48,10 +48,12 @@
                 },
                 lazyFetching: true,
                 navLinks: true,
-                // defaultView: 'basicWeek',
+                // Si la largeur de la fenêtre (ou de l'écran) est inférieure à 765px de large,
+                // on n'affiche que la journée courante, sinon on affiche le mois courant.
+                defaultView: $(window).width() < 765 ? 'basicDay':'month',
                 eventLimit: true,
                 eventLimitText: "de plus",
-                slotDuration: '00:15:00',
+                slotDuration: '00:30:00',
                 weekends: false,
                 minTime: "{{ constant('App\\Entity\\Unavailability::DAY_START') }}",
                 maxTime: "{{ constant('App\\Entity\\Unavailability::DAY_END') }}",
@@ -67,7 +69,7 @@
                             alert('L\'affichage du calendrier a renvoyé une erreur !');
                         }
                     }
-                ],
+                ]
             });
         });
     </script>
