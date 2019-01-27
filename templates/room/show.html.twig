@@ -101,6 +101,7 @@
     <script src='{{ asset('bundles/fullcalendar/js/fullcalendar/locale/fr.js') }}'></script>
     {#<script src="{{ asset('js/reunionit_room_calendar.js') }}"></script>#}
     <script>
+        // Paramétrage du calendrier (cf. documentation de fullCalendar)
         $(function () {
             $('#calendar-holder').fullCalendar({
                 themeSystem: 'bootstrap4',
@@ -134,6 +135,7 @@
                     return moment().diff(select.start) <= 0;
                 },
                 selectOverlap: false,
+                unselectCancel: '#datesConfirm',
                 select: function(startDate, endDate) {
                     // S'il s'agit de journée(s) complète(s), on fixe les heures de début et de fin.
                     if (!startDate.hasTime() || !endDate.hasTime()) {
@@ -172,7 +174,7 @@
                     });
 
                     $("#datesCancel").on("click", function(){
-                        this.unselect();
+                        // this.unselect();
                         $("#datesConfirmationModal").modal('hide');
                     });
                 },

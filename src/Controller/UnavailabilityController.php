@@ -133,7 +133,7 @@ class UnavailabilityController extends AbstractController
             }
 
             $this->addFlash('notice',
-                'La réservation est enregistrée.');
+                'La réservation a été enregistrée.');
 
             return $this->redirectToRoute('unavailability_calendar');
         }
