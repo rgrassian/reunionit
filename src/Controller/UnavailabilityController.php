@@ -60,7 +60,7 @@ class UnavailabilityController extends AbstractController
     /**
      * Permet de créer une nouvelle réservation.
      * @Route("/nouvelle-reservation.html", name="unavailability_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_EMPLOYEE", message="Vous n'êtes pas autorisé à consulter cette page.")
      * @param Request $request
      * @param RoomRepository $roomRepository
      * @param \Swift_Mailer $mailer
@@ -151,7 +151,7 @@ class UnavailabilityController extends AbstractController
      * Affiche les infos sur une réservation.
      * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
      * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_EMPLOYEE", message="Vous n'êtes pas autorisé à consulter cette page.")
      * @param Unavailability $unavailability
      * @return Response
      */
@@ -170,7 +170,8 @@ class UnavailabilityController extends AbstractController
      * @Route("/modifier/reservation-{id}.html", name="unavailability_edit", methods={"GET","POST"})
      * @Security("unavailability != null", statusCode=404,
      *     message="Cette réservation n'existe plus ou n'a jamais existé.")
-     * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()")
+     * @Security("(unavailability.isOrganiser(user) or has_role('ROLE_ADMIN')) and unavailability.isNotPast()",
+     *     message="Vous n'êtes pas autorisé à modifier cette réservation.")
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
@@ -327,7 +328,7 @@ class UnavailabilityController extends AbstractController
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         // à checker
-        $entityManager = $this->getDoctrine()->getManager();
+//        $entityManager = $this->getDoctrine()->getManager();
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
 
