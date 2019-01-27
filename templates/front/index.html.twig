@@ -8,8 +8,11 @@
 
         <h1 class="display-3"><i class="fas fa-fist-raised"></i> A bas la réunionnite !</h1>
 
-        <p class="lead">Bonjour{{ is_granted('IS_AUTHENTICATED_FULLY') ? ' '~app.user.firstName~' '~app.user.lastName : '' }},</p>
-        <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>
+        <p class="lead">Vous avez remarqué ?</p>
+        <p class="lead">Ce qui prend le plus de temps, dans une réunion, c'est son organisation.</p>
+        {#<p class="lead">RéunionIT, c'est zéro bullshit !</p>#}
+        <p class="lead">Avec RéunionIT, réservez une salle et conviez les participants en quelques clics.</p>
+        <p class="lead">Que vous soyez organisateur ou invité, vous serez informé par email du moindre changement.</p>
         <hr class="my-4">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             {% if is_granted('ROLE_EMPLOYEE') %}
