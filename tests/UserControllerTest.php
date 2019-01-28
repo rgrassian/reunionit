@@ -13,7 +13,7 @@ use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 class UserControllerTest extends WebTestCase
 {
     /**
-     * User $connectedUser;
+     * User $connecteduser;
      */
     private $connectedUser;
 
@@ -42,15 +42,15 @@ class UserControllerTest extends WebTestCase
     public function testFindActiveUsersExceptCurrent()
     {
         $this->logIn();
+        $crawler = $this->client->request('GET', '/nouvelle-reservation.html');
 
         /**
          * @var Response $rep
          */
         $rep = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
-//        $this->assertContains($this->connectedUser->getFirstName(), $crawler->filter('#bonjour')->text());
-
-        $this->assertFalse(in_array($this->connectedUser, $this->userRepository->findActiveUsersExceptCurrent()));
+        $this->assertNotContains(strval($this->connectedUser->getId()),
+            $crawler->filter('option[value=' . $this->connectedUser->getId() . ']')->text());
     }
 
     private function logIn()
