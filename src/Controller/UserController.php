@@ -105,7 +105,7 @@ class UserController extends AbstractController
      * @Route("/utilisateur-{id}.html", name="user_show", methods={"GET"})
      * @Security("u != null and u.getDeletedAt() == null", statusCode=404,
      *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_GUEST")
      * @param User $u
      * @return Response
      */
@@ -218,12 +218,12 @@ class UserController extends AbstractController
                 // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
                 if ($user->hasUpcomingUnavailabilities()) {
                     //                                              modal de confirmation /!\
-                    $unavailabilityController->deleteUpcomingUnavailabilityByOrganiser($user);
+                    $unavailabilityController->deleteUpcomingUnavailabilitiesByOrganiser($user);
                 }
 
                 // Si l'utilisateur est invité à des réunions à venir, on le supprime des invités à ces réunions.
                 if ($user->hasUpcomingInvitations()) {
-                    $unavailabilityController->removeUserFromUpcomingUnavailabilityGuests($user);
+                    $unavailabilityController->removeUserFromUpcomingUnavailabilitiesGuests($user);
                 }
             }
 

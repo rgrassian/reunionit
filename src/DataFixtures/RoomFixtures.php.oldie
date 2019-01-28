@@ -4,9 +4,9 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Room;
+use App\Provider\FeaturesProvider;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
 
 class RoomFixtures extends Fixture
 {
@@ -17,14 +17,13 @@ class RoomFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('en_EN');
-        for($i = 0; $i < 15; $i ++){
+        for($i = 1; $i < 9; $i ++){
             $room = new Room();
 
-            $room->setName($faker->city);
-            $room->setCapacity(10);
-            $room->setFeatures(['Wifi','Chauffage au sol']);
-            $room->setPicture($faker->imageUrl());
+            $room->setName('salle-'.$i);
+            $room->setCapacity(rand(5, 25));
+            $room->setFeatures(['feature-'.$i, 'feature-'.($i + 1), 'feature-'.($i + 2)]);
+            $room->setPicture('salle-'.$i.'.jpg');
 
             $manager->persist($room);
         }

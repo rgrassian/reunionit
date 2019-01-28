@@ -17,11 +17,11 @@
         {{ form_errors(form.features) }}
 
         <div class="form-group">
-        {{ form_label(form.features) }}
-                {% set salle = form.vars.value %}
-                {% for feature in form.features %}
-                    {{ form_widget(feature) }}
-                {% endfor %}
+            {{ form_label(form.features) }}
+            {% set salle = form.vars.value %}
+            {% for feature in form.features %}
+                {{ form_widget(feature) }}
+            {% endfor %}
         </div>
 
         {{ form_row(form.picture) }}

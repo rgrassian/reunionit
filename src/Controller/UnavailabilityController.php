@@ -324,11 +324,9 @@ class UnavailabilityController extends AbstractController
      * Supprime toutes les réunions à venir organisées par un User.
      * @param User $organiser
      */
-    public function deleteUpcomingUnavailabilityByOrganiser(User $organiser)
+    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
-        // à checker
-//        $entityManager = $this->getDoctrine()->getManager();
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
 
@@ -341,7 +339,7 @@ class UnavailabilityController extends AbstractController
      * Retire un utilisateur de la liste des invités aux réunions à venir.
      * @param User $user
      */
-    public function removeUserFromUpcomingUnavailabilityGuests(User $user)
+    public function removeUserFromUpcomingUnavailabilitiesGuests(User $user)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
@@ -361,7 +359,7 @@ class UnavailabilityController extends AbstractController
      * Supprime toutes les réunions à venir organisées dans une salle.
      * @param Room $room
      */
-    public function deleteUpcomingUnavailabilityByRoom(Room $room)
+    public function deleteUpcomingUnavailabilitiesByRoom(Room $room)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
@@ -385,8 +383,9 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Affiche le calendrier de toutes les réunions dans toutes les salles.
      * @Route("/calendrier.html", name="unavailability_calendar")
-     * @IsGranted("ROLE_GUEST")
+     * @IsGranted("ROLE_EMPLOYEE", message="Vous n'êtes pas autorisé à consulter l'agenda de toutes les réunions.")
      */
     public function calendar()
     {
