@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Cookie;
@@ -49,6 +50,8 @@ class UserControllerTest extends WebTestCase
          */
         $rep = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
+        $this->assertCount(count($this->userRepository->findAll()) - 1,
+            $this->userRepository->findActiveUsersExceptCurrent());
         $this->assertNotContains(strval($this->connectedUser->getId()),
             $crawler->filter('option[value=' . $this->connectedUser->getId() . ']')->text());
     }
