@@ -29,9 +29,9 @@
                     <td>Le {{ unavailability.startDate ? unavailability.startDate|date('d/m/Y à H:i') : '' }}</td>
                     <td>Le {{ unavailability.endDate ? unavailability.endDate|date('d/m/Y à H:i') : '' }}</td>
                     <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
-                    <td>
-                        <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
-                            <i class="fas fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" style="text-decoration: none;"></i>
+                    <td class="last-column">
+                        <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}" style="text-decoration: none;">
+                            <i class="fas fa-eye" data-toggle="tooltip" data-placement="top" title="Voir"></i>
                         </a>
                         {% if date() < unavailability.startDate %}
                         <a href="{{ path('unavailability_edit', {'id': unavailability.id}) }}">

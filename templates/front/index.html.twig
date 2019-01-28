@@ -5,12 +5,21 @@
 {% block content %}
 
     <div class="jumbotron col-md-9 mx-auto mt-4">
-
-        <h1 class="display-3"><i class="fas fa-fist-raised"></i> A bas la réunionnite !</h1>
-
-        <p class="lead">Bonjour{{ is_granted('IS_AUTHENTICATED_FULLY') ? ' '~app.user.firstName~' '~app.user.lastName : '' }},</p>
-        <p class="lead">Bienvenue sur notre service corporate d'optimisation digitale de happiness development agile.</p>
-        <hr class="my-4">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <p class="lead">Vous avez remarqué ?</p>
+                <p class="lead font-weight-bolder">Ce qui vous fait perdre le plus de temps, dans une réunion, c'est son organisation.</p>
+                <p class="lead">Avec <u>RéunionIT</u>, réservez une salle et conviez les participants en quelques clics.</p>
+                <p class="lead">Que vous soyez organisateur ou invité, vous serez informé par email du moindre changement.</p>
+            </div>
+            <div class="col-12 col-lg-6 text-center text-primary text-secondary text-uppercase">
+                <h1 class="display-4 font-weight-bold"><i class="fas fa-fist-raised"></i>
+                    <br>
+                    Halte à la <u class="text-success">réunionnite</u><exp>*</exp> !
+                </h1>
+            </div>
+        </div>
+        <hr class="mb-4">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             {% if is_granted('ROLE_EMPLOYEE') %}
                 <p class="lead">
@@ -23,15 +32,17 @@
             </p>
         {% endif %}
 
+        <blockquote>* &laquo;&nbsp;Maladie&nbsp;&raquo; de la réunion.<footer class="blockquote-footer">Encyclopædia Universalis</footer></blockquote>
+
         <div class="col-5 ml-auto">
-            <blockquote class="blockquote">
-                <p class="mb-0"><i><span class="h1">&laquo;</span>&nbsp;RéunionIT est sans conteste la meilleure solution de réservation de salles de réunion de l'univers connu.&nbsp;<span class="h1">&raquo;</span></i></p>
+            <blockquote class="blockquote font-weight-bold">
+                <p class="mb-0"><i><span class="h1 text-success">&laquo;</span>&nbsp;RéunionIT est sans conteste la meilleure solution de réservation de salles de réunion de l'univers visible.&nbsp;<span class="h1 text-success">&raquo;</span></i></p>
                 <br>
-                <footer class="blockquote-footer">Bill M. Jobs, <cite title="Source Title">Facebook</cite></footer>
+                <footer class="blockquote-footer">Hubert Reeves, <cite title="Source Title">CNRS</cite></footer>
             </blockquote>
         </div>
 
-        {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_EMPLOYEE') %}
+        {% if is_granted('ROLE_EMPLOYEE') %}
         
         <div class="row">
             <div class="col-12">Actuellement :</div>

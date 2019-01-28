@@ -119,8 +119,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * Permet à l'admin de modifier
-     * les caractéristiques d'une salle.
+     * Permet à l'admin de modifier les caractéristiques d'une salle.
      * @Route("/admin/modifier/salle-{id}.html",
      *     name="room_edit",
      *     methods={"GET","POST"}))
@@ -142,10 +141,15 @@ class RoomController extends AbstractController
 
         $pictureName = $room->getPicture();
 
-        $room->setPicture(
-            new File($this->getParameter('rooms_assets_dir')
-                . '/' . $pictureName)
-        );
+        try {
+            $room->setPicture(
+                new File($this->getParameter('rooms_assets_dir')
+                    . '/' . $pictureName)
+            );
+        } catch (\Exception $e) {
+
+        }
+
 
         $form = $this->createForm(RoomType::class, $room, $options)
             ->handleRequest($request);

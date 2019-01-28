@@ -1,4 +1,5 @@
 {% set route = app.request.get('_route') %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container col-md-9 mx-auto">
 
@@ -13,28 +14,46 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="nav navbar-nav mr-auto">
             {% if is_granted('ROLE_EMPLOYEE') %}
-                <a class="nav-item nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">Calendrier</a>
-                <a class="nav-item nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">Salles</a>
+                <a class="nav-item nav-link {{ route == 'unavailability_calendar' ? 'active' : '' }}" href="{{ path('unavailability_calendar') }}">
+                    Calendrier
+                </a>
+                <a class="nav-item nav-link {{ route == 'room_index' ? 'active' : '' }}" href="{{ path('room_index') }}">
+                    Salles
+                </a>
             {% endif %}
             {% if is_granted ('ROLE_ADMIN') %}
-                <a class="nav-item nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">Historique</a>
-                <a class="nav-item nav-link {{ route == 'user_index' ? 'active' : '' }}" href="{{ path('user_index') }}">Utilisateurs</a>
+                <a class="nav-item nav-link {{ route == 'unavailability_index' ? 'active' : '' }}" href="{{ path('unavailability_index') }}">
+                    Historique
+                </a>
+                <a class="nav-item nav-link {{ route == 'user_index' ? 'active' : '' }}" href="{{ path('user_index') }}">
+                    Utilisateurs
+                </a>
             {% endif %}
             </ul>
             <ul class="nav navbar-nav">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Bonjour {{ app.user.firstName }}</a>
+                        <a class="nav-link text-white dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Bonjour {{ app.user.firstName }}
+                        </a>
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
-                            <a class="dropdown-item" href="{{ path('user_dashboard') }}">Tableau de bord</a>
-                            <a class="dropdown-item" href="{{ path('user_show', {'id': app.user.id }) }}">Mon profil</a>
+                            <a class="dropdown-item" href="{{ path('user_dashboard') }}">
+                                Tableau de bord
+                            </a>
+                            <a class="dropdown-item" href="{{ path('user_show', {'id': app.user.id }) }}">
+                                Mon profil
+                            </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ path('app_logout') }}" >Déconnexion</a>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}" >
+                                Déconnexion
+                            </a>
                         </div>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ path('app_login') }}" >Bienvenue, veuillez vous connecter</a>
+                        <a class="nav-link text-white" href="{{ path('app_login') }}" >
+                            Bienvenue, veuillez vous connecter
+                        </a>
                     </li>
                 {% endif %}
             </ul>
