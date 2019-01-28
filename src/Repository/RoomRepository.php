@@ -27,6 +27,14 @@ class RoomRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function findTotalCapacity()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('SUM(r.capacity)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Room[] Returns an array of Room objects
     //  */
