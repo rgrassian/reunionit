@@ -34,6 +34,7 @@ class FrontController extends AbstractController
         $totalRoomCount = count($roomRepository->findAll());
         $upcomingUnavailabilitiesCount = count($unavailabilityRepository->findUpcomingUnavailabilities())   ?? 0;
         $roomMaxCapacity = $roomRepository->findMaxCapacityRoom()                                           ?? 0;
+        $totalCapacity = $roomRepository->findTotalCapacity()                                               ?? 0;
         $currentUnavailability = count($unavailabilityRepository->findCurrentUnavailabilities())            ?? 0;
         $currentAvailableRoomCount = $totalRoomCount - $currentUnavailability;
         $lastOrganiser = $unavailabilityRepository->findLastUnavailability()
@@ -43,14 +44,15 @@ class FrontController extends AbstractController
         $lastMonthGuest = $userRepository->findLastMonthMostInvited()          ?? $fakeUser;
 
         return $this->render('front/index.html.twig', [
-            'totalRoomCount' => $totalRoomCount,
-            'upcomingUnavailabilities' => $upcomingUnavailabilitiesCount,
-            'roomMaxCapacity' => $roomMaxCapacity,
+            'totalRoomCount'            => $totalRoomCount,
+            'upcomingUnavailabilities'  => $upcomingUnavailabilitiesCount,
+            'roomMaxCapacity'           => $roomMaxCapacity,
+            'totalCapacity'             => $totalCapacity,
             'currentAvailableRoomCount' => $currentAvailableRoomCount,
-            'currentUnavailability' => $currentUnavailability,
-            'lastOrganiser' => $lastOrganiser,
-            'lastMonthOrganiser' => $lastMonthOrganiser,
-            'lastMonthGuest' => $lastMonthGuest
+            'currentUnavailability'     => $currentUnavailability,
+            'lastOrganiser'             => $lastOrganiser,
+            'lastMonthOrganiser'        => $lastMonthOrganiser,
+            'lastMonthGuest'            => $lastMonthGuest
         ]);
     }
 }
