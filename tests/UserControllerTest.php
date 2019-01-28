@@ -40,38 +40,5 @@ class UserControllerTest extends WebTestCase
 //        $this->assertContains('Halte', $crawler->filter('h1')->text());
 //    }
 
-    public function testFindActiveUsersExceptCurrent()
-    {
-        $this->logIn();
-        $crawler = $this->client->request('GET', '/nouvelle-reservation.html');
 
-        /**
-         * @var Response $rep
-         */
-        $rep = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
-        $this->assertCount(count($this->userRepository->findAll()) - 1,
-            $this->userRepository->findActiveUsersExceptCurrent());
-        $this->assertNotContains(strval($this->connectedUser->getId()),
-            $crawler->filter('option[value=' . $this->connectedUser->getId() . ']')->text());
-    }
-
-    private function logIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-        $firewallName = 'main';
-        // if you don't define multiple connected firewalls, the context defaults to the firewall name
-        // See https://symfony.com/doc/current/reference/configuration/security.html#firewall-context
-        $firewallContext = 'main';
-
-        // you may need to use a different token class depending on your application.
-        // for example, when using Guard authentication you must instantiate PostAuthenticationGuardToken
-        $token = new UsernamePasswordToken($this->connectedUser, 'superadmin', $firewallName, ['ROLE_ADMIN']);
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-
-    }
 }
