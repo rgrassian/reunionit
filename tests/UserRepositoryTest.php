@@ -3,9 +3,13 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class UserRepositoryTest extends KernelTestCase
+
+class UserRepositoryTest extends WebTestCase
 {
     private $userRepository;
 
@@ -21,14 +25,8 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testFindActiveUsers()
     {
-        $this->assertEquals(14, count($this->userRepository->findActiveUsers()));
+        $this->assertEquals(12, count($this->userRepository->findActiveUsers()));
     }
-
-    // A faire sous forme de test fonctionnel
-//    public function testFindActiveUsersExceptCurrent()
-//    {
-//        $this->assertEquals(13, count($this->userRepository->findActiveUsersExceptCurrent()));
-//    }
 
     public function testFindLastMonthOrganiser()
     {

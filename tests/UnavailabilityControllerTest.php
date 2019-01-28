@@ -5,10 +5,9 @@ namespace App\Tests;
 use App\Controller\UnavailabilityController;
 use App\Entity\Unavailability;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UnavailabilityControllerTest extends KernelTestCase
+class UnavailabilityControllerTest extends WebTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -20,6 +19,8 @@ class UnavailabilityControllerTest extends KernelTestCase
     private $unavailabilityRepository;
 
     private $unavailabilityController;
+
+    private $client;
 
     /**
      * {@inheritDoc}
@@ -35,6 +36,7 @@ class UnavailabilityControllerTest extends KernelTestCase
         $this->unavailabilityController = self::$container->get(UnavailabilityController::class);
         $this->userRepository = $this->entityManager->getRepository(User::class);
         $this->unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
+        $this->client = static::createClient();
     }
 
     public function testDeleteUpcomingUnavailabilitiesByOrganiser()
