@@ -27,8 +27,11 @@ class UnavailabilityRepositoryTest extends KernelTestCase
             $Ids[] = $unavailability->getId();
         }
 
-        $this->assertEquals([13, 14], $Ids);
+        $this->assertEquals([4], $Ids);
     }
 
+    public function testFindUpcomingUnavailabilitiesByOrganiser()
+    {
 
+    }
 }
