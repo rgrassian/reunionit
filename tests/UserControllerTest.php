@@ -27,6 +27,7 @@ class UserControllerTest extends WebTestCase
     {
         static::bootKernel();
         $this->client = static::createClient();
+        $this->client->followRedirects();
         $this->userRepository = self::$container->get(UserRepository::class);
     }
 
@@ -34,7 +35,7 @@ class UserControllerTest extends WebTestCase
     {
         // Test d'accès Admin
         $this->connectedUser = self::$container->get(UserRepository::class)->findOneById('48');
-        $this->adminLogIn();
+        $this->login('superadmin', ['ROLE_ADMIN']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
 
@@ -44,11 +45,20 @@ class UserControllerTest extends WebTestCase
         $this->assertSame('Nouvel utilisateur',
             $crawler->filter('h1')->text());
 
+        $form = $crawler->filter('button[title="Enregistrer"]')->form();
+        $form['user_admin[firstName]'] = 'test';
+        $form['user_admin[lastName]'] = 'test';
+        $form['user_admin[email]'] = 'bz@reunion.it';
+        $form['user_admin[roles]'] = 'ROLE_EMPLOYEE';
+        $this->client->submit($form);
+
+        $this->assertSame('bz@reunion.it', $this->userRepository->findOneByLastName('test')->getEmail());
+
         $this->logout();
 
         // Test d'accès Employee
         $this->connectedUser = self::$container->get(UserRepository::class)->findOneById('52');
-        $this->employeeLogIn();
+        $this->login('user', ['ROLE_EMPLOYEE']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
         $rep = $this->client->getResponse();
@@ -58,68 +68,20 @@ class UserControllerTest extends WebTestCase
 
         // Test d'accès Guest
         $this->connectedUser = self::$container->get(UserRepository::class)->findOneById('61');
-        $this->guestLogIn();
+        $this->login('user', ['ROLE_GUEST']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
         $rep = $this->client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $rep->getStatusCode());
     }
 
-//    public function testSomething()
-//    {
-//        $crawler = $this->client->request('GET', '/');
-//
-//        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-//        $this->assertContains('Halte', $crawler->filter('h1')->text());
-//    }
-
-    private function adminLogIn()
+    public function login($credentials, $role)
     {
         $session = $this->client->getContainer()->get('session');
         $firewallName = 'main';
-        // if you don't define multiple connected firewalls, the context defaults to the firewall name
-        // See https://symfony.com/doc/current/reference/configuration/security.html#firewall-context
         $firewallContext = 'main';
 
-        // you may need to use a different token class depending on your application.
-        // for example, when using Guard authentication you must instantiate PostAuthenticationGuardToken
-        $token = new UsernamePasswordToken($this->connectedUser, 'superadmin', $firewallName, ['ROLE_ADMIN']);
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
-    private function employeeLogIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-        $firewallName = 'main';
-        // if you don't define multiple connected firewalls, the context defaults to the firewall name
-        // See https://symfony.com/doc/current/reference/configuration/security.html#firewall-context
-        $firewallContext = 'main';
-
-        // you may need to use a different token class depending on your application.
-        // for example, when using Guard authentication you must instantiate PostAuthenticationGuardToken
-        $token = new UsernamePasswordToken($this->connectedUser, 'user', $firewallName, ['ROLE_EMPLOYEE']);
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
-    private function guestLogIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-        $firewallName = 'main';
-        // if you don't define multiple connected firewalls, the context defaults to the firewall name
-        // See https://symfony.com/doc/current/reference/configuration/security.html#firewall-context
-        $firewallContext = 'main';
-
-        // you may need to use a different token class depending on your application.
-        // for example, when using Guard authentication you must instantiate PostAuthenticationGuardToken
-        $token = new UsernamePasswordToken($this->connectedUser, 'user', $firewallName, ['ROLE_GUEST']);
+        $token = new UsernamePasswordToken($this->connectedUser, $credentials, $firewallName, $role);
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 
@@ -130,6 +92,5 @@ class UserControllerTest extends WebTestCase
     public function logout()
     {
         $crawler = $this->client->request('GET', '/deconnexion');
-        $crawler = $this->client->request('GET', '/');
     }
 }
