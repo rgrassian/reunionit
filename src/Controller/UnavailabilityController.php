@@ -9,6 +9,7 @@ use App\Form\UnavailabilityAdminType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
+use App\Service\UnavailabilityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Configuration;
@@ -289,7 +290,8 @@ class UnavailabilityController extends AbstractController
      */
     public function delete(Request $request,
                            \Swift_Mailer $mailer,
-                           Unavailability $unavailability): Response
+                           Unavailability $unavailability,
+                           UnavailabilityManager $unavailabilityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
 
@@ -312,8 +314,7 @@ class UnavailabilityController extends AbstractController
                 );
             }
 
-
-            $this->removeUnavailabilityFromDatabase($unavailability);
+            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
         }
 
         $this->addFlash('notice',
@@ -326,14 +327,14 @@ class UnavailabilityController extends AbstractController
      * Supprime toutes les réunions à venir organisées par un User.
      * @param User $organiser
      */
-    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
+    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser, UnavailabilityManager $unavailabilityManager)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
 
         foreach ($unavailabilities as $unavailability) {
-            $this->removeUnavailabilityFromDatabase($unavailability);
+            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
         }
     }
 
@@ -361,7 +362,7 @@ class UnavailabilityController extends AbstractController
      * Supprime toutes les réunions à venir organisées dans une salle.
      * @param Room $room
      */
-    public function deleteUpcomingUnavailabilitiesByRoom(Room $room)
+    public function deleteUpcomingUnavailabilitiesByRoom(Room $room, UnavailabilityManager $unavailabilityManager)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
@@ -369,19 +370,8 @@ class UnavailabilityController extends AbstractController
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
 
         foreach ($unavailabilities as $unavailability) {
-            $this->removeUnavailabilityFromDatabase($unavailability);
+            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
         }
-    }
-
-    /**
-     * Supprime une Unavailability de la BDD.
-     * @param Unavailability $unavailability
-     */
-    private function removeUnavailabilityFromDatabase(Unavailability $unavailability)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($unavailability);
-        $entityManager->flush();
     }
 
     /**
