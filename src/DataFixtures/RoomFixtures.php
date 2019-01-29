@@ -29,6 +29,6 @@ class RoomFixtures extends Fixture
             $manager->persist($room);
         }
 
-        $manager->flush();
+//        $manager->flush();
     }
 }

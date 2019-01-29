@@ -25,7 +25,7 @@
                     <td>{{ unavailability.type == 0 ? 'Réunion' : 'Autre' }}</td>
                 {% endif %}
                 <td>
-                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}">
+                    <a href="{{ path('unavailability_show', {'id': unavailability.id}) }}" style="text-decoration: none;">
                         <i class="far fa-eye" data-toggle="tooltip" data-placement="top" title="Voir" ></i>
                     </a>
                 </td>

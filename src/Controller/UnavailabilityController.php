@@ -373,8 +373,9 @@ class UnavailabilityController extends AbstractController
     }
 
     /**
+     * Affiche le calendrier de toutes les réunions dans toutes les salles.
      * @Route("/calendrier.html", name="unavailability_calendar")
-     * @IsGranted("ROLE_GUEST")
+     * @IsGranted("ROLE_EMPLOYEE", message="Vous n'êtes pas autorisé à consulter l'agenda de toutes les réunions.")
      */
     public function calendar()
     {
