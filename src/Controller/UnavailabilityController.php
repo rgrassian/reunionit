@@ -288,7 +288,8 @@ class UnavailabilityController extends AbstractController
      */
     public function delete(Request $request,
                            \Swift_Mailer $mailer,
-                           Unavailability $unavailability): Response
+                           Unavailability $unavailability,
+                           UnavailabilityManager $unavailabilityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
 
@@ -311,7 +312,7 @@ class UnavailabilityController extends AbstractController
                 );
             }
 
-            $this->removeUnavailabilityFromDatabase($unavailability);
+            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
         }
 
         $this->addFlash('notice',
