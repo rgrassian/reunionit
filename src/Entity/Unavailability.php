@@ -176,6 +176,11 @@ class Unavailability
         return $this->guests;
     }
 
+    public function isGuest(User $user) : bool
+    {
+        return $this->guests->contains($user);
+    }
+
     public function addGuest(User $guest): self
     {
         if (!$this->guests->contains($guest)) {

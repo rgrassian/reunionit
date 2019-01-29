@@ -150,8 +150,10 @@ class UnavailabilityController extends AbstractController
     /**
      * Affiche les infos sur une réservation.
      * @Route("/reservation-{id}.html", name="unavailability_show", methods={"GET"})
-     * @Security("unavailability != null", statusCode=404, message="Cette réservation n'existe plus ou n'a jamais existé.")
-     * @IsGranted("ROLE_EMPLOYEE", message="Vous n'êtes pas autorisé à consulter cette page.")
+     * @Security("unavailability != null", statusCode=404,
+     *     message="Cette réservation n'existe plus ou n'a jamais existé.")
+     * @Security("unavailability.isGuest(user) or has_role('ROLE_EMPLOYEE')", statusCode=403,
+     *     message="Vous n'avez pas l'autorisation d'accéder à cette page.")
      * @param Unavailability $unavailability
      * @return Response
      */

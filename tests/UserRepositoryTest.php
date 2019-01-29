@@ -60,8 +60,7 @@ class UserRepositoryTest extends WebTestCase
          */
         $rep = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
-        $this->assertCount(count($this->userRepository->findActiveUsers()) - 1,
-            $this->userRepository->findActiveUsersExceptCurrent());
+        $this->assertCount(count($this->userRepository->findActiveUsers()) - 1, $this->userRepository->findActiveUsersExceptCurrent());
         $this->assertNotContains(strval($this->connectedUser->getId()),
             $crawler->filter('option[value=' . $this->connectedUser->getId() . ']')->text());
     }
