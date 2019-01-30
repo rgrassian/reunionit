@@ -8,7 +8,7 @@
 
 namespace App\Service;
 
-
+use App\Service\EmailManager;
 use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
@@ -40,30 +40,56 @@ class UnavailabilityManager
 
     /**
      * Supprime toutes les réunions à venir organisées par un User.
+     * @param \App\Service\EmailManager $emailManager
      * @param User $organiser
+     * @param \Swift_Mailer $mailer
      */
-    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
+    public function deleteUpcomingUnavailabilitiesByOrganiser(EmailManager $emailManager, User $organiser, \Swift_Mailer $mailer)
     {
         $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
 
         foreach ($unavailabilities as $unavailability) {
+            // Envoi de mails aux invités
+            $guests = $unavailability->getGuests();
+            foreach ($guests as $guest) {
+                $emailManager->sendEmail($mailer,
+                    'ReunionIT | Annulation d\'une invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_delete_guest.html.twig',
+                    ['guest'=>$guest,'data' => $unavailability]
+                );
+            }
+
             $this->removeUnavailabilityFromDatabase($unavailability);
         }
     }
 
     /**
      * Supprime toutes les réunions à venir organisées dans une salle.
+     * @param \App\Service\EmailManager $emailManager
      * @param Room $room
+     * @param \Swift_Mailer $mailer
      */
-    public function deleteUpcomingUnavailabilitiesByRoom(Room $room)
+    public function deleteUpcomingUnavailabilitiesByRoom(EmailManager $emailManager, Room $room, \Swift_Mailer $mailer)
     {
         $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
 
         $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
 
         foreach ($unavailabilities as $unavailability) {
+            // Envoi de mails aux invités
+            $guests = $unavailability->getGuests();
+            foreach ($guests as $guest) {
+                $emailManager->sendEmail($mailer,
+                    'ReunionIT | Annulation d\'une invitation',
+                    $guest->getEmail(),
+                    'email/unavailability_delete_guest.html.twig',
+                    ['guest'=>$guest,'data' => $unavailability]
+                );
+            }
+
             $this->removeUnavailabilityFromDatabase($unavailability);
         }
     }

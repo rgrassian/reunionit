@@ -7,6 +7,7 @@ use App\Form\Model\ChangePassword;
 use App\Form\UserAdminType;
 use App\Form\UserPasswordChangeType;
 use App\Repository\UnavailabilityRepository;
+use App\Service\EmailManager;
 use App\Service\UnavailabilityManager;
 use App\Service\UserManager;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -193,6 +194,8 @@ class UserController extends AbstractController
      * @param UnavailabilityRepository $unavailabilityRepository
      * @param UnavailabilityManager $unavailabilityManager
      * @param UserManager $userManager
+     * @param EmailManager $emailManager
+     * @param \Swift_Mailer $mailer
      * @param User $user
      * @return Response
      */
@@ -200,6 +203,8 @@ class UserController extends AbstractController
                            UnavailabilityRepository $unavailabilityRepository,
                            UnavailabilityManager $unavailabilityManager,
                            UserManager $userManager,
+                           EmailManager $emailManager,
+                           \Swift_Mailer $mailer,
                            User $user = null): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
@@ -211,7 +216,7 @@ class UserController extends AbstractController
 
                 // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
                 if ($user->hasUpcomingUnavailabilities()) {
-                    $unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($user);
+                    $unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($emailManager,$user, $mailer);
                 }
 
                 // Si l'utilisateur est invité à des réunions à venir, on le supprime des invités à ces réunions.

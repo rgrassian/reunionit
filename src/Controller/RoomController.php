@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\EmailManager;
+use App\Service\UnavailabilityManager;
 use Doctrine\ORM\Configuration;
 use App\Entity\Room;
 use App\Form\RoomType;
@@ -199,13 +201,17 @@ class RoomController extends AbstractController
      * @Route("/admin/supprimer/salle-{id}.html", name="room_delete", methods={"DELETE"})
      * @Security("room != null and room.getDeletedAt() == null", statusCode=404, message="Cette salle n'existe plus ou n'a jamais existé.")
      * @param Request $request
-     * @param UnavailabilityController $unavailabilityController
      * @param Room $room
+     * @param UnavailabilityManager $unavailabilityManager
+     * @param \Swift_Mailer $mailer
+     * @param EmailManager $emailManager
      * @return Response
      */
     public function delete(Request $request,
-                           UnavailabilityController $unavailabilityController,
-                           Room $room): Response
+                           Room $room,
+                           UnavailabilityManager $unavailabilityManager,
+                           \Swift_Mailer $mailer,
+                           EmailManager $emailManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
 
@@ -215,7 +221,7 @@ class RoomController extends AbstractController
             // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
             if ($room->hasUpcomingUnavailabilities()) {
                 //                                          /!\ Modal de confirmation
-                $unavailabilityController->deleteUpcomingUnavailabilityByRoom($room);
+                $unavailabilityManager->deleteUpcomingUnavailabilityByRoom($emailManager, $room, $mailer);
             }
 
             $entityManager->remove($room);

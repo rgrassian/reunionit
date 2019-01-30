@@ -11,6 +11,7 @@ use App\Form\UnavailabilityEditType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
+use App\Service\EmailManager;
 use App\Service\UnavailabilityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,6 +21,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,12 +70,14 @@ class UnavailabilityController extends AbstractController
      * @param RoomRepository $roomRepository
      * @param \Swift_Mailer $mailer
      * @param UnavailabilityRepository $unavailabilityRepository
+     * @param EmailManager $emailManager
      * @return Response
      */
     public function new(Request $request,
                         RoomRepository $roomRepository,
                         \Swift_Mailer $mailer,
-                        UnavailabilityRepository $unavailabilityRepository): Response
+                        UnavailabilityRepository $unavailabilityRepository,
+                        EmailManager $emailManager): Response
     {
         $unavailability = new Unavailability();
 
@@ -119,7 +123,7 @@ class UnavailabilityController extends AbstractController
             $formData = $form->getData();
 
             // Envoi de mail à l'organisateur
-            $this->sendEmail($mailer,
+            $emailManager->sendEmail($mailer,
                 'ReunionIT | Enregistrement de votre réservation',
                 $formData->getOrganiser()->getEmail(),
                 'email/unavailability_new.html.twig',
@@ -129,7 +133,7 @@ class UnavailabilityController extends AbstractController
             // Envoi de mails aux invités
             $guests = $formData->getGuests();
             foreach ($guests as $guest) {
-                $this->sendEmail($mailer,
+                $emailManager->sendEmail($mailer,
                     'ReunionIT | Nouvelle invitation',
                     $guest->getEmail(),
                     'email/unavailability_new_guest.html.twig',
@@ -182,11 +186,13 @@ class UnavailabilityController extends AbstractController
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
+     * @param EmailManager $emailManager
      * @return Response
      */
     public function edit(Request $request,
                          \Swift_Mailer $mailer,
-                         Unavailability $unavailability = null): Response
+                         Unavailability $unavailability = null,
+                         EmailManager $emailManager): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->getFilters()->disable('softdeleteable');
@@ -207,7 +213,7 @@ class UnavailabilityController extends AbstractController
             $formData = $form->getData();
 
             // Envoi de mail à l'organisateur
-            $this->sendEmail($mailer,
+            $emailManager->sendEmail($mailer,
                 'ReunionIT | Modification de votre réservation',
                 $formData->getOrganiser()->getEmail(),
                 'email/unavailability_edit.html.twig',
@@ -234,7 +240,7 @@ class UnavailabilityController extends AbstractController
 
             // Envoi de mails aux guests déjà invités
             foreach ($persistGuests as $guest) {
-                $this->sendEmail($mailer,
+                $emailManager->sendEmail($mailer,
                     'ReunionIT | Modification d\'une invitation',
                     $guest->getEmail(),
                     'email/unavailability_edit_guest.html.twig',
@@ -244,7 +250,7 @@ class UnavailabilityController extends AbstractController
 
             // Envoi de mails aux guests nouvellement invités
             foreach ($additionalGuests as $guest) {
-                $this->sendEmail($mailer,
+                $emailManager->sendEmail($mailer,
                     'ReunionIT | Nouvelle invitation',
                     $guest->getEmail(),
                     'email/unavailability_new_guest.html.twig',
@@ -254,7 +260,7 @@ class UnavailabilityController extends AbstractController
 
             // Envoi de mails aux guests nouvellement invités
             foreach ($removedGuests as $guest) {
-                $this->sendEmail($mailer,
+                $emailManager->sendEmail($mailer,
                     'ReunionIT | Invitation annulée',
                     $guest->getEmail(),
                     'email/unavailability_delete_guest.html.twig',
@@ -285,17 +291,19 @@ class UnavailabilityController extends AbstractController
      * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
      * @param UnavailabilityManager $unavailabilityManager
+     * @param EmailManager $emailManager
      * @return Response
      */
     public function delete(Request $request,
                            \Swift_Mailer $mailer,
                            Unavailability $unavailability,
-                           UnavailabilityManager $unavailabilityManager): Response
+                           UnavailabilityManager $unavailabilityManager,
+                           EmailManager $emailManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$unavailability->getId(), $request->request->get('_token'))) {
 
             // Envoi de mail à l'organisateur
-            $this->sendEmail($mailer,
+            $emailManager->sendEmail($mailer,
                 'ReunionIT | Suppression de votre réservation',
                 $unavailability->getOrganiser()->getEmail(),
                 'email/unavailability_delete.html.twig',
@@ -305,7 +313,7 @@ class UnavailabilityController extends AbstractController
             // Envoi de mails aux invités
             $guests = $unavailability->getGuests();
             foreach ($guests as $guest) {
-                $this->sendEmail($mailer,
+                $emailManager->sendEmail($mailer,
                     'ReunionIT | Annulation d\'une invitation',
                     $guest->getEmail(),
                     'email/unavailability_delete_guest.html.twig',
@@ -332,14 +340,15 @@ class UnavailabilityController extends AbstractController
         return $this->render('unavailability/calendar.html.twig');
     }
 
+
     /**
-     * @param \Swift_Mailer $mailer
+     * @param Swift_Mailer $mailer
      * @param $object
      * @param $to
      * @param $view
      * @param $options
      */
-    public function sendEmail(\Swift_Mailer $mailer, $object, $to, $view, $options)
+    public function sendEmail(Swift_Mailer $mailer, $object, $to, $view, $options)
     {
         $message = (new \Swift_Message($object))
             ->setFrom('margouillat.reunion.it@gmail.com')
@@ -348,4 +357,5 @@ class UnavailabilityController extends AbstractController
                 $this->renderView($view, $options), 'text/html');
         $mailer->send($message);
     }
+
 }
