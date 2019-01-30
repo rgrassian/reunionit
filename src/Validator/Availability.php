@@ -18,6 +18,7 @@ class Availability extends Constraint
     public $pastDatesMessage = 'La date ou l\'heure de début est passée. Trop tard.';
     public $weekEndDatesMessage = 'Impossible de réserver une salle le samedi et/ou le dimanche.';
     public $tooManyGuestsMessage = 'La salle n\'a pas la capacité suffisante pour accueillir ce nombre d\'invités';
+    public $organiserAndGuestMessage = 'L\'organisateur de la réunion n\'a pas besoin d\'être invité';
 
     public function validatedBy()
     {
