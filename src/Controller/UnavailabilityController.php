@@ -286,6 +286,7 @@ class UnavailabilityController extends AbstractController
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
+     * @param UnavailabilityManager $unavailabilityManager
      * @return Response
      */
     public function delete(Request $request,
@@ -361,8 +362,10 @@ class UnavailabilityController extends AbstractController
     /**
      * Supprime toutes les réunions à venir organisées dans une salle.
      * @param Room $room
+     * @param UnavailabilityManager $unavailabilityManager
      */
-    public function deleteUpcomingUnavailabilitiesByRoom(Room $room, UnavailabilityManager $unavailabilityManager)
+    public function deleteUpcomingUnavailabilitiesByRoom(Room $room,
+                                                         UnavailabilityManager $unavailabilityManager)
     {
         $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
         $entityManager = $this->getDoctrine()->getManager();
