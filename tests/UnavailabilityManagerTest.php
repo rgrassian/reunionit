@@ -48,11 +48,6 @@ class UnavailabilityManagerTest extends KernelTestCase
         $this->unavailabilityManager = self::$container->get(UnavailabilityManager::class);
     }
 
-//    public function testRemoveUnavailabilityFromDatabase()
-//    {
-//
-//    }
-
     public function testDeleteUpcomingUnavailabilitiesByOrganiser()
     {
         $organiser = $this->userRepository->findOneBy(['id' => 1]);

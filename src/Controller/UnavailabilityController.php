@@ -280,6 +280,7 @@ class UnavailabilityController extends AbstractController
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @param Unavailability $unavailability
+     * @param UnavailabilityManager $unavailabilityManager
      * @return Response
      */
     public function delete(Request $request,

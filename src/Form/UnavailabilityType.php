@@ -31,16 +31,6 @@ class UnavailabilityType extends AbstractType
     {
         $users = $this->userRepository->findActiveUsersExceptCurrent();
         $builder
-            ->add('startDate', DateTimeType::class, [
-                'label' => 'Début',
-                'date_format' => 'dd/MM/yyyy HH:ii',
-                'widget' => 'single_text',
-            ])
-            ->add('endDate', DateTimeType::class, [
-                'label' => 'Fin',
-                'date_format' => 'dd/MM/yyyy HH:ii',
-                'widget' => 'single_text'
-            ])
             ->add('guests', EntityType::class, [
                 'label' => 'Invités',
                 'class' => User::class,
@@ -50,11 +40,6 @@ class UnavailabilityType extends AbstractType
             ])
             ->add('object', TextType::class, [
                 'label' => 'Objet'
-            ])
-            ->add('room', EntityType::class, [
-                'label' => 'Salle',
-                'class' => Room::class,
-                'choice_label' => 'name'
             ])
         ;
     }

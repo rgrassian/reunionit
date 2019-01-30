@@ -3,11 +3,13 @@
 namespace App\Form;
 
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class UnavailabilityAdminType extends UnavailabilityType
@@ -19,6 +21,21 @@ class UnavailabilityAdminType extends UnavailabilityType
         parent::buildForm($builder, $options);
         
         $builder
+            ->add('startDate', DateTimeType::class, [
+                'label' => 'Début',
+                'date_format' => 'dd/MM/yyyy HH:ii',
+                'widget' => 'single_text',
+            ])
+            ->add('endDate', DateTimeType::class, [
+                'label' => 'Fin',
+                'date_format' => 'dd/MM/yyyy HH:ii',
+                'widget' => 'single_text'
+            ])
+            ->add('room', EntityType::class, [
+                'label' => 'Salle',
+                'class' => Room::class,
+                'choice_label' => 'name'
+            ])
             ->add('type', ChoiceType::class, [
                 'label' => 'Type de réservation',
                 'choices' => [
