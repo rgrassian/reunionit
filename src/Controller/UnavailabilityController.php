@@ -103,8 +103,10 @@ class UnavailabilityController extends AbstractController
 
 //            $form->get('startDate')->setData($startDate);
 //            $form->get('endDate')->setData($endDate);
-//            $form->get('room')->setData($room);
 
+            if ($this->getUser()->hasRole('ROLE_ADMIN')) {
+                $form->get('room')->setData($room);
+            }
         }
 
         $form->handleRequest($request);

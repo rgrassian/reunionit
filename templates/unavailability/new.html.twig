@@ -7,7 +7,7 @@
     <div class="jumbotron col-md-6 mx-auto mt-4">
 
         <h1>Salle {{ unavailability.room.name }}</h1>
-        <h2>du {{ unavailability.startDate | date('d/m/Y à h\\hi') ~ ' au ' ~ unavailability.endDate | date('d/m/Y à h\\hi') }}</h2>
+        <h2>du {{ unavailability.startDate | date('d/m/Y à H\\hi') ~ ' au ' ~ unavailability.endDate | date('d/m/Y à H\\hi') }}</h2>
 
         {{ include('unavailability/_form.html.twig') }}
 

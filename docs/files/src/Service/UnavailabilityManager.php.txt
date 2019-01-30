@@ -1,0 +1,72 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Etudiant
+ * Date: 29/01/2019
+ * Time: 11:11
+ */
+
+namespace App\Service;
+
+
+use App\Entity\Room;
+use App\Entity\Unavailability;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+
+class UnavailabilityManager
+{
+    private $entityManager;
+
+    /**
+     * UnavailabilityManager constructor.
+     * @param $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * Supprime une Unavailability de la BDD.
+     * @param Unavailability $unavailability
+     */
+    public function removeUnavailabilityFromDatabase(Unavailability $unavailability)
+    {
+        $entityManager = $this->entityManager;
+        $entityManager->remove($unavailability);
+        $entityManager->flush();
+    }
+
+    /**
+     * Supprime toutes les réunions à venir organisées par un User.
+     * @param User $organiser
+     */
+    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
+    {
+        $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+    /**
+     * Supprime toutes les réunions à venir organisées dans une salle.
+     * @param Room $room
+     */
+    public function deleteUpcomingUnavailabilitiesByRoom(Room $room)
+    {
+        $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+
+}
