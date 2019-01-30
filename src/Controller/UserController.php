@@ -7,6 +7,8 @@ use App\Form\Model\ChangePassword;
 use App\Form\UserAdminType;
 use App\Form\UserPasswordChangeType;
 use App\Repository\UnavailabilityRepository;
+use App\Service\UnavailabilityManager;
+use App\Service\UserManager;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -182,16 +184,6 @@ class UserController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/admin/user-delete-confirmation/{id}", name="user_delete_confirm")
-//     * @param User $user
-//     * @return JsonResponse
-//     */
-//    public function deleteConfirm(User $user)
-//    {
-//        return new JsonResponse(['ask' => $user->hasUpcomingUnavailabilities()]);
-//    }
-
     /**
      * Permet à l'admin de supprimer un compte utilisateur.
      * @Route("/admin/supprimer/utilisateur-{id}.html", name="user_delete", methods={"DELETE"})
@@ -199,13 +191,15 @@ class UserController extends AbstractController
      *     message="Cet utilisateur n'existe plus ou n'a jamais existé.")
      * @param Request $request
      * @param UnavailabilityRepository $unavailabilityRepository
-     * @param UnavailabilityController $unavailabilityController
+     * @param UnavailabilityManager $unavailabilityManager
+     * @param UserManager $userManager
      * @param User $user
      * @return Response
      */
     public function delete(Request $request,
                            UnavailabilityRepository $unavailabilityRepository,
-                           UnavailabilityController $unavailabilityController,
+                           UnavailabilityManager $unavailabilityManager,
+                           UserManager $userManager,
                            User $user = null): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
@@ -217,23 +211,22 @@ class UserController extends AbstractController
 
                 // Si l'utilisateur est l'organisateur de réunions à venir, on supprime ces réunions.
                 if ($user->hasUpcomingUnavailabilities()) {
-                    //                                              modal de confirmation /!\
-                    $unavailabilityController->deleteUpcomingUnavailabilitiesByOrganiser($user);
+                    $unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($user);
                 }
 
                 // Si l'utilisateur est invité à des réunions à venir, on le supprime des invités à ces réunions.
                 if ($user->hasUpcomingInvitations()) {
-                    $unavailabilityController->removeUserFromUpcomingUnavailabilitiesGuests($user);
+                    $userManager->removeUserFromUpcomingUnavailabilitiesGuests($user);
                 }
             }
 
             // Dans tous les cas, on le désactive (1ère requête "remove")
-            $this->removeUserFromDatabase($user);
+            $userManager->removeUserFromDatabase($user);
 
             if (empty($user->getUnavailabilities()) && empty($unavailabilityRepository->findByGuestAndOrder($user))) {
                 // Si l'utilisateur n'est l'organisateur ou l'invité d'aucune réunion,
                 // on le supprime définitivement (2e requête "remove").
-                $this->removeUserFromDatabase($user);
+                $userManager->removeUserFromDatabase($user);
             } else {
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -243,18 +236,6 @@ class UserController extends AbstractController
             'Le compte a été désactivé.');
 
         return $this->redirectToRoute('user_index');
-    }
-
-    /**
-     * Désactive un utilisateur au premier appel.
-     * Supprime un utilisateur de la BDD au second appel.
-     * @param User $user
-     */
-    private function removeUserFromDatabase(User $user)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
     }
 
     /**
