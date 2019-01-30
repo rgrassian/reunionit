@@ -6,6 +6,8 @@ use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
 use App\Form\UnavailabilityAdminType;
+use App\Form\UnavailabilityEditAdminType;
+use App\Form\UnavailabilityEditType;
 use App\Form\UnavailabilityType;
 use App\Repository\RoomRepository;
 use App\Repository\UnavailabilityRepository;
@@ -99,9 +101,9 @@ class UnavailabilityController extends AbstractController
                             ->setEndDate($endDate)
                             ->setRoom($room);
 
-            $form->get('startDate')->setData($startDate);
-            $form->get('endDate')->setData($endDate);
-            $form->get('room')->setData($room);
+//            $form->get('startDate')->setData($startDate);
+//            $form->get('endDate')->setData($endDate);
+//            $form->get('room')->setData($room);
 
         }
 
@@ -188,9 +190,9 @@ class UnavailabilityController extends AbstractController
         $entityManager->getFilters()->disable('softdeleteable');
 
         if ($this->getUser()->hasRole('ROLE_ADMIN')) {
-            $form = $this->createForm(UnavailabilityAdminType::class, $unavailability);
+            $form = $this->createForm(UnavailabilityEditAdminType::class, $unavailability);
         } else {
-            $form = $this->createForm(UnavailabilityType::class, $unavailability);
+            $form = $this->createForm(UnavailabilityEditType::class, $unavailability);
         }
 
         $oldGuests = $unavailability->getGuests()->toArray();

@@ -105,13 +105,13 @@ class UserControllerTest extends WebTestCase
 
     public function testShow()
     {
-        // Test d'accès Guest
         $this->connectedUser = $this->userRepository->findOneById('6');
         $this->login('user', ['ROLE_GUEST']);
 
         $crawler = $this->client->request('GET', '/utilisateur-1.html');
         $rep = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
+        $this->assertSame('Jacques Grenier', $crawler->filter('h1')->text());
     }
 
     public function login($credentials, $role)

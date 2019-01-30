@@ -37,6 +37,7 @@ class UserRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.id != :user_id')
+            ->andWhere('u.deletedAt is null')
             ->setParameter('user_id', $this->security->getUser()->getId())
             ->orderBy('u.lastName', 'ASC')
             ->getQuery()
