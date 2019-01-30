@@ -3,8 +3,10 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
+use App\Service\UnavailabilityManager;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Runner\Exception;
+use Proxies\__CG__\App\Entity\Unavailability;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Cookie;
@@ -47,8 +49,8 @@ class UserControllerTest extends WebTestCase
     public function testNew()
     {
         // Test d'accès Admin
-        $this->connectedUser = $this->userRepository->findOneById('48');
-        $this->login('superadmin', ['ROLE_ADMIN']);
+        $this->connectedUser = $this->userRepository->findOneById('1');
+        $this->login('adminadmin', ['ROLE_ADMIN']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
 
@@ -66,22 +68,24 @@ class UserControllerTest extends WebTestCase
         $this->client->submit($form);
 
         $crawler = $this->client->followRedirect();
+
         $user = $this->userRepository->findOneByLastName('testLastName');
         $this->assertSame('test.email@reunion.it', $user->getEmail());
-        $userId = $user->getId();
         $this->assertSame('Utilisateurs', $crawler->filter('h1')->text());
 
         $this->logout();
 
-        $this->assertEquals(0, $crawler->filter('html:contains("Nos locaux")')->count());
+        $this->assertEquals(0, $crawler->filter('html:contains("Nos locaux :")')->count());
 
-        $this->connectedUser = $this->userRepository->findOneById($userId);
+        $this->connectedUser = $this->userRepository->findOneByEmail('test.email@reunion.it');
         $this->login('user', ['ROLE_EMPLOYEE']);
 
-        $this->assertNotEquals(1, $crawler->filter('html:contains("Nos locaux")')->count());
+        $crawler = $this->client->request('GET', '/');
+
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Nos locaux :")')->count());
 
         // Test d'accès Employee
-        $this->connectedUser = $this->userRepository->findOneById('52');
+        $this->connectedUser = $this->userRepository->findOneById('3');
         $this->login('user', ['ROLE_EMPLOYEE']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
@@ -91,7 +95,7 @@ class UserControllerTest extends WebTestCase
         $this->logout();
 
         // Test d'accès Guest
-        $this->connectedUser = $this->userRepository->findOneById('61');
+        $this->connectedUser = $this->userRepository->findOneById('6');
         $this->login('user', ['ROLE_GUEST']);
 
         $crawler = $this->client->request('GET', '/admin/nouvel-utilisateur.html');
@@ -99,10 +103,16 @@ class UserControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_FORBIDDEN, $rep->getStatusCode());
     }
 
-//    public function show()
-//    {
-//
-//    }
+    public function testShow()
+    {
+        // Test d'accès Guest
+        $this->connectedUser = $this->userRepository->findOneById('6');
+        $this->login('user', ['ROLE_GUEST']);
+
+        $crawler = $this->client->request('GET', '/utilisateur-1.html');
+        $rep = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $rep->getStatusCode());
+    }
 
     public function login($credentials, $role)
     {
@@ -121,5 +131,6 @@ class UserControllerTest extends WebTestCase
     public function logout()
     {
         $crawler = $this->client->request('GET', '/deconnexion');
+        $crawler = $this->client->followRedirect();
     }
 }

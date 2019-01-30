@@ -75,7 +75,7 @@ class UserRepositoryTest extends WebTestCase
 
         // you may need to use a different token class depending on your application.
         // for example, when using Guard authentication you must instantiate PostAuthenticationGuardToken
-        $token = new UsernamePasswordToken($this->connectedUser, 'superadmin', $firewallName, ['ROLE_ADMIN']);
+        $token = new UsernamePasswordToken($this->connectedUser, 'adminadmin', $firewallName, ['ROLE_ADMIN']);
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 
