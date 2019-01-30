@@ -29,15 +29,15 @@ class UnavailabilityType extends AbstractType
         $users = $this->userRepository->findActiveUsersExceptCurrent();
 
         $builder
+            ->add('object', TextType::class, [
+                'label' => 'Objet'
+            ])
             ->add('guests', EntityType::class, [
                 'label' => 'Invités',
                 'class' => User::class,
                 'choices' => $users,
                 'choice_label' => function(User $user) {return $user->getFirstName().' '.$user->getLastName();},
                 'multiple' => true
-            ])
-            ->add('object', TextType::class, [
-                'label' => 'Objet'
             ])
         ;
     }

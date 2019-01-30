@@ -137,7 +137,7 @@ class UserController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('notice',
-                'La fiche de l\'utilisateur a été mise à jour.');
+                'Le profil de l\'utilisateur a été mis à jour.');
 
             return $this->redirectToRoute('user_index');
         }

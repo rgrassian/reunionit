@@ -20,16 +20,6 @@ class UnavailabilityAdminType extends UnavailabilityType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('startDate', DateTimeType::class, [
-                'label' => 'Début',
-                'date_format' => 'dd/MM/yyyy HH:ii',
-                'widget' => 'single_text',
-            ])
-            ->add('endDate', DateTimeType::class, [
-                'label' => 'Fin',
-                'date_format' => 'dd/MM/yyyy HH:ii',
-                'widget' => 'single_text'
-            ])
             ->add('room', EntityType::class, [
                 'label' => 'Salle',
                 'class' => Room::class,

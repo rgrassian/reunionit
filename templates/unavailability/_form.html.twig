@@ -3,9 +3,9 @@
 <button class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Enregistrer">
     <i class="fas fa-check"></i>
 </button>
-<button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour">
-    <a href="{{ path('unavailability_index') }}" style="color: #fff;">
+<a href="{{ path('room_show', { 'id': unavailability.room.id }) }}" style="color: #fff;">
+    <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="tooltip" data-placement="top" title="Retour">
         <i class="fas fa-chevron-left"></i>
-    </a>
-</button>
+    </button>
+</a>
 {{ form_end(form) }}

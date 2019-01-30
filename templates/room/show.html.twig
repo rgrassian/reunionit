@@ -131,6 +131,7 @@
                 maxTime: "{{ day_end }}",
                 nowIndicator: true,
                 selectable: true,
+                selectContraints: "businessHours",
                 // On n'autorise la réservation qu'à partir de l'heure courante.
                 selectAllow: function(select) {
                     return moment().diff(select.start) <= 0;
