@@ -23,7 +23,6 @@ class UnavailabilityRepositoryTest extends KernelTestCase
 
     private $roomRepository;
 
-    private $client;
 
     /**
      * {@inheritDoc}
@@ -128,16 +127,4 @@ class UnavailabilityRepositoryTest extends KernelTestCase
         $this->assertSame('lastMonthUnavailability', $this->unavailabilityRepository->findLastMonthUnavailabilities()[0]->getObject());
 
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->entityManager->close();
-        $this->entityManager = null; // avoid memory leaks
-    }
-
 }

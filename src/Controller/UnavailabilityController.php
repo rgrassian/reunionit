@@ -212,10 +212,6 @@ class UnavailabilityController extends AbstractController
 
             $newGuests = $unavailability->getGuests()->toArray();
 
-//            $persistGuests = array_intersect_key($oldGuests, $newGuests);
-//            $removedGuests = array_diff_key($oldGuests, $newGuests);
-//            $additionalGuests = array_diff_key($newGuests, $oldGuests);
-
             $persistGuests = [];
             $removedGuests = [];
             $additionalGuests = [];
@@ -231,8 +227,6 @@ class UnavailabilityController extends AbstractController
                     $additionalGuests[] = $guest;
                 }
             }
-
-            //dd($removedGuests);
 
             // Envoi de mails aux guests déjà invités
             foreach ($persistGuests as $guest) {
@@ -321,57 +315,6 @@ class UnavailabilityController extends AbstractController
             'La réservation a été annulée.');
 
         return $this->redirectToRoute('unavailability_calendar');
-    }
-
-    /**
-     * Supprime toutes les réunions à venir organisées par un User.
-     * @param User $organiser
-     */
-    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser, UnavailabilityManager $unavailabilityManager)
-    {
-        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
-
-        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
-
-        foreach ($unavailabilities as $unavailability) {
-            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
-        }
-    }
-
-    /**
-     * Retire un utilisateur de la liste des invités aux réunions à venir.
-     * @param User $user
-     */
-    public function removeUserFromUpcomingUnavailabilitiesGuests(User $user)
-    {
-        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByGuest($user);
-
-        foreach ($unavailabilities as $unavailability) {
-
-            $unavailability->removeGuest($user);
-
-            $entityManager->persist($unavailability);
-            $entityManager->flush();
-        }
-    }
-
-    /**
-     * Supprime toutes les réunions à venir organisées dans une salle.
-     * @param Room $room
-     */
-    public function deleteUpcomingUnavailabilitiesByRoom(Room $room, UnavailabilityManager $unavailabilityManager)
-    {
-        $unavailabilityRepository = $this->getDoctrine()->getRepository(Unavailability::class);
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
-
-        foreach ($unavailabilities as $unavailability) {
-            $unavailabilityManager->removeUnavailabilityFromDatabase($unavailability);
-        }
     }
 
     /**

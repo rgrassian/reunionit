@@ -9,7 +9,9 @@
 namespace App\Service;
 
 
+use App\Entity\Room;
 use App\Entity\Unavailability;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UnavailabilityManager
@@ -35,4 +37,36 @@ class UnavailabilityManager
         $entityManager->remove($unavailability);
         $entityManager->flush();
     }
+
+    /**
+     * Supprime toutes les réunions à venir organisées par un User.
+     * @param User $organiser
+     */
+    public function deleteUpcomingUnavailabilitiesByOrganiser(User $organiser)
+    {
+        $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+    /**
+     * Supprime toutes les réunions à venir organisées dans une salle.
+     * @param Room $room
+     */
+    public function deleteUpcomingUnavailabilitiesByRoom(Room $room)
+    {
+        $unavailabilityRepository = $this->entityManager->getRepository(Unavailability::class);
+
+        $unavailabilities = $unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room);
+
+        foreach ($unavailabilities as $unavailability) {
+            $this->removeUnavailabilityFromDatabase($unavailability);
+        }
+    }
+
+
 }
