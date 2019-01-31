@@ -47,6 +47,11 @@ class UnavailabilityControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
+    public function exampleTest()
+    {
+
+    }
+
 
     /**
      * {@inheritDoc}
