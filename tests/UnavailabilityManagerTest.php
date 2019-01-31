@@ -13,6 +13,7 @@ use App\Controller\UnavailabilityController;
 use App\Entity\Room;
 use App\Entity\Unavailability;
 use App\Entity\User;
+use App\Service\EmailManager;
 use App\Service\UnavailabilityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -29,9 +30,13 @@ class UnavailabilityManagerTest extends KernelTestCase
 
     private $unavailabilityManager;
 
+    private $emailManager;
+
     private $userRepository;
 
     private $roomRepository;
+
+    private $mailer;
 
     public function setUp()
     {
@@ -46,13 +51,16 @@ class UnavailabilityManagerTest extends KernelTestCase
         $this->userRepository = $this->entityManager->getRepository(User::class);
         $this->roomRepository = $this->entityManager->getRepository(Room::class);
         $this->unavailabilityManager = self::$container->get(UnavailabilityManager::class);
+        $this->emailManager = self::$container->get(EmailManager::class);
+        $this->mailer = self::$container->get(\Swift_Mailer::class);
+
     }
 
     public function testDeleteUpcomingUnavailabilitiesByOrganiser()
     {
         $organiser = $this->userRepository->findOneBy(['id' => 1]);
 
-        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($organiser);
+        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($this->emailManager, $organiser, $this->mailer);
 
         $this->assertEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser));
 
@@ -77,7 +85,7 @@ class UnavailabilityManagerTest extends KernelTestCase
 
         $this->assertNotEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser));
 
-        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($organiser);
+        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByOrganiser($this->emailManager, $organiser, $this->mailer);
 
         $this->assertEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByOrganiser($organiser));
     }
@@ -86,7 +94,7 @@ class UnavailabilityManagerTest extends KernelTestCase
     {
         $room = $this->roomRepository->findOneBy(['id' => 2]);
 
-        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByRoom($room);
+        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByRoom($this->emailManager, $room, $this->mailer);
 
         $this->assertEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room));
 
@@ -111,7 +119,7 @@ class UnavailabilityManagerTest extends KernelTestCase
 
         $this->assertNotEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room));
 
-        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByRoom($room);
+        $this->unavailabilityManager->deleteUpcomingUnavailabilitiesByRoom($this->emailManager, $room, $this->mailer);
 
         $this->assertEmpty($this->unavailabilityRepository->findUpcomingUnavailabilitiesByRoom($room));
     }
