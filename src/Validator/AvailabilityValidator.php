@@ -48,6 +48,10 @@ class AvailabilityValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->tooManyGuestsMessage)
                 ->addViolation();
         }
+        if ($this->organiserAndGuest($value)) {
+            $this->context->buildViolation($constraint->organiserAndGuestMessage)
+                ->addViolation();
+        }
     }
 
     public function availability($value)
@@ -102,5 +106,10 @@ class AvailabilityValidator extends ConstraintValidator
     // La capacité de la salle doit être supérieure ou égale au nombre d'invités + 1 (l'organisateur).
     public function tooManyGuests($value) {
         return ($value->getRoom()->getCapacity() < count($value->getGuests()) + 1);
+    }
+
+    public function organiserAndGuest($value)
+    {
+        return $value->isGuest($value->getOrganiser());
     }
 }
